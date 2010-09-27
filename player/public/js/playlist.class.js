@@ -118,7 +118,8 @@ Playlist.prototype.refresh = function () {
         type: "POST",
         dataType: "json",
         success: function() {
-            // add
+            // add dsdss
+            // whahahaha
         }
     });
 };
