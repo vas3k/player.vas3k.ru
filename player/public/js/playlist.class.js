@@ -113,13 +113,24 @@ Playlist.prototype.deltrack = function (aid) {
 // Управление плейлистами
 
 Playlist.prototype.refresh = function () {
+    // TODO: Show loader
     $.ajax({
         url: "/ajax/playlist/list",
         type: "POST",
         dataType: "json",
-        success: function() {
-            // add dsdss
-            // whahahaha
+        success: function(data) {
+            var html = "";
+            if ((data["status"] == "OK") && (data["count"] > 0)) {
+                for (var i = 0; i < data["count"]; i++) {
+                    html += "<li><img src=\"/images/icons/playlist.png\" alt=\">\" /> " + data["lists"][i]["name"];
+                    html += " <small onclick=\"player.playlist.add_to('" + data["lists"][i]["_id"] + "');\">";
+                    html += "<img src=\"/images/icons/add.png\" alt=\"add\" /></small> ";
+                    html += "<small onclick=\"player.playlist.remove('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/cross.png\" alt=\"del\" /></small></li>";
+                }
+            } else {
+                html = "<li>Нет плейлистов</li>";
+            }
+            $("#playlistlist").html(html);
         }
     });
 };
@@ -132,9 +143,36 @@ Playlist.prototype.create = function (name) {
             data: ({ name: name }),
             type: "POST",
             dataType: "json",
-            success: function() {
-                playlist.refresh();
+            success: function(data) {
+                if (data["status"] == "OK") {
+                    playlist.refresh();
+                    $("#newplaylist input").val("");
+                    $("#newplaylist").hide("fast");
+                } else {
+                    // TODO: Show error
+                    alert(data["message"]);
+                }
             }
         });
     }
 };
+
+Playlist.prototype.remove = function (id) {
+    var playlist = this;
+    if (id) {
+        $.ajax({
+            url: "/ajax/playlist/remove",
+            data: ({ id: id }),
+            type: "POST",
+            dataType: "json",
+            success: function(data) {
+                if (data["status"] == "OK") {
+                    playlist.refresh();
+                } else {
+                    // TODO: Show error
+                    alert(data["message"]);
+                }
+            }
+        });
+    }
+}

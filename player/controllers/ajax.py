@@ -26,11 +26,15 @@ class AjaxController(BaseController):
             return json.dumps({ "status": "NeOK", "message": u"Bad userid '%s" %self.userid })
 
         if pl_action == "list":
-            lists = self.connection.playes.playlists.find({ "userid": ObjectId(self.userid) })
+            lists = self.connection.player.playlists.find({ "userid": ObjectId(self.userid) })
             pl = []
+            count = 0
             for list in lists:
+                list["_id"] = unicode(list["_id"])
+                list["userid"] = unicode(list["userid"])
                 pl.append(list)
-            return json.dumps({ "status": "OK", "lists": pl })
+                count += 1
+            return json.dumps({ "status": "OK", "count": count, "lists": pl })
 
         if pl_action == "new":
             name = request.params.get("name")

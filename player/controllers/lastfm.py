@@ -44,13 +44,13 @@ class LastfmController(BaseController):
         response.set_cookie("lastfm_session", session, max_age=36000000)
 
         # сохраняем все в БД
-        self.connection.player.users.update({ "hash": self.userhash }, { "$set": {
-            "lastfm": {
-                "login": lastfm_login,
-                "token": token,
-                "session": session
-            }
-        }})
+        #self.connection.player.users.update({ "hash": self.userhash }, { "$set": {
+        #    "lastfm": {
+        #        "login": lastfm_login,
+        #        "token": token,
+        #        "session": session
+        #    }
+        #}})
         return 'OK'
 
     def scrobble(self):

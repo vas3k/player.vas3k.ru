@@ -129,6 +129,8 @@ Controls.prototype.initialize = function () {
             controls.vk_search($(this).val());
         }
     });
+
+    controls.playlist.refresh();
 };
 
 Controls.prototype.setCurrent = function (sound) {

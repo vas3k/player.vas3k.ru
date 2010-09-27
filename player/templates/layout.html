@@ -62,7 +62,7 @@
                 <span class="dir">НЕДАВНИЕ ПОИСКИ</span>
                     <ul id="lastsearches"></ul>
 
-                <span class="dir">ПЛЕЙЛИСТЫ <small onclick=""><img src="/images/icons/add.png" alt="new" onclick="$('#newplaylist').toggle('fast');" /></small></span>
+                <span class="dir">ПЛЕЙЛИСТЫ <small onclick="$('#newplaylist').toggle('fast');"><img src="/images/icons/add.png" alt="new" /></small> <small onclick="player.playlist.refresh();"><img src="/images/icons/repeat.png" alt="refresh" /></small></span>
                     <span id="newplaylist" style="display: none;"><input type="text" name="name" /><small onclick="player.playlist.create($('#newplaylist input').val());"> <img src="/images/icons/accept.png" alt="done" /></small></span>
                     <ul id="playlistlist">
                         <li><img src="/images/icons/playlist.png" alt=">" /> Test 1 <small onclick="player.playlist.add_to('ID-blablabla');"><img src="/images/icons/add.png" alt="add" /></small> <small onclick=""><img src="/images/icons/cross.png" alt="del" /></small></li>
