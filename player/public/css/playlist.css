@@ -1,0 +1,101 @@
+#playlist {
+    overflow: auto;
+}
+
+.sort-placeholder {
+    display: block;
+    height: 30px;
+    width: 99%;
+    background-color: #EEE;
+    border: dashed 1px #DDD;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+}
+
+.track {
+    background-color: #F2F5F9;
+    display: block;
+    clear: both;
+    width: 97%;
+    padding: 5px 10px;
+    margin-bottom: 3px;
+    border: solid 1px #999;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+}
+
+    .track span {
+        cursor: pointer;
+    }
+
+    .track .time {
+        float: right;
+        max-width: 80px;
+    }
+
+    .track .deletebutton, .track .lovebutton, .track .repeatbutton {
+        float: right;
+        cursor: pointer;
+        opacity: 0.4;
+    }
+
+     .track .repeatbutton {
+         display: none;
+     }
+
+        .track .deletebutton:hover, .track .lovebutton:hover, .track .repeatbutton:hover {
+            opacity: 1;
+        }
+    
+    .track .playbutton {
+        cursor: pointer;
+    }
+
+.selected {
+    background-color: #BEFFC7;
+}
+
+.playing {
+    background-color: #CBCBCB;
+}
+
+    .playing .repeatbutton {
+        display: inline;
+    }
+
+    .playing .activebutton {
+         display: inline;
+         opacity: 1;
+    }
+
+/* SIDEBAR */
+
+#sideLeft > ul {
+    margin: 10px 0;
+}
+
+#sideLeft li {
+    padding-left: 10px;
+}
+
+#sideLeft li:hover {
+    background-color: #67A0DA;
+}
+
+#sideLeft li.active {
+    background: url("../images/itunes/bg_active.png") repeat-x center center;
+    color: #FFF;
+}
+
+#sideLeft .dir {
+    display: block;
+    color: #627095;
+    text-shadow: 1px 1px 1px #CCC;
+    padding-left: 10px;
+    margin-top: 10px;
+}
+
+#lastsearches {
+    max-height: 9em;
+    overflow: hidden;
+}

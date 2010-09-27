@@ -1,0 +1,13 @@
+{% extends "/static_layout.html" %}
+
+{% block title %}
+Логин
+{% endblock %}
+
+{% block body %}
+<form action="/main/login" method="post">
+    <span><label for="login">Логин:</label> <input type="text" id="login" name="login" placeholder="Login" /></span><br />
+    <span><label for="password">Пассворд:</label> <input type="password" id="password" name="password" placeholder="Password" /></span><br />
+    <span><input type="submit" value="Музяка тут" /></span>
+</form>
+{% endblock %}

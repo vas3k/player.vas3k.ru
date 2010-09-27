@@ -1,0 +1,3 @@
+include player/config/deployment.ini_tmpl
+recursive-include player/public *
+recursive-include player/templates *

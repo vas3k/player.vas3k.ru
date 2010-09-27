@@ -1,0 +1,129 @@
+#button_next, #button_prev {
+    float: left;
+    padding: 20px 5px;
+}
+
+    button {
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+    }
+
+    .ui-button {
+        width: 30px;
+        height: 30px;
+        border-radius: 20px;
+        -moz-border-radius: 20px;
+    }
+
+#button_play {
+    float: left;
+    padding-top: 15px;
+}
+
+    #button_play button {
+        width: 40px;
+        height: 40px;
+    }
+
+#qok {
+    float: right;
+    margin-top: 1px;
+    margin-left: -23px;
+    width: 23px;
+    height: 23px;
+}
+
+#progress {
+    width: 500px;
+    float: left;
+    padding: 20px 5px;
+    margin-top: -5px;
+    position: relative;
+    color: #4E5045;
+}
+
+    #progressbar {
+        width: 99%;
+        height: 42px;
+        background: url("../images/itunes/bg_progress.png") center center;
+    }
+
+    .ui-progressbar-value {
+        background-color: #696B61;
+    }
+
+    .progressbar-ani {
+        background-image: url("../images/pbar-ani.gif"); 
+    }
+
+    #trackposition {
+        position: absolute;
+        top: 32px;
+        left: 10px;
+    }
+
+    #tracktitle {
+        position: absolute;
+        top: 22px;
+        line-height: 1.1em;
+        left: 50px;
+        overflow: hidden;
+    }
+
+    #trackduration {
+        position: absolute;
+        top: 32px;
+        right: 20px;
+    }
+
+    #trackslider {
+        position: absolute;
+        top: 50px;
+        left: 43px;
+        width: 90%;
+    }
+
+    #trackslider .ui-slider-handle {
+        width: 9px;
+        height: 9px;
+    }
+
+    #smallinfo {
+        font-size: 10px;
+        position: absolute;
+        top: 45px;
+        right: 40px;
+    }
+
+#volume {
+    float: left;
+    padding: 28px 10px;
+}
+
+    #vol_slider {
+        width: 100px;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        border: solid 1px #9A9A9A;
+    }
+
+    #vol_slider .ui-widget {
+        font-size: 1.0em;
+    }
+
+    #vol_slider .ui-slider-handle {
+        border-radius: 10px;
+        -moz-border-radius: 10px;         
+    }
+
+#search {
+    padding: 20px 10px;
+    margin-top: 7px;
+    float: right;
+}
+
+    #search input {
+        width: 200px;
+    }

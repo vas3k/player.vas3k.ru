@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="title" content="" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link rel="icon" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png" />
+
+    <link rel="stylesheet" type="text/css" href="/css/smoothness/jquery-ui-1.8.4.custom.css" />
+    <link rel="stylesheet" type="text/css" media="screen, projection" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/controls.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/playlist.css" />
+    <!--[if lte IE 6]><link rel="stylesheet" type="text/css" media="screen, projection" href="/css/style_ie.css" /><![endif]-->
+
+    <script type="text/javascript" src="/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.8.4.custom.min.js"></script>
+    <script type="text/javascript" src="/js/soundmanager2.js"></script>
+
+    <script type="text/javascript" src="/js/player.class.js"></script>
+    <script type="text/javascript" src="/js/controls.class.js"></script>
+    <script type="text/javascript" src="/js/playlist.class.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
+    <!--[if IE]>
+        <script>
+            // Сосите мужской хуй, мудачки вендузятские. Я заставлю ваше говно любить мой HTML 5.
+            document.createElement('header');
+            document.createElement('nav');
+            document.createElement('section');
+            document.createElement('article');
+            document.createElement('aside');
+            document.createElement('footer');
+        </script>
+    <![endif]-->
+  </head>
+  <body>
+    <div id="wrapper">
+
+        <header id="header">
+            <div id="button_prev"><button></button></div>
+            <div id="button_play"><button></button></div>
+            <div id="button_next"><button></button></div>
+            <div id="volume"><div id="vol_slider"></div></div>
+            <div id="progress">
+                <div id="progressbar"></div>
+                <div id="trackposition"></div>
+                <div id="tracktitle"></div>
+                <div id="trackduration"></div>
+                <div id="trackslider"></div>
+                <div id="smallinfo"></div>
+            </div>
+            <div id="search"><input type="text" name="q" id="q" value="search..." /><button id="qok">&rarr;</button></div>
+        </header><!-- #header-->
+
+        <section id="middle">
+            <div id="container">
+                <div id="playlist">
+                {% block body %}
+                {% endblock %}
+                </div>
+            </div><!-- #container-->
+
+            <section id="sideLeft">
+                АПЕСАНЕЕ
+            </section><!-- #sideLeft -->
+
+        </section><!-- #middle-->
+
+    </div><!-- #wrapper -->
+
+    <footer id="footer">
+        Все ок
+    </footer><!-- #footer -->
+  </body>
+</html>

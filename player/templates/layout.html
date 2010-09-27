@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <title>Playaaa</title>
+    <meta name="title" content="" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link rel="icon" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png" />
+
+    <link rel="stylesheet" type="text/css" href="/css/smoothness/jquery-ui-1.8.4.custom.css" />
+    <link rel="stylesheet" type="text/css" media="screen, projection" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/controls.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/playlist.css" />
+    <!--[if lte IE 6]><link rel="stylesheet" type="text/css" media="screen, projection" href="/css/style_ie.css" /><![endif]-->
+    <!--[if IE]>
+        <script>
+            // Сосите мужской хуй, мудачки вендузятские. Я заставлю ваше говно любить мой HTML 5.
+            document.createElement('header');
+            document.createElement('nav');
+            document.createElement('section');
+            document.createElement('article');
+            document.createElement('aside');
+            document.createElement('footer');
+        </script>
+    <![endif]-->
+  </head>
+  <body>
+    <div id="wrapper">
+
+        <header id="header">
+            <div id="button_prev"><button></button></div>
+            <div id="button_play"><button></button></div>
+            <div id="button_next"><button></button></div>
+            <div id="volume"><div id="vol_slider"></div></div>
+            <div id="progress">
+                <div id="progressbar"></div>
+                <div id="trackposition"></div>
+                <div id="tracktitle"></div>
+                <div id="trackduration"></div>
+                <div id="trackslider"></div>
+                <div id="smallinfo"></div>
+            </div>
+            <div id="search"><input type="text" name="q" id="q" value="search..." /><button id="qok">&rarr;</button></div>
+        </header><!-- #header-->
+
+        <section id="middle">
+            <div id="container">
+                <div id="playlist">
+                    <ul id="sortable"></ul>
+                </div>
+            </div><!-- #container-->
+
+            <section id="sideLeft">
+                <span class="dir">ПОИСК</span>
+                    <ul>
+                        <li class="active"><img src="/images/icons/vkontakte.ico" alt=">" /> Вконтакте <small id="vk_search_login" onclick="player.vk_login();">[войти]</small></li>
+                    </ul>
+
+                <span class="dir">НЕДАВНИЕ ПОИСКИ</span>
+                    <ul id="lastsearches"></ul>
+
+                <span class="dir">ПЛЕЙЛИСТЫ <small onclick=""><img src="/images/icons/add.png" alt="new" onclick="$('#newplaylist').toggle('fast');" /></small></span>
+                    <span id="newplaylist" style="display: none;"><input type="text" name="name" /><small onclick="player.playlist.create($('#newplaylist input').val());"> <img src="/images/icons/accept.png" alt="done" /></small></span>
+                    <ul id="playlistlist">
+                        <li><img src="/images/icons/playlist.png" alt=">" /> Test 1 <small onclick="player.playlist.add_to('ID-blablabla');"><img src="/images/icons/add.png" alt="add" /></small> <small onclick=""><img src="/images/icons/cross.png" alt="del" /></small></li>
+                    </ul>
+
+                <span class="dir">ПОДБОРКИ</span>
+                    <ul>
+                        <li><img src="/images/icons/playlist.png" alt=">" /> Любимые</li>
+                        <li><img src="/images/icons/playlist.png" alt=">" /> Недавно прослушанные</li>
+                        <li><img src="/images/icons/playlist.png" alt=">" /> Часто слушаемые</li>
+                    </ul>
+            </section><!-- #sideLeft -->
+
+        </section><!-- #middle-->
+
+    </div><!-- #wrapper -->
+
+    <footer id="footer">
+        <div id="buttons">
+            <a href="#" onclick="window.open('http://www.lastfm.ru/api/auth?api_key=6f557f2c836b0fff474c3b6cfcf0ccf4', 'Last.fm login', 'width=800,height=600,resizable=yes,scrollbars=yes,status=no'); return false;">
+                <img src="/images/icons/lastfm.png" alt="Last.fm" />
+            </a>
+        </div>
+        <div id="console"></div>
+    </footer><!-- #footer -->
+
+    <div id="dialog-unsupported" title="Внезапно!" style="display: none; text-align: center;">
+        Какой-то пиздец. Попробуй F5.
+    </div>
+
+    <div id="dialog-vk" title="Залогинься!" style="display: none; text-align: center;">
+        Чтобы все было ок, нужно залогинится вконтактике. Вот те кнопочка:<br />
+        <span id="login_vk" onclick="player.vk_login();"></span>
+    </div>
+
+    <div id="vk_api_transport"></div>
+    <script type="text/javascript" src="http://vkontakte.ru/js/api/openapi.js" charset="windows-1251"></script>
+                                    
+    <script type="text/javascript" src="/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.8.4.custom.min.js"></script>
+    <script type="text/javascript" src="/js/soundmanager2.js"></script>
+
+    <script type="text/javascript" src="/js/player.class.js"></script>
+    <script type="text/javascript" src="/js/controls.class.js"></script>
+    <script type="text/javascript" src="/js/playlist.class.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
+  </body>
+</html>
