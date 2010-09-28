@@ -129,8 +129,6 @@ Controls.prototype.initialize = function () {
             controls.vk_search($(this).val());
         }
     });
-
-    controls.playlist.refresh();
 };
 
 Controls.prototype.setCurrent = function (sound) {
@@ -222,7 +220,7 @@ Controls.prototype.vk_search = function (query) {
                 controls.playlist.tracklist[i]["artist"] = controls.pidoffka_filter(controls.playlist.tracklist[i]["artist"]);
                 controls.playlist.tracklist[i]["title"] = controls.pidoffka_filter(controls.playlist.tracklist[i]["title"]);
             }
-            controls.playlist.update();
+            controls.playlist.update(controls.playlist.tracklist);
         }
     });
     document.location.hash = "search:" + query.replace(" ", "+");

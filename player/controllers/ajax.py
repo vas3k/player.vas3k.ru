@@ -18,7 +18,7 @@ class AjaxController(BaseController):
 
 
     def playlist(self, pl_action):
-        actions = ["list", "new", "remove", "add", "delete"]
+        actions = ["list", "new", "remove", "add", "get", "delete"]
         if pl_action not in actions:
             return json.dumps({ "status": "NeOK", "message": u"Bad action '%s'" % pl_action })
 
@@ -32,6 +32,7 @@ class AjaxController(BaseController):
             for list in lists:
                 list["_id"] = unicode(list["_id"])
                 list["userid"] = unicode(list["userid"])
+                del list["tracks"]
                 pl.append(list)
                 count += 1
             return json.dumps({ "status": "OK", "count": count, "lists": pl })
@@ -53,16 +54,26 @@ class AjaxController(BaseController):
             if not id:
                 return json.dumps({ "status": "NeOK", "message": u"No ID" })
 
-            self.connection.player.playlists.remove({ "_id": ObjectId(id) })            
+            self.connection.player.playlists.remove({ "_id": ObjectId(id) })
             return json.dumps({ "status": "OK", "message": u"Playlist removed" })
 
         if pl_action == "add":
             id = request.params.get("id")
+            tracks = json.loads(request.params.get("tracks"))
             if not id:
                 return json.dumps({ "status": "NeOK", "message": u"No ID" })
-            # TODO: Get list
-            # TODO: Add to playlist
+            for track in tracks:
+                self.connection.player.playlists.update({ "_id": ObjectId(id) }, { "$push": { "tracks": track }})
             return json.dumps({ "status": "OK", "message": u"Tracks added" })
+
+        if pl_action == "get":
+            id = request.params.get("id")
+            if not id:
+                return json.dumps({ "status": "NeOK", "message": u"No ID" })                
+            list = self.connection.player.playlists.find_one({ "_id": ObjectId(id) })
+            list["_id"] = unicode(list["_id"])
+            list["userid"] = unicode(list["userid"])
+            return json.dumps({ "status": "OK", "list": list })
 
         if pl_action == "delete":
             id = request.params.get("id")

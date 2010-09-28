@@ -13,15 +13,16 @@ function Playlist () {
         {"aid":"60830458", "owner_id":"6492", "artist":"Noname", "title":"Bosco", "duration":"195","url":"http:\/\/cs40.vkontakte.ru\/u06492\/audio\/2ce49d2b88.mp3"},
         {"aid":"59317035","owner_id":"6492","artist":"Mestre Barrao","title":"Sinhazinha", "duration":"234","url":"http:\/\/cs510.vkontakte.ru\/u2082836\/audio\/d100f76cb84e.mp3"},
     ];
+    this.almost_tracklist = [];
 };
 
 Playlist.prototype.setControls = function (controls) {
     this.controls = controls;
 };
 
-Playlist.prototype.update = function () {
+Playlist.prototype.update = function (trackslist) {
     html = "";
-    this.tracklist.forEach(function (element, index, array) {
+    trackslist.forEach(function (element, index, array) {
         html += '<li id="track' + element.aid +
                     '" class="track" data-artist="' + element.artist +
                     '" data-track="' + index +
@@ -81,7 +82,7 @@ Playlist.prototype.playNext =  function () {
 };
 
 Playlist.prototype.getById = function (id) {
-    for (i = 0; i < this.tracklist.length; i++) {
+    for (var i = 0; i < this.tracklist.length; i++) {
         if (this.tracklist[i].aid == id) {
             return this.tracklist[i];
         }
@@ -89,7 +90,7 @@ Playlist.prototype.getById = function (id) {
 };
 
 Playlist.prototype.getNById = function(id) {
-    for (i = 0; i < this.tracklist.length; i++) {
+    for (var i = 0; i < this.tracklist.length; i++) {
         if (this.tracklist[i].aid == id) {
             return i;
         }
@@ -122,7 +123,7 @@ Playlist.prototype.refresh = function () {
             var html = "";
             if ((data["status"] == "OK") && (data["count"] > 0)) {
                 for (var i = 0; i < data["count"]; i++) {
-                    html += "<li><img src=\"/images/icons/playlist.png\" alt=\">\" /> " + data["lists"][i]["name"];
+                    html += "<li onclick=\"player.playlist.show('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/playlist.png\" alt=\">\" /> " + data["lists"][i]["name"];
                     html += " <small onclick=\"player.playlist.add_to('" + data["lists"][i]["_id"] + "');\">";
                     html += "<img src=\"/images/icons/add.png\" alt=\"add\" /></small> ";
                     html += "<small onclick=\"player.playlist.remove('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/cross.png\" alt=\"del\" /></small></li>";
@@ -175,4 +176,50 @@ Playlist.prototype.remove = function (id) {
             }
         });
     }
-}
+};
+
+Playlist.prototype.add_to = function (playlist_id) {
+    var playlist = this;
+    if (playlist_id) {
+        var tracks = [];
+        $("#playlist li.selected").each(function () {
+            tracks.push(playlist.getById($(this).attr("data-id")));
+        });
+        $.ajax({
+            url: "/ajax/playlist/add",
+            data: ({
+                id: playlist_id,
+                tracks: JSON.stringify(tracks)
+            }),
+            type: "POST",
+            dataType: "json",
+            success: function(data) {
+                if (data["status"] == "OK") {
+                    // TODO: Show OK
+                } else {
+                    // TODO: Show error
+                }
+            }
+        });
+    }
+};
+
+Playlist.prototype.show = function (playlist_id) {
+    var playlist = this;
+    if (playlist_id) {
+        $.ajax({
+            url: "/ajax/playlist/get",
+            type: "POST",
+            data: ({ id: playlist_id }),
+            dataType: "json",
+            success: function(data) {
+                if (data["status"] == "OK") {
+                    playlist.almost_tracklist = data["list"]["tracks"];
+                    playlist.update(playlist.almost_tracklist);
+                } else {
+                    // TODO: Show error
+                }
+            }
+        });
+    }
+};

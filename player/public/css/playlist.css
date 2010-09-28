@@ -76,6 +76,7 @@
 
 #sideLeft li {
     padding-left: 10px;
+    cursor: pointer;
 }
 
 #sideLeft li:hover {

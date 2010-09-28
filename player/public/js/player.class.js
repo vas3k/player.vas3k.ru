@@ -5,6 +5,9 @@ function Player () {
     this.controls.setPlaylist(this.playlist);
     this.playlist.setControls(this.controls);
 
+    this.is_authorized = false;
+    this.is_lastfm = false;
+
     soundManager.url = '/swf/';
     soundManager.debugMode = false;
     soundManager.flashVersion = 9; // optional: shiny features (default = 8)
@@ -57,6 +60,22 @@ Player.prototype.initializeByHash = function (hash) {
     }
 };
 
+Player.prototype.initializeAuth = function () {
+    if (getCookie("userhash")) {
+        this.is_authorized = true;
+    }
+
+    if (getCookie("lastfm_session")) {
+        this.is_lastfm = true;
+    }
+
+    if (this.is_authorized) {
+        this.playlist.refresh();
+    } else {
+        $("#playlistlist").html("<a href='/user/register'>Зарегайся</a> и будут плейлисты");
+    }
+};
+
 Player.prototype.vk_login = function () {
     VK.Auth.login(function () {
             $("#vk_search_login").hide();
@@ -76,4 +95,14 @@ function timeFormat (milliseconds) {
     timestr += (seconds < 10) ? "0" : "";
     timestr += seconds;
     return timestr;
+};
+
+function getCookie(name) {
+    var pattern = "(?:; )?" + name + "=([^;]*);?";
+    var regexp  = new RegExp(pattern);
+
+    if (regexp.test(document.cookie))
+    return decodeURIComponent(RegExp["$1"]);
+
+	    return false;
 };
