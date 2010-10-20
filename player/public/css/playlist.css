@@ -68,6 +68,33 @@
          opacity: 1;
     }
 
+#playlist_search {
+    border-radius: 10px;
+    -moz-border-radius: 5px;
+    border: solid 1px #999;
+    padding: 20px;
+    margin: 10px;
+    width: 90%;
+}
+
+    #playlist_search input {
+        border-radius: 10px;
+        border: solid 1px #CCC;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        font-size: 18px;
+        height: 30px;
+        padding: 0 3px;
+        width: 90%;
+    }
+
+    #playlist_search button {
+        width: 5%;
+        height: 32px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
 /* SIDEBAR */
 
 #sideLeft > ul {
@@ -96,7 +123,59 @@
     margin-top: 10px;
 }
 
+#newplaylist input {
+    margin-left: 10px;
+    width: 160px;
+    border: solid 1px #999;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
 #lastsearches {
     max-height: 9em;
     overflow: hidden;
+}
+
+#search_loader, #playlist_loader, #smart_loader, #big_loader {
+    display: none;
+    vertical-align: middle;
+}
+
+#big_loader {
+    margin-top: 35%;
+    margin-left: 46%;
+}
+
+#playlist_error {
+    display: none;
+    margin: 20px;
+    padding: 40px;
+    text-align: center;
+    border: solid 1px red;
+    background-color: #F8DAD9;
+    font-size: 14px;
+}
+
+#small_error {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 400px;
+    max-width: 250px;
+    color: #000;
+    background-color: #DB3B34;
+    opacity: 0.5;
+    padding: 20px;
+}
+
+#small_ok {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 400px;
+    max-width: 250px;
+    background-color: #4687CB;
+    color: #000;
+    opacity: 0.5;
+    padding: 20px;
 }

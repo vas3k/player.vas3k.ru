@@ -45,7 +45,7 @@ body {
 	height: 100%;
 }
 a {
-	color: blue;
+	color: #333;
 	outline: none;
 	text-decoration: underline;
 }
@@ -53,8 +53,16 @@ a:hover {
 	text-decoration: none;
 }
 p {
-	margin: 0 0 18px
+    text-indent: 20px;
+	margin: 0 0 18px;
+    font-size: 14px;
 }
+
+h1 {
+    font-size: 16px;
+    padding-bottom: 10px;
+}
+
 img {
 	border: none;
     vertical-align: middle;
@@ -108,6 +116,42 @@ input {
 	padding: 0 0 0 205px;
 }
 
+#regform {
+    position: absolute;
+    top: 40%;
+    left: 35%;
+    display: block;
+    width: 320px;
+    padding: 40px;
+    font-size: 14px;
+    font-family: Verdana, Arial;
+    line-height: 1.8em;
+    border: solid 1px #999;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px #999;
+}
+
+#regform input {
+    padding: 1px;
+    width: 200px;
+    float: left;
+}
+
+#regform input[type=submit] {
+    padding: 1px;
+    width: 200px;
+    float: left;
+    width: 310px;
+    height: 30px;
+}
+
+#regform label {
+    display: block;
+    width: 100px;
+    text-align: right;
+    float: left;
+}
+
 
 /* Sidebar Left
 -----------------------------------------------------------------------------*/
@@ -126,9 +170,14 @@ input {
     }
 
     #sideLeft small {
+        float: right;
         cursor: pointer;
         font-size: 10px;
         opacity: 0.5;
+    }
+
+    #sideLeft .dir small {
+        float: none;
     }
 
     #sideLeft small:hover {
@@ -144,3 +193,18 @@ input {
 	height: 24px;
 	background-image: url("../images/itunes/bg_footer.png");
 }
+
+    #footer_links {
+        float: left;
+        width: 30%;
+    }
+
+    #buttons {
+        float: right;
+        text-align: right;
+        width: 20%;
+    }
+
+    #buttons img {
+        height: 22px;
+    }

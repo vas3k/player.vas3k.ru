@@ -83,3 +83,12 @@ class MainController(BaseController):
         else:
             # show form
             return render("/user/login_form.html")
+
+    def logout(self):
+        response.set_cookie("userhash", "", max_age=0)
+        response.set_cookie("userid", "", max_age=0)
+        redirect("/")
+
+    def faq(self):
+        return render("/static/faq.html")
+

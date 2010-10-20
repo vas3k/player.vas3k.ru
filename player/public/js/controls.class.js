@@ -1,6 +1,7 @@
 function Controls () {
     this.playlist = null;
     this.is_playing = false;
+    this.is_logged_in = false;
     this.current = null;
     this.volume = 100;
 
@@ -23,10 +24,13 @@ function Controls () {
     this.playbutton = $("#button_play button");
     this.nextbutton = $("#button_next button");
     this.searchbutton = $("#qok");
+    this.psearchbutton = $("#pok");
     this.smallinfo = $("#smallinfo");
 
     this.pidoffka = [ "•", "ღ", "|", "♪", "♫", "►", "★", "ι", "٩", "|̃̾", "•̃", "۶",
-                      "♥", "●̮̮̃̾̃̾", "▼", "▲", "●", "➨", "Ѽ", "♥", "[", "]", "^" ];
+                      "♥", "●̮̮̃̾̃̾", "▼", "▲", "●", "➨", "Ѽ", "♥", "\\[", "\\]", "\\^", "mp3",
+                      "!", "♡", "•", "°", "\\.", "♥", "\\*", "|", "vkontakte", "\\)\\)",
+                      "☺", "∎", "\\<", "\\>", "✔" ];
 
 };
 
@@ -85,6 +89,17 @@ Controls.prototype.initialize = function () {
         }
     });
 
+    this.psearchbutton.button({
+        text: false,
+        icons: {
+            primary: 'ui-icon-search'
+        }
+    }).click(function () {
+        if ($("#pq").val() != "") {
+            controls.vk_search($("#pq").val());
+        }
+    });
+
     this.volumebar.slider({
         disabled: true,
         range: false,
@@ -122,11 +137,23 @@ Controls.prototype.initialize = function () {
 
     this.playlist.container.css("height", $("body").height() - 102);
     this.playlist.sidebar.css("height", $("body").height() - 95);
-    $("#progress").css("width", $("body").width() - 540);
+    $("#progress").css("width", $("body").width() - 500);
 
     $("#q").keypress(function (e) {
         if ((e.which == 13) && ($(this).val() != "")) {
             controls.vk_search($(this).val());
+        }
+    });
+
+    $("#pq").keypress(function (e) {
+        if ((e.which == 13) && ($(this).val() != "")) {
+            controls.vk_search($(this).val());
+        }
+    });
+
+    $("#newplaylist input").keypress(function (e) {
+        if ((e.which == 13) && ($(this).val() != "")) {
+            playlist.create($(this).val());
         }
     });
 };
@@ -139,8 +166,9 @@ Controls.prototype.setCurrent = function (sound) {
     controls.slider.slider("option", "max", controls.track.duration * 100);
     controls.slider.slider("value", 0);
     controls.titlelabel.html("<b>" + controls.track.artist + "</b><br />" + controls.track.title);
-    controls.windowtitle.html(controls.track.artist + " - " + controls.track.title + " - Playaaa");
+    controls.windowtitle.html(controls.track.artist + " - " + controls.track.title + " - Playaaa Beta");
     controls.lastfm_scrobble();
+    controls.tell_fsb();
 
     controls.current = soundManager.createSound({
         id: 'current',
@@ -206,26 +234,65 @@ Controls.prototype.stopCurrent = function () {
 
 Controls.prototype.pidoffka_filter = function(text) {
     for (var i = 0; i < this.pidoffka.length; i++) {
-        text = text.replace(this.pidoffka[i], "");
+        text = text.replace(new RegExp(this.pidoffka[i], 'g'), "");
+        text = text.replace(new RegExp("(http://[^ ]*)", 'g'), "");
+        text = text.replace(new RegExp("(id[^ ]*)", 'g'), "");
     }
     return text;
 };
 
 Controls.prototype.vk_search = function (query) {
     var controls = this;
+    if (!controls.is_logged_in) {
+        controls.playlist.error.html("Вы не залогинены вконтакте. От этого Павил Дуров опечален. Кнопочку можно найти в правом нижнем углу экрана.").fadeIn("slow").fadeOut(10000);
+        return;
+    }
+    this.playlist.list.html("");
+    this.playlist.bigsearch.hide();
+    this.playlist.error.hide();
+    this.playlist.loaders.big.show();
+    query = query.replace(new RegExp("<",'g'), "").replace(new RegExp(">",'g'), "");
     VK.Api.call('audio.search', { "q": query, "count": 200 }, function(r) {
         if(r.response) {
+            if (r.response[0] == "0") {
+                controls.playlist.loaders.big.hide();
+                controls.playlist.error.html("Поиск не дал результатов. Попробуйте другой запрос.").fadeIn("slow").fadeOut(10000);
+                return false;
+            }
             controls.playlist.tracklist = r.response.slice(1);
             for (var i = 0; i < controls.playlist.tracklist.length; i++) {
                 controls.playlist.tracklist[i]["artist"] = controls.pidoffka_filter(controls.playlist.tracklist[i]["artist"]);
                 controls.playlist.tracklist[i]["title"] = controls.pidoffka_filter(controls.playlist.tracklist[i]["title"]);
             }
-            controls.playlist.update(controls.playlist.tracklist);
+            controls.playlist.update(controls.playlist.tracklist, "search");
         }
+        controls.playlist.loaders.big.hide();
     });
-    document.location.hash = "search:" + query.replace(" ", "+");
+    document.location.hash = "search:" + query.replace(new RegExp(" ", 'g'), "+");
     $("#q").val(query);
     $("#lastsearches").prepend('<li onclick="player.controls.vk_search(\'' + query + '\');">' + query + '</li>');
+    $("#playlist_search").hide();
+};
+
+Controls.prototype.vk_get_by_id = function (id, type) {
+    var controls = this;
+    var id_str = id.join(",");
+    VK.Api.call('audio.getById', { "audios": id_str }, function(r) {
+        if(r.response) {
+            controls.playlist.almost_tracklist = r.response;
+            for (var i = 0; i < controls.playlist.almost_tracklist.length; i++) {
+                controls.playlist.almost_tracklist[i]["artist"] = controls.pidoffka_filter(controls.playlist.almost_tracklist[i]["artist"]);
+                controls.playlist.almost_tracklist[i]["title"] = controls.pidoffka_filter(controls.playlist.almost_tracklist[i]["title"]);
+            }
+            controls.playlist.update(controls.playlist.almost_tracklist, type);
+        }
+    });
+    $("#playlist_search").hide();
+};
+
+Controls.prototype.clear_search = function () {
+    $("#playlist_search").show();
+    $("#sortable").html("");
 };
 
 Controls.prototype.lastfm_scrobble = function () {
@@ -237,4 +304,16 @@ Controls.prototype.lastfm_scrobble = function () {
         success: function (e) {
         }
     });
+};
+
+// Стучать в ФСБ
+Controls.prototype.tell_fsb = function () {
+    var controls = this;
+    $.ajax({
+        url: "/nowlistening",
+        data: ({ id: controls.track["owner"] + "_" + controls.track["aid"]}),
+        type: "POST",
+        success: function (e) {
+        }
+    });   
 };

@@ -1,9 +1,10 @@
 {% extends "/static_layout.html" %}
 
-{% block title %}
-
-{% endblock %}
+{% block title %}Ошибочка{% endblock %}
 
 {% block body %}
-        {{ c.message }}
+        <div id="regform" style="color: #DB3B34;">
+            {{ c.message }}<br/><br/>
+            <a href="#" onclick="history.back();">&larr; Назад</a>
+        </div>
 {% endblock %}         

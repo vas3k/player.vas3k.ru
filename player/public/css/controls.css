@@ -16,6 +16,10 @@
         border-radius: 20px;
         -moz-border-radius: 20px;
     }
+    
+    #button_next .ui-button, #button_prev .ui-button {
+	padding: 0 15px;
+    }
 
 #button_play {
     float: left;
@@ -28,11 +32,11 @@
     }
 
 #qok {
-    float: right;
-    margin-top: 1px;
-    margin-left: -23px;
-    width: 23px;
-    height: 23px;
+    position: absolute;
+    right: -1px;
+    top: 0px;
+    width: 24px;
+    height: 24px;
 }
 
 #progress {
@@ -99,7 +103,8 @@
 
 #volume {
     float: left;
-    padding: 28px 10px;
+    padding: 0 10px;
+    padding-top: 33px;
 }
 
     #vol_slider {
@@ -119,8 +124,9 @@
     }
 
 #search {
-    padding: 20px 10px;
-    margin-top: 7px;
+    position: relative;
+    margin-right: 10px;
+    margin-top: 22px;
     float: right;
 }
 

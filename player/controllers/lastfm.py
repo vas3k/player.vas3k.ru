@@ -24,7 +24,7 @@ class LastfmController(BaseController):
     def callback(self):
         token = request.params.get("token", "")
         if not token: return "bad hash"
-        if not self.userid: return "bad userid"
+        #if not self.userid: return "bad userid"
 
         # получим себе key
         api_sig = md5('api_key' + self.API_KEY + 'methodauth.getSessiontoken' + token + self.API_SECRET_KEY).hexdigest()
@@ -51,7 +51,7 @@ class LastfmController(BaseController):
         #        "session": session
         #    }
         #}})
-        return 'OK'
+        return render("/static/lastfmok.html")
 
     def scrobble(self):
         nowtime = int(time.time())

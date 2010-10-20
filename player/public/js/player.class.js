@@ -32,13 +32,15 @@ Player.prototype.initializeControls = function () {
 };
 
 Player.prototype.initializeVK = function () {
+    var controls = this.controls;
     VK.init({
         apiId: 1934554,
         nameTransportPath: "http://p.thedevel.ru/js/xd_receiver.html"
     });
     VK.Auth.getLoginStatus(function (r) {
         if (r.session) {
-                $("#vk_search_login").hide();            
+                $("#vk_search_login").hide();
+                controls.is_logged_in = true;
         } else {
             $("#dialog-vk").dialog({
                 height: 140,
@@ -51,12 +53,16 @@ Player.prototype.initializeVK = function () {
 Player.prototype.initializeByHash = function (hash) {
     if ((hash == "") || (hash == "#")) return;
 
-    if (hash.substr(0, 7) == "#search") {
-        player.controls.vk_search(hash.replace("#search:", "").replace("+", " "));
-    } else if (hash.substr(0, 6) == "#track") {
-        // TODO: Show track
-    } else if (hash.substr(0, 5) == "#list") {
-        // TODO: Load playlist
+    if (hash.indexOf("#search") == 0) {
+        this.controls.vk_search(hash.replace("#search:", "").replace("+", " "));
+    }
+
+    if (hash.indexOf("#love") == 0) {
+        this.playlist.love_list();
+    }
+    
+    if (hash.indexOf("#playlist") == 0) {
+        this.playlist.show(hash.replace("#playlist:", ""));
     }
 };
 
@@ -71,14 +77,20 @@ Player.prototype.initializeAuth = function () {
 
     if (this.is_authorized) {
         this.playlist.refresh();
+        this.playlist.search_refresh();
+        $("#button_register").hide();
+        $("#button_login").hide();
     } else {
-        $("#playlistlist").html("<a href='/user/register'>Зарегайся</a> и будут плейлисты");
+        $("#savedsearches").html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Нужно <a href='/register'>зарегаться</a>");
+        $("#playlistlist").html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;или <a href='/login'>войти</a>");
+        $("#button_exit").hide();
     }
 };
 
 Player.prototype.vk_login = function () {
     VK.Auth.login(function () {
             $("#vk_search_login").hide();
+            controls.is_logged_in = true;
         },
         VK.access.FRIENDS | VK.access.AUDIO
     );
