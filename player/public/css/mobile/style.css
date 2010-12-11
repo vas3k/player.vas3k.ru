@@ -1,0 +1,86 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+:focus {
+	outline: 0;
+}
+ins {
+	text-decoration: none;
+}
+del {
+	text-decoration: line-through;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+html {
+	height: 100%;
+}
+header, nav, section, article, aside, footer {
+	display: block;
+}
+body {
+	font: 12px/18px Arial, Tahoma, Verdana, sans-serif;
+	height: 100%;
+}
+a {
+	color: #333;
+	outline: none;
+	text-decoration: underline;
+}
+a:hover {
+	text-decoration: none;
+}
+p {
+    text-indent: 20px;
+	margin: 0 0 18px;
+    font-size: 14px;
+}
+
+h1 {
+    font-size: 16px;
+    padding-bottom: 10px;
+}
+
+img {
+	border: none;
+    vertical-align: middle;
+}
+input {
+	vertical-align: middle;
+}
+#wrapper {
+    width: 100%;
+    position: relative;
+    background-color: #1B1B1B;
+}
+
+/**************************/
+#big_loader {
+    display: none;
+}
+#sm2-container {
+    position: absolute;
+    top: -20px;
+}

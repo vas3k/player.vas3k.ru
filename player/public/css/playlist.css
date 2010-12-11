@@ -16,12 +16,8 @@
     background-color: #F2F5F9;
     display: block;
     clear: both;
-    width: 97%;
     padding: 5px 10px;
-    margin-bottom: 3px;
-    border: solid 1px #999;
-    border-radius: 10px;
-    -moz-border-radius: 10px;
+    border-bottom: solid 1px #999;
 }
 
     .track span {
@@ -33,7 +29,7 @@
         max-width: 80px;
     }
 
-    .track .deletebutton, .track .lovebutton, .track .repeatbutton {
+     .track .linkbutton, .track .deletebutton, .track .lovebutton, .track .repeatbutton {
         float: right;
         cursor: pointer;
         opacity: 0.4;
@@ -43,7 +39,7 @@
          display: none;
      }
 
-        .track .deletebutton:hover, .track .lovebutton:hover, .track .repeatbutton:hover {
+        .track .linkbutton:hover, .track .deletebutton:hover, .track .lovebutton:hover, .track .repeatbutton:hover {
             opacity: 1;
         }
     
@@ -122,6 +118,32 @@
     padding-left: 10px;
     margin-top: 10px;
 }
+
+/* SIDEBAR RIGHT */
+
+#sideRight #artist_title {
+    font-size: 16px;
+}
+
+#sideRight #artist_url a {
+    font-size: 10px;
+}
+
+#sideRight #artist_similar {
+    font-size: 11px;
+}
+
+#sideRight #artist_img img {
+    max-width: 180px;
+    max-height: 200px;
+    border: 0;
+    margin: 10px;
+}
+
+#sideRight #artist_text {
+}
+
+/* FUCKING SHIT */
 
 #newplaylist input {
     margin-left: 10px;

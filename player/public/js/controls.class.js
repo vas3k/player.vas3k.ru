@@ -1,4 +1,5 @@
-function Controls () {
+function Controls (is_mobile) {
+    this.is_mobile = is_mobile;
     this.playlist = null;
     this.is_playing = false;
     this.is_logged_in = false;
@@ -38,7 +39,7 @@ Controls.prototype.setPlaylist = function (playlist) {
     this.playlist = playlist;
 };
 
-Controls.prototype.initialize = function () {
+Controls.prototype.initialize = function (is_mobile) {
     var controls = this;
     var playlist = this.playlist;
 
@@ -135,10 +136,6 @@ Controls.prototype.initialize = function () {
     });
     this.playlist.list.disableSelection();
 
-    this.playlist.container.css("height", $("body").height() - 102);
-    this.playlist.sidebar.css("height", $("body").height() - 95);
-    $("#progress").css("width", $("body").width() - 500);
-
     $("#q").keypress(function (e) {
         if ((e.which == 13) && ($(this).val() != "")) {
             controls.vk_search($(this).val());
@@ -167,8 +164,15 @@ Controls.prototype.setCurrent = function (sound) {
     controls.slider.slider("value", 0);
     controls.titlelabel.html("<b>" + controls.track.artist + "</b><br />" + controls.track.title);
     controls.windowtitle.html(controls.track.artist + " - " + controls.track.title + " - Playaaa Beta");
-    controls.lastfm_scrobble();
+    controls.lastfm_scrobble(false);  
     controls.tell_fsb();
+
+    controls.volumebar.slider("option", "disabled", false);
+    controls.prevbutton.button("option", "disabled", false);
+    controls.playbutton.button("option", "disabled", false);
+    controls.nextbutton.button("option", "disabled", false);
+    controls.playbutton.button("option", "icons", { primary: 'ui-icon-pause' });
+    controls.smallinfo.show("fast");
 
     controls.current = soundManager.createSound({
         id: 'current',
@@ -176,12 +180,7 @@ Controls.prototype.setCurrent = function (sound) {
         autoLoad: true,
         autoPlay: false,
         onconnect: function () {
-            controls.volumebar.slider("option", "disabled", false);
-            controls.prevbutton.button("option", "disabled", false);
-            controls.playbutton.button("option", "disabled", false);
-            controls.nextbutton.button("option", "disabled", false);
-            controls.playbutton.button("option", "icons", { primary: 'ui-icon-pause' });
-            controls.smallinfo.show("fast");
+            controls.lastfm_getinfo(controls.track["artist"]);
         },
         onload: function() {
             controls.bar.removeClass("progressbar-ani");
@@ -195,6 +194,9 @@ Controls.prototype.setCurrent = function (sound) {
         whileplaying: function () {
             controls.slider.slider("value", controls.current.position / 10);
             controls.positionlabel.html(timeFormat(controls.current.position));
+        },
+        onjustbeforefinish: function () {
+            controls.lastfm_scrobble(true);  
         },
         onfinish: function () {
             controls.playbutton.button("option", "icons", { primary: 'ui-icon-pause' });
@@ -244,7 +246,7 @@ Controls.prototype.pidoffka_filter = function(text) {
 Controls.prototype.vk_search = function (query) {
     var controls = this;
     if (!controls.is_logged_in) {
-        controls.playlist.error.html("Вы не залогинены вконтакте. От этого Павил Дуров опечален. Кнопочку можно найти в правом нижнем углу экрана.").fadeIn("slow").fadeOut(10000);
+        controls.playlist.error.html("Вы не залогинены вконтакте. От этого Павил Дуров опечален. Кнопочку можно найти в углу экрана.").fadeIn("slow").fadeOut(10000);
         return;
     }
     this.playlist.list.html("");
@@ -272,9 +274,15 @@ Controls.prototype.vk_search = function (query) {
     $("#q").val(query);
     $("#lastsearches").prepend('<li onclick="player.controls.vk_search(\'' + query + '\');">' + query + '</li>');
     $("#playlist_search").hide();
+    if (this.is_mobile) {
+        $("#menu").hide();
+        $('#playlistlist').hide();
+        $('#savedsearches').hide();
+        $('#playlist').show();
+    }
 };
 
-Controls.prototype.vk_get_by_id = function (id, type) {
+Controls.prototype.vk_get_by_id = function (id, type, play_now) {
     var controls = this;
     var id_str = id.join(",");
     VK.Api.call('audio.getById', { "audios": id_str }, function(r) {
@@ -285,23 +293,86 @@ Controls.prototype.vk_get_by_id = function (id, type) {
                 controls.playlist.almost_tracklist[i]["title"] = controls.pidoffka_filter(controls.playlist.almost_tracklist[i]["title"]);
             }
             controls.playlist.update(controls.playlist.almost_tracklist, type);
+            if (play_now) {
+                controls.playlist.tracklist = controls.playlist.almost_tracklist;
+                controls.playlist.current = 0;
+                controls.playlist.playTrack(0);
+            }
         }
     });
     $("#playlist_search").hide();
+    if (this.is_mobile) {
+        $("#menu").hide();
+        $('#playlistlist').hide();
+        $('#savedsearches').hide();
+        $('#playlist').show();
+    }
 };
+
+Controls.prototype.vk_getuserinfo = function () {
+    var controls = this;
+    VK.Api.call('getProfiles', { "uids": player.vk_id, "fields": "uid, first_name, last_name, nickname, sex, bdate, city, country, timezone, photo, photo_medium, photo_big, photo_rec" }, function(r) {
+        controls.playlist.sidebarRight.find("#artist_title").html(r.response[0].first_name + " " + r.response[0].last_name);
+        controls.playlist.sidebarRight.find("#artist_url").html("");
+        controls.playlist.sidebarRight.find("#artist_similar").html("");
+        controls.playlist.sidebarRight.find("#artist_img").html("<center><img src='" + r.response[0].photo_big + "' alt=''></center>");
+        controls.playlist.sidebarRight.find("#artist_text").html("Да-да, это ты.");
+    });
+};
+
 
 Controls.prototype.clear_search = function () {
     $("#playlist_search").show();
     $("#sortable").html("");
 };
 
-Controls.prototype.lastfm_scrobble = function () {
+Controls.prototype.lastfm_scrobble = function (o_rly) {
     var controls = this;
+    var url = "/lastfm/nowplaying";
+    if (o_rly) {
+        url = "/lastfm/scrobble"
+    }
     $.ajax({
-        url: "/lastfm/scrobble",
+        url: url,
         data: (controls.track),
         type: "POST",
         success: function (e) {
+            //console.debug(e)
+        }
+    });
+};
+
+Controls.prototype.lastfm_getinfo = function (artist) {
+    var controls = this;
+    $.ajax({
+        url: "/lastfm/getartistinfo",
+        data: ({ "artist": artist }),
+        type: "POST",
+        dataType: "json",
+        success: function (data) {
+            if (data["status"] == "OK") {
+                for (var key = 0; key < data["artist"]["similar"].length; key++) {
+                    data["artist"]["similar"][key] = '<a href="#" onclick="player.controls.vk_search(\'' + data["artist"]["similar"][key] + '\');">' + data["artist"]["similar"][key] + "</a>";
+                }
+                controls.playlist.sidebarRight.find("#artist_title").html(data["artist"]["name"]);
+                controls.playlist.sidebarRight.find("#artist_url").html("<a href='" + data["artist"]["url"] + "'>" + data["artist"]["url"] + "</a>");
+                controls.playlist.sidebarRight.find("#artist_similar").html("<b>Похожие:</b> " + data["artist"]["similar"].join(", "));
+                if (data["artist"]["image"][3]) {
+                    controls.playlist.sidebarRight.find("#artist_img").html("<a href='" + data["artist"]["url"] + "'><img src='" + data["artist"]["image"][3] + "' alt='' /></a>");
+                } else {
+                    controls.playlist.sidebarRight.find("#artist_img").html("");
+                }
+                if (data["artist"]["bio"]) {
+                    controls.playlist.sidebarRight.find("#artist_text").html("<b>Биография:</b><br/>" + data["artist"]["bio"]);
+                } else {
+                    controls.playlist.sidebarRight.find("#artist_text").html("");
+                }
+            } else {
+                controls.vk_getuserinfo();              
+            }
+        },
+        error: function() {
+            controls.vk_getuserinfo();
         }
     });
 };

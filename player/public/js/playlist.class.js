@@ -1,4 +1,5 @@
-function Playlist () {
+function Playlist (is_mobile) {
+    this.is_mobile = is_mobile;
     this.controls = null;
     this.tracks = 0;
     this.search = "";
@@ -13,6 +14,7 @@ function Playlist () {
     this.smallok = $("#small_ok");
     this.bigsearch = $("#playlist_search");
     this.sidebar = $("#sideLeft");
+    this.sidebarRight = $("#sideRight");
 
     this.loaders = {};
     this.loaders.search = $("#search_loader");
@@ -30,19 +32,41 @@ Playlist.prototype.setControls = function (controls) {
 };
 
 Playlist.prototype.update = function (trackslist, type) {
+    var playlist = this;
     html = "";
     trackslist.forEach(function (element, index, array) {
-        html += '<li id="' + element.owner_id + "_" + element.aid +
-                    '" class="track" data-artist="' + element.artist +
-                    '" data-track="' + index +
-                    '" data-type="' + type +
-                    '" data-id="' + element.aid +
-                    '" data-owner="' + element.owner_id +
-                    '" data-title="' + element.title +
-                    '" data-url="' + element.url + '"><input type="checkbox"> <img src="/images/icons/play.png" alt=">" class="playbutton"> <b> ' +
-                    '<span onclick="player.controls.vk_search(\'' + element.artist + '\');">' + element.artist + '</span></b> ' +
-                    '<span onclick="player.controls.vk_search(\'' + element.title + '\');">' + element.title + '</span> <span class="time">(' + timeFormat(element.duration * 1000) + ')</span> ' +
-		            ' <img src="/images/icons/delete.png" alt="X" class="deletebutton"> <img src="/images/icons/love.png" alt="X" class="lovebutton"> <img src="/images/icons/repeat.png" alt="X" class="repeatbutton"></li>';
+        if (!playlist.is_mobile) {
+            html += '<li id="' + element.owner_id + "_" + element.aid +
+                        '" class="track" data-artist="' + element.artist +
+                        '" data-track="' + index +
+                        '" data-type="' + type +
+                        '" data-id="' + element.aid +
+                        '" data-owner="' + element.owner_id +
+                        '" data-title="' + element.title +
+                        '" data-url="' + element.url + '"><input type="checkbox"> <img src="/images/icons/play.png" alt=">" class="playbutton"> <b>' +
+                        ' <span onclick="player.controls.vk_search(\'' + element.artist + '\');">' + element.artist + '</span></b>' +
+                        ' <span onclick="player.controls.vk_search(\'' + element.title + '\');">' + element.title + '</span>' +
+                        ' <span class="time">(' + timeFormat(element.duration * 1000) + ')</span>' +
+                        ' <img src="/images/icons/delete.png" alt="X" class="deletebutton">' +
+                        ' <img src="/images/icons/love.png" alt="X" class="lovebutton">' +
+                        ' <img src="/images/icons/link.png" alt="X" class="linkbutton">' +
+                        ' <img src="/images/icons/repeat.png" alt="X" class="repeatbutton"></li>';
+        } else {
+            html += '<li id="' + element.owner_id + "_" + element.aid +
+                        '" class="track" data-artist="' + element.artist +
+                        '" data-track="' + index +
+                        '" data-type="' + type +
+                        '" data-id="' + element.aid +
+                        '" data-owner="' + element.owner_id +
+                        '" data-title="' + element.title +
+                        '" data-url="' + element.url + '">' +
+                        '<div class="pl_check"><input type="checkbox" /></div>' +
+                        '<div class="playbutton">' + element.title + '<br /><small>' + element.artist + '</small></div>' +
+                        '<div class="pl_buttons">' +
+                        '</div>' +
+                        '<div class="pl_duration">' + timeFormat(element.duration * 1000) + '</div>' +
+                    '</li>';
+        }
     });
     this.list.html(html);
     this.bind();
@@ -58,25 +82,35 @@ Playlist.prototype.bind =  function () {
     $(".playbutton").click(function () {
         playlist.repeat_one = false;
         playlist.controls.stopCurrent();
-        if ($(this).parent().attr("data-type") == "playlist") playlist.tracklist = playlist.almost_tracklist;
+        if (($(this).parent().attr("data-type") == "playlist") || ($(this).parent().attr("data-type") == "love")) {
+            playlist.tracklist = playlist.almost_tracklist;
+        }
         playlist.current = playlist.getNById($(this).parent().attr("data-id"));
         playlist.playTrack(playlist.current);
     });
+
+    $(".linkbutton").click(function () {
+        window.open("/small#track:" + $(this).parent().attr("id"),
+                    $(this).parent().attr("data-artist") + " " + $(this).parent().attr("data-title"),
+                    'top=300, left=200, menubar=0, toolbar=0, location=0, ' +
+                    'directories=0, status=0, scrollbars=0, resizable=0, width=600, height=110');
+    });
+
+
     $(".deletebutton").click(function () {
         playlist.deltrack($(this).parent().attr("data-id"));
         $(this).parent().hide("fast");
     });
+
     $(".lovebutton").click(function () {
         playlist.love($(this).parent().attr("data-id"), $(this).parent().attr("data-owner"));
     });
+
     $(".repeatbutton").click(function () {
-        if (playlist.repeat_one) {
-            playlist.repeat_one = false;
-        } else {
-            playlist.repeat_one = true;
-        }
+        playlist.repeat_one = playlist.repeat_one ? false : true;
         $(this).toggleClass("activebutton");
     });
+
     $(".track input").click(function () {
         $(this).parent().toggleClass("selected");
     });
@@ -464,4 +498,9 @@ Playlist.prototype.love_list = function () {
         }
     });
     document.location.hash = "love";
+};
+
+Playlist.prototype.distinct = function (list) {
+    if (!list) return [];
+    var newlist = [];    
 };

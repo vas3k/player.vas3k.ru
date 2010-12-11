@@ -17,6 +17,9 @@ class MainController(BaseController):
         # or, return a string
         return render('/layout.html')
 
+    def track(self):
+        return render("/small.html")
+
     def register(self):
         if request.method == "POST":
             # register

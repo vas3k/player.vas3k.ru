@@ -111,9 +111,10 @@ input {
 	width: 100%;
 	float: left;
 	overflow: hidden;
+    margin-top: -6px;
 }
 #playlist {
-	padding: 0 0 0 205px;
+	margin: 0 222px 0 200px;
 }
 
 #regform {
@@ -153,7 +154,7 @@ input {
 }
 
 
-/* Sidebar Left
+/* Sidebars
 -----------------------------------------------------------------------------*/
 #sideLeft {
 	float: left;
@@ -163,6 +164,7 @@ input {
 	position: relative;
 	background: #D9DEE5;
     border-right: solid 1px #BBBBBB;
+    overflow: auto;
 }
 
     #sideLeft img {
@@ -183,6 +185,18 @@ input {
     #sideLeft small:hover {
         opacity: 1.0;
     }
+
+#sideRight {
+	float: right;
+	width: 200px;
+	margin-left: -100%;
+    margin-top: -7px;
+	position: relative;
+	background: #D9DEE5;
+    border-right: solid 1px #BBBBBB;
+    overflow: auto;
+    padding: 10px;
+}
 
 
 /* Footer
@@ -208,3 +222,10 @@ input {
     #buttons img {
         height: 22px;
     }
+
+
+
+#sm2-container {
+    position: absolute;
+    top: -20px;
+}

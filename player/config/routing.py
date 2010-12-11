@@ -19,6 +19,8 @@ def make_map(config):
     map.connect('/error/{action}/{id}', controller='error')
 
     # CUSTOM ROUTES HERE
+    map.connect('/small', controller="main", action="track")
+    map.connect('/small/', controller="main", action="track")
     map.connect('/register', controller="main", action="register")
     map.connect('/register/', controller="main", action="register")
     map.connect('/login', controller="main", action="login")
@@ -33,7 +35,15 @@ def make_map(config):
     map.connect('/ajax/love/:l_action', controller="ajax", action="love")
     map.connect('/nowlistening', controller="ajax", action="nowlistening")
     map.connect('/', controller='main', action='index')
+
+    map.connect('/m', controller="mobile", action="index")
+    map.connect('/m/', controller="mobile", action="index")
+    map.connect('/m/menu', controller="mobile", action="menu")
+    map.connect('/m/menu/', controller="mobile", action="menu")
+
     map.connect('/{controller}/{action}')
     map.connect('/{controller}/{action}/{id}')
+
+
 
     return map
