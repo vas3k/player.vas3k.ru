@@ -143,6 +143,17 @@
 #sideRight #artist_text {
 }
 
+#sideRight .usertrack {
+    border: solid 1px #777;
+    background-color: #CCC;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#sideRight #useraudio {
+    cursor: pointer;
+}
+
 /* FUCKING SHIT */
 
 #newplaylist input {

@@ -72,6 +72,14 @@ Player.prototype.initializeByHash = function (hash) {
     if (hash.indexOf("#track") == 0) {
         this.controls.vk_get_by_id([hash.replace("#track:", ""),], "playlist", true);
     }
+
+    if (hash.indexOf("#last") == 0) {
+        this.playlist.nowlistening();
+    }
+
+    if (hash.indexOf("#my") == 0) {
+        this.controls.vk_getuserinfo(true);
+    }
 };
 
 Player.prototype.initializeAuth = function () {

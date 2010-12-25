@@ -76,8 +76,11 @@ class LastfmController(BaseController):
 
         url = "http://post2.audioscrobbler.com:80/np_1.2"
         req = Request(url, u's=' + lastfm_session + '&a=' + artist + '&t=' + song + '&b=&l=' + duration + '&n=&m=')
-        data = urlopen(req)
-        return data
+        try:
+            data = urlopen(req)
+            return data
+        except:
+            return "FAIL"
 
     def scrobble(self):
         nowtime = str(int(time.time()))
@@ -102,13 +105,32 @@ class LastfmController(BaseController):
 
         url = "http://post2.audioscrobbler.com:80/protocol_1.2"
         req = Request(url, u's=' + lastfm_session + '&a[0]=' + artist + '&t[0]=' + song + '&i[0]=' + str(nowtime) + '&o[0]=P&r[0]=&l[0]=' + duration + '&b[0]=&n[0]=&m[0]=')
-        data = urlopen(req)
-        return data
+        try:
+            data = urlopen(req)
+            return data
+        except:
+            return "FAIL"
 
     def getartistinfo(self):
         from lxml import etree
 
-        artist = request.params.get("artist", "").encode("utf-8", "ignore")
+        try:
+            track = json.loads(request.params.get("track").encode("utf-8", "ignore"))#.encode("utf-8", "ignore")
+            artist = track["artist"].encode("utf-8", "ignore")
+        except:
+            return json.dumps({ "status": "NeOK", "message": "Fail! No track" })
+
+        try:
+            lst = self.connection.player.listening.Listening()
+            lst["user"] = ObjectId(self.userid)
+            lst["track"]["title"] = track["title"]
+            lst["track"]["artist"] = track["artist"]
+            lst["track"]["aid"] = track["aid"]
+            lst["track"]["owner_id"] = track["owner_id"]
+            lst.save()
+        except:
+            return json.dumps({ "status": "NeOK", "message": "Fail! Save fail" })
+
         try:
             if not artist: raise Exception(u"No artist")
             url = u"http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&lang=ru&autocorrect=1&api_key=%s&artist=%s" % (self.API_KEY, urllib.quote(artist))

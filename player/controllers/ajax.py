@@ -165,17 +165,17 @@ class AjaxController(BaseController):
             return json.dumps({ "status": "NeOK", "message": e })
 
     def nowlistening(self):
-        track_id = request.params.get("id", "")
-
         if not self.userid:
             return json.dumps({ "status": "NeOK", "message": u"Bad userid '%s" %self.userid })
-            
-        if not track_id:
-            return json.dumps({ "status": "NeOK", "message": u"Bad trackid: %s" % track_id })
 
         try:
-            self.connection.player.listening.update({ "userid": ObjectId(self.userid) }, { "$inc": { "tracks.%s" % track_id: 1 }})
-            return json.dumps({ "status": "OK", "message": u"Track %s sended to FBI" % track_id })
+            lists = self.connection.player.listening.find({ "user": ObjectId(self.userid) }).sort("time", -1).limit(199)
+            pl = []
+            count = 0
+            for list in lists:
+                pl.append(list["track"]["owner_id"] + "_" + list["track"]["aid"])
+                count += 1
+            return json.dumps({ "status": "OK", "count": count, "tracks": pl })
         except Exception, e:
             return json.dumps({ "status": "NeOK", "message": e })
 

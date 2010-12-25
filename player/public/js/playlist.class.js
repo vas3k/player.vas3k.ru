@@ -34,7 +34,8 @@ Playlist.prototype.setControls = function (controls) {
 Playlist.prototype.update = function (trackslist, type) {
     var playlist = this;
     html = "";
-    trackslist.forEach(function (element, index, array) {
+    for (var index = 0; index < trackslist.length; index++) {
+        element = trackslist[index];
         if (!playlist.is_mobile) {
             html += '<li id="' + element.owner_id + "_" + element.aid +
                         '" class="track" data-artist="' + element.artist +
@@ -67,13 +68,15 @@ Playlist.prototype.update = function (trackslist, type) {
                         '<div class="pl_duration">' + timeFormat(element.duration * 1000) + '</div>' +
                     '</li>';
         }
-    });
+    };
     this.list.html(html);
     this.bind();
     if (type == "playlist") {
         this.bind_playlist();
     } else if (type == "love") {
         this.bind_love();
+    } else if (type == "last") {
+        this.bind_last();
     }
 };
 
@@ -82,7 +85,7 @@ Playlist.prototype.bind =  function () {
     $(".playbutton").click(function () {
         playlist.repeat_one = false;
         playlist.controls.stopCurrent();
-        if (($(this).parent().attr("data-type") == "playlist") || ($(this).parent().attr("data-type") == "love")) {
+        if ($(this).parent().attr("data-type") != "search") {
             playlist.tracklist = playlist.almost_tracklist;
         }
         playlist.current = playlist.getNById($(this).parent().attr("data-id"));
@@ -132,6 +135,11 @@ Playlist.prototype.bind_love = function () {
         playlist.deltrack($(this).parent().attr("data-id"));
         $(this).parent().hide("fast");
     });
+};
+
+Playlist.prototype.bind_last = function () {
+    var playlist = this;
+    $(".deletebutton").hide();
 };
 
 Playlist.prototype.playTrack = function (id) {
@@ -503,4 +511,31 @@ Playlist.prototype.love_list = function () {
 Playlist.prototype.distinct = function (list) {
     if (!list) return [];
     var newlist = [];    
+};
+
+Playlist.prototype.nowlistening = function() {
+    this.loaders.smart.show();
+    var playlist = this;
+    $.ajax({
+        url: "/ajax/nowlistening",
+        type: "POST",
+        dataType: "json",
+        success: function(data) {
+            if (data["status"] == "OK") {
+                playlist.controls.vk_get_by_id(data["tracks"], "last");
+            } else {
+                playlist.smallerror.html("При отображении последних треков я сломалась. Я говно. Я хуевая программа.").fadeIn("slow").fadeOut(10000);
+            }
+            playlist.loaders.smart.hide();
+        }
+    });
+    document.location.hash = "last";
+};
+
+Playlist.prototype.userPlaylist = function(ids) {
+    this.loaders.smart.show();
+    var playlist = this;
+    document.location.hash = "my";
+    playlist.controls.vk_get_by_id(ids, "my");
+    playlist.loaders.smart.hide();
 };

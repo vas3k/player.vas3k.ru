@@ -7,8 +7,8 @@
     <meta name="title" content="" />
     <meta name="keywords" content="" />
     <meta name="description" content="" />
-    <link rel="icon" href="favicon.png">
-    <link rel="apple-touch-icon" href="favicon.png" />
+    <link rel="icon" href="/images/favicon_pause.png">
+    <link rel="apple-touch-icon" href="/images/favicon_play.png" />
 
     <link rel="stylesheet" type="text/css" href="/css/smoothness/jquery-ui-1.8.4.custom.css" />
     <link rel="stylesheet" type="text/css" media="screen, projection" href="/css/style.css" />
@@ -77,10 +77,11 @@
                     </span>
                     <ul id="playlistlist"></ul>
 
-                <img src="/images/loaders/sidebar.gif" alt="X" id="smart_loader" /> <span class="dir">ПОДБОРКИ</span>
+                <img src="/images/loaders/sidebar.gif" alt="X" id="smart_loader" /> <span class="dir">ВКУСНЯШКИ</span>
                     <ul>
+                        <li onclick="player.controls.vk_getuserinfo(true);"><img src="/images/icons/playlist.png" alt=">" /> Мои аудиозаписи</li>
                         <li onclick="player.playlist.love_list();"><img src="/images/icons/playlist.png" alt=">" /> Любимые</li>
-                        <li><img src="/images/icons/playlist.png" alt=">" /> <s>Недавно прослушанные</s></li>
+                        <li onclick="player.playlist.nowlistening();"><img src="/images/icons/playlist.png" alt=">" /> Недавно прослушанные</li>
                         <li><img src="/images/icons/playlist.png" alt=">" /> <s>Часто слушаемые</s></li>
                     </ul>
                 <div id="small_error"></div>

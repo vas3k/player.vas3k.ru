@@ -4,7 +4,18 @@ import datetime
 
 class Listening(Document):
     structure = {
-        "userid": ObjectId,
-        "tracks": [],
+        "user": ObjectId,
+        "time": datetime.datetime,
+        "track": {
+            "title": unicode,
+            "artist": unicode,
+            "aid": unicode,
+            "owner_id": unicode,
+        },
     }
-    required_fields = ['userid',]
+    default_values = { "time": datetime.datetime.now, }
+    required_fields = ['user',]
+    indexes = [{
+        'fields': [ 'user', ],
+        'unique': False,
+    }]

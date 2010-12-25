@@ -72,9 +72,11 @@ Controls.prototype.initialize = function (is_mobile) {
     }).click(function () {
         if (controls.is_playing) {
             $(this).button("option", "icons", { primary: 'ui-icon-play' });
+            controls.changeFavicon("favicon_pause.png");
             controls.pauseCurrent();
         } else {
             $(this).button("option", "icons", { primary: 'ui-icon-pause' });
+            controls.changeFavicon("favicon_play.png");
             controls.playCurrent();
         }
     });
@@ -164,8 +166,7 @@ Controls.prototype.setCurrent = function (sound) {
     controls.slider.slider("value", 0);
     controls.titlelabel.html("<b>" + controls.track.artist + "</b><br />" + controls.track.title);
     controls.windowtitle.html(controls.track.artist + " - " + controls.track.title + " - Playaaa Beta");
-    controls.lastfm_scrobble(false);  
-    controls.tell_fsb();
+    controls.lastfm_scrobble(false);
 
     controls.volumebar.slider("option", "disabled", false);
     controls.prevbutton.button("option", "disabled", false);
@@ -173,6 +174,7 @@ Controls.prototype.setCurrent = function (sound) {
     controls.nextbutton.button("option", "disabled", false);
     controls.playbutton.button("option", "icons", { primary: 'ui-icon-pause' });
     controls.smallinfo.show("fast");
+    controls.changeFavicon("favicon_play.png");
 
     controls.current = soundManager.createSound({
         id: 'current',
@@ -180,7 +182,7 @@ Controls.prototype.setCurrent = function (sound) {
         autoLoad: true,
         autoPlay: false,
         onconnect: function () {
-            controls.lastfm_getinfo(controls.track["artist"]);
+            controls.lastfm_getinfo(controls.track);
         },
         onload: function() {
             controls.bar.removeClass("progressbar-ani");
@@ -284,9 +286,9 @@ Controls.prototype.vk_search = function (query) {
 
 Controls.prototype.vk_get_by_id = function (id, type, play_now) {
     var controls = this;
-    var id_str = id.join(",");
+    var id_str = typeof(id) == "string" ? id : id.join(",");
     VK.Api.call('audio.getById', { "audios": id_str }, function(r) {
-        if(r.response) {
+        if (r.response) {
             controls.playlist.almost_tracklist = r.response;
             for (var i = 0; i < controls.playlist.almost_tracklist.length; i++) {
                 controls.playlist.almost_tracklist[i]["artist"] = controls.pidoffka_filter(controls.playlist.almost_tracklist[i]["artist"]);
@@ -309,14 +311,32 @@ Controls.prototype.vk_get_by_id = function (id, type, play_now) {
     }
 };
 
-Controls.prototype.vk_getuserinfo = function () {
+Controls.prototype.vk_getuserinfo = function (show) {
     var controls = this;
-    VK.Api.call('getProfiles', { "uids": player.vk_id, "fields": "uid, first_name, last_name, nickname, sex, bdate, city, country, timezone, photo, photo_medium, photo_big, photo_rec" }, function(r) {
-        controls.playlist.sidebarRight.find("#artist_title").html(r.response[0].first_name + " " + r.response[0].last_name);
+    VK.Api.call('audio.get', { "uid": player.vk_id, "need_user": 1 }, function(r) {
+        controls.playlist.sidebarRight.find("#artist_title").html(r.response[0].name);
         controls.playlist.sidebarRight.find("#artist_url").html("");
         controls.playlist.sidebarRight.find("#artist_similar").html("");
-        controls.playlist.sidebarRight.find("#artist_img").html("<center><img src='" + r.response[0].photo_big + "' alt=''></center>");
-        controls.playlist.sidebarRight.find("#artist_text").html("Да-да, это ты.");
+        var usertracks = controls.playlist.sidebarRight.find("#artist_text");
+        usertracks.html("<strong id='useraudio'>Мои аудиозаписи:</strong>");
+        var ids = new Array();
+        for (var i = 1; i < r.response.length; i++) {
+            ids.push(r.response[i].owner_id + '_' + r.response[i].aid);
+            usertracks.append('<div class="usertrack" onclick="window.open(\'/small#track:' + r.response[i].owner_id + '_' + r.response[i].aid  + '\', \'\', \'top=300, left=200, menubar=0, toolbar=0, location=0, directories=0, status=0, scrollbars=0, resizable=0, width=600, height=110\');">' + r.response[i].artist + " - " + r.response[i].title + '</div>');
+        }
+        $("#useraudio").click(function() {
+            controls.playlist.userPlaylist(ids.join(","));
+        });
+        if (show) {
+            setTimeout(function () {
+                controls.playlist.userPlaylist(ids.join(","));
+            }, 1000);
+        }
+        setTimeout(function () {
+            VK.Api.call('getProfiles', { "uids": player.vk_id, "fields": "uid, first_name, last_name, nickname, sex, bdate, city, country, timezone, photo, photo_medium, photo_big, photo_rec" }, function(r) {
+                controls.playlist.sidebarRight.find("#artist_img").html("<center><img src='" + r.response[0].photo_big + "' alt=''></center>");
+            });
+        }, 2000);
     });
 };
 
@@ -342,11 +362,13 @@ Controls.prototype.lastfm_scrobble = function (o_rly) {
     });
 };
 
-Controls.prototype.lastfm_getinfo = function (artist) {
+Controls.prototype.lastfm_getinfo = function (track) {
     var controls = this;
     $.ajax({
         url: "/lastfm/getartistinfo",
-        data: ({ "artist": artist }),
+        data: ({
+            track: JSON.stringify(track)
+        }),
         type: "POST",
         dataType: "json",
         success: function (data) {
@@ -377,14 +399,10 @@ Controls.prototype.lastfm_getinfo = function (artist) {
     });
 };
 
-// Стучать в ФСБ
-Controls.prototype.tell_fsb = function () {
-    var controls = this;
-    $.ajax({
-        url: "/nowlistening",
-        data: ({ id: controls.track["owner"] + "_" + controls.track["aid"]}),
-        type: "POST",
-        success: function (e) {
-        }
-    });   
+Controls.prototype.changeFavicon = function(filename) {
+    var link = document.createElement('link');
+    link.type = 'image/x-icon';
+    link.rel = 'shortcut icon';
+    link.href = '/images/' + filename;
+    document.getElementsByTagName('head')[0].appendChild(link);
 };
