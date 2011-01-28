@@ -28,6 +28,10 @@
     <![endif]-->
   </head>
   <body>
+    <div id="popup_error" onclick="player.vk_api.login();">
+          Чтобы все заработало, нужно залогиниться вконтактике. Просто клацни по мне.
+    </div>
+
     <div id="wrapper">
         <header id="header">
             <div id="button_prev"><button></button></div>
@@ -39,7 +43,7 @@
                     <a href="#" onclick="window.open('http://www.lastfm.ru/api/auth?api_key=6f557f2c836b0fff474c3b6cfcf0ccf4', 'Last.fm login', 'width=800,height=600,resizable=yes,scrollbars=yes,status=no'); return false;">
                         <img src="/images/icons/lastfm.png" alt="Last.fm" title="Авторизоваться на last.fm" />
                     </a>
-                    <a href="#" onclick="player.vk_login(); return false;">
+                    <a href="#" onclick="player.vk_api.login(); return false;">
                         <img src="/images/icons/vkontakte.png" alt="Vkontakte" title="Залогиниться вконтакте" />
                     </a>
                 </div>
@@ -61,7 +65,7 @@
     </div>
 
     <div id="dialog-vk" title="Залогинься!" style="display: none; text-align: center; font-size: 14px;">
-        Чтобы работал поиск и воспроизведение, нужно залогиниться вконтактике. Поэтому вот волшебная кнопочка: <center><span id="login_vk" onclick="player.vk_login();"></span></center>
+        Чтобы работал поиск и воспроизведение, нужно залогиниться вконтактике. Поэтому вот волшебная кнопочка: <center><span id="login_vk" onclick="player.vk_api.login();"></span></center>
     </div>
 
     <div id="vk_api_transport" style="display: none;"></div>
@@ -74,6 +78,8 @@
     <script type="text/javascript" src="/js/player.class.js"></script>
     <script type="text/javascript" src="/js/controls.class.js"></script>
     <script type="text/javascript" src="/js/playlist.class.js"></script>
+    <script type="text/javascript" src="/js/vkontakte.api.class.js"></script>
+    <script type="text/javascript" src="/js/lastfm.api.class.js"></script>
     <script type="text/javascript" src="/js/small_main.js"></script>
     <script type="text/javascript" src="http://yandex.st/json2/2009-09-29/json2.min.js"></script>
     <!-- Yandex.Metrika -->

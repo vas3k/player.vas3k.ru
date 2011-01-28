@@ -1,12 +1,15 @@
-function Playlist (is_mobile) {
-    this.is_mobile = is_mobile;
-    this.controls = null;
+function Playlist (player) {
+    this.player = player;
+    this.is_mobile = false;
+    this.is_restructing = false;
+    this.now_type = "search";
+
     this.tracks = 0;
-    this.search = "";
     this.current = -1;
     this.shuffle = false;
     this.repeat_one = false;
     this.repeat_all = true;
+
     this.container = $("#playlist");
     this.list = $("#playlist ul");
     this.error = $("#playlist_error");
@@ -22,17 +25,46 @@ function Playlist (is_mobile) {
     this.loaders.smart = $("#smart_loader");
     this.loaders.big = $("#big_loader");
 
-    this.tracklist = [
-    ];
+    this.playlist_controls = $("#playlist_controls");
+    this.button_doubles = $("#button_doubles button");
+    this.button_only_artist = $("#button_only_artist button");
+    this.button_only_title = $("#button_only_title button");
+    this.show_more = $("#show_more");
+
+    this.tracklist = [];
     this.almost_tracklist = [];
+
+    this.initialize();
 };
 
-Playlist.prototype.setControls = function (controls) {
-    this.controls = controls;
+Playlist.prototype.initialize = function () {
+    var playlist = this;
+    this.list.sortable({
+        placeholder: 'sort-placeholder',
+        opacity: 0.8,
+        stop: function(event, ui) {
+            playlist.restruct();
+        }
+    });
+
+    this.list.disableSelection();
+
+    this.button_doubles.button().click(function () {
+        playlist.filterDoubles();
+    });
+
+    this.button_only_artist.button().click(function () {
+        playlist.filterOnlyArtist();
+    });
+
+    this.button_only_title.button().click(function () {
+        playlist.filterOnlyTitle();
+    });
 };
 
 Playlist.prototype.update = function (trackslist, type) {
     var playlist = this;
+    this.now_type = type;
     html = "";
     for (var index = 0; index < trackslist.length; index++) {
         element = trackslist[index];
@@ -45,8 +77,8 @@ Playlist.prototype.update = function (trackslist, type) {
                         '" data-owner="' + element.owner_id +
                         '" data-title="' + element.title +
                         '" data-url="' + element.url + '"><input type="checkbox"> <img src="/images/icons/play.png" alt=">" class="playbutton"> <b>' +
-                        ' <span onclick="player.controls.vk_search(\'' + element.artist + '\');">' + element.artist + '</span></b>' +
-                        ' <span onclick="player.controls.vk_search(\'' + element.title + '\');">' + element.title + '</span>' +
+                        ' <span onclick="player.vk_api.search(\'' + element.artist + '\');">' + element.artist + '</span></b>' +
+                        ' <span onclick="player.vk_api.search(\'' + element.title + '\');">' + element.title + '</span>' +
                         ' <span class="time">(' + timeFormat(element.duration * 1000) + ')</span>' +
                         ' <img src="/images/icons/delete.png" alt="X" class="deletebutton">' +
                         ' <img src="/images/icons/love.png" alt="X" class="lovebutton">' +
@@ -72,19 +104,20 @@ Playlist.prototype.update = function (trackslist, type) {
     this.list.html(html);
     this.bind();
     if (type == "playlist") {
-        this.bind_playlist();
+        this.bindPlaylist();
     } else if (type == "love") {
-        this.bind_love();
+        this.bindLove();
     } else if (type == "last") {
-        this.bind_last();
+        this.bindLast();
     }
 };
 
 Playlist.prototype.bind =  function () {
     var playlist = this;
+    var player = this.player;
     $(".playbutton").click(function () {
         playlist.repeat_one = false;
-        playlist.controls.stopCurrent();
+        player.controls.stopCurrent();
         if ($(this).parent().attr("data-type") != "search") {
             playlist.tracklist = playlist.almost_tracklist;
         }
@@ -111,24 +144,36 @@ Playlist.prototype.bind =  function () {
 
     $(".repeatbutton").click(function () {
         playlist.repeat_one = playlist.repeat_one ? false : true;
+        if (playlist.repeat_one) {
+            playlist.player.controls.ui_repeat_status.html("one");
+        } else {
+            playlist.player.controls.ui_repeat_status.html("all");
+        }
         $(this).toggleClass("activebutton");
     });
 
     $(".track input").click(function () {
         $(this).parent().toggleClass("selected");
     });
+
+    this.sidebar.find("li").click(function () {
+        playlist.sidebar.find("li").each(function () {
+            $(this).removeClass("active");
+        });
+        $(this).addClass("active");
+    });
 };
 
-Playlist.prototype.bind_playlist = function () {
+Playlist.prototype.bindPlaylist = function () {
     var playlist = this;
     $(".deletebutton").click(function () {
-        playlist.remove_from($(this).parent().attr("data-owner") + "_" + $(this).parent().attr("data-id"));
+        playlist.removeFrom($(this).parent().attr("data-owner") + "_" + $(this).parent().attr("data-id"));
         playlist.deltrack($(this).parent().attr("data-id"));
         $(this).parent().hide("fast");
     });    
 };
 
-Playlist.prototype.bind_love = function () {
+Playlist.prototype.bindLove = function () {
     var playlist = this;
     $(".deletebutton").click(function () {
         playlist.unlove($(this).parent().attr("data-owner") + "_" + $(this).parent().attr("data-id"));
@@ -137,18 +182,21 @@ Playlist.prototype.bind_love = function () {
     });
 };
 
-Playlist.prototype.bind_last = function () {
+Playlist.prototype.bindLast = function () {
     var playlist = this;
     $(".deletebutton").hide();
 };
 
 Playlist.prototype.playTrack = function (id) {
-    id = parseInt(id) % this.tracklist.length;
-    var aid = this.tracklist[id]["aid"];
-    $(".track").removeClass("playing");
-    $(".track[data-id=" + aid + "]").addClass("playing");
-    this.controls.setCurrent(this.tracklist[id]);
-    this.controls.playCurrent();
+    id = this.repeat_all ? parseInt(id) % this.tracklist.length : parseInt(id);
+    try {
+        var aid = this.tracklist[id]["aid"];
+        $(".track").removeClass("playing");
+        $(".track[data-id=" + aid + "]").addClass("playing");
+        player.controls.setCurrent(this.tracklist[id]);
+        player.controls.playCurrent();
+    } catch (e) {
+    }
 };
 
 Playlist.prototype.playPrev =  function () {
@@ -178,18 +226,22 @@ Playlist.prototype.getNById = function(id) {
 };
 
 Playlist.prototype.restruct = function () {
-    var newarray = this.list.sortable('toArray');
-    var newtracklist = [];
-    var track_id = 0;
-    for (var i = 0; i < newarray.length ; i++) {
-        track_id = newarray[i].split("_");
-        newtracklist.push(this.getById(track_id[1]));
-    }
-    this.tracklist = newtracklist;
+    if (!this.is_restructing) {
+        this.is_restructing = true;
+        var newarray = this.list.sortable('toArray');
+        var newtracklist = [];
+        var track_id = 0;
+        for (var i = 0; i < newarray.length ; i++) {
+            track_id = newarray[i].split("_");
+            newtracklist.push(this.getById(track_id[1]));
+        }
+        this.tracklist = newtracklist;
 
-    if (document.location.hash.indexOf("#playlist") == 0) {
-        var playlist_id = document.location.hash.replace("#playlist:", "");
-        this.restruct_save(playlist_id, newarray);
+        if (document.location.hash.indexOf("#playlist") == 0) {
+            var playlist_id = document.location.hash.replace("#playlist:", "");
+            this.restructSave(playlist_id, newarray);
+        }
+        this.is_restructing = false;
     }
 };
 
@@ -212,7 +264,7 @@ Playlist.prototype.refresh = function () {
             if ((data["status"] == "OK") && (data["count"] > 0)) {
                 for (var i = 0; i < data["count"]; i++) {
                     html += "<li><span onclick=\"player.playlist.show('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/playlist.png\" alt=\">\" /> " + data["lists"][i]["name"] + "</span>";
-                    html += " <small onclick=\"player.playlist.add_to('" + data["lists"][i]["_id"] + "');\">";
+                    html += " <small onclick=\"player.playlist.addTo('" + data["lists"][i]["_id"] + "');\">";
                     html += "<img src=\"/images/icons/add.png\" alt=\"add\" /></small> ";
                     html += "<small onclick=\"player.playlist.remove('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/cross.png\" alt=\"del\" /></small></li>";
                 }
@@ -272,7 +324,7 @@ Playlist.prototype.remove = function (id) {
     }
 };
 
-Playlist.prototype.add_to = function (playlist_id) {
+Playlist.prototype.addTo = function (playlist_id) {
     this.loaders.playlist.show();
     var playlist = this;
     if (playlist_id) {
@@ -302,7 +354,7 @@ Playlist.prototype.add_to = function (playlist_id) {
     }
 };
 
-Playlist.prototype.remove_from = function (track_id) {
+Playlist.prototype.removeFrom = function (track_id) {
     this.loaders.playlist.show();
     var playlist = this;
     var playlist_id = document.location.hash.replace("#playlist:", "");
@@ -316,7 +368,6 @@ Playlist.prototype.remove_from = function (track_id) {
             type: "POST",
             dataType: "json",
             success: function(data) {
-                console.debug(data);
                 if (data["status"] == "OK") {
                     playlist.smallok.html("Треки успешно удалены").fadeIn("slow").fadeOut(5000);
                 } else {
@@ -328,7 +379,7 @@ Playlist.prototype.remove_from = function (track_id) {
     }
 };
 
-Playlist.prototype.restruct_save = function (playlist_id, newarray) {
+Playlist.prototype.restructSave = function (playlist_id, newarray) {
     this.loaders.playlist.show();
     var playlist = this;
     if (playlist_id) {
@@ -363,7 +414,7 @@ Playlist.prototype.show = function (playlist_id) {
             dataType: "json",
             success: function(data) {
                 if (data["status"] == "OK") {
-                    playlist.controls.vk_get_by_id(data["list"]["tracks"], "playlist");
+                    player.vk_api.getById(data["list"]["tracks"], "playlist");
                 } else {
                     playlist.smallerror.html("Все сломалось. Плейлист не отображается. Попробуй еще раз.").fadeIn("slow").fadeOut(10000);
                 }
@@ -375,7 +426,7 @@ Playlist.prototype.show = function (playlist_id) {
 };
 
 // Save searches
-Playlist.prototype.search_save = function (search_name) {
+Playlist.prototype.searchSave = function (search_name) {
     this.loaders.search.show();
     var playlist = this;
     if (!search_name) {
@@ -389,7 +440,7 @@ Playlist.prototype.search_save = function (search_name) {
         dataType: "json",
         success: function(data) {
             if (data["status"] == "OK") {
-                playlist.search_refresh();
+                playlist.searchRefresh();
                 playlist.smallok.html("Поиск сохранен").fadeIn("slow").fadeOut(5000);
             } else {
                 playlist.smallerror.html("При сохранении поиска потеряна связь с космосом... это печально").fadeIn("slow").fadeOut(10000);
@@ -399,7 +450,7 @@ Playlist.prototype.search_save = function (search_name) {
     });
 };
 
-Playlist.prototype.search_remove = function (id) {
+Playlist.prototype.searchRemove = function (id) {
     if (!id) return false;
     this.loaders.search.show();
     var playlist = this;
@@ -410,7 +461,7 @@ Playlist.prototype.search_remove = function (id) {
         dataType: "json",
         success: function(data) {
             if (data["status"] == "OK") {
-                playlist.search_refresh();
+                playlist.searchRefresh();
                 playlist.smallok.html("Поиск удален").fadeIn("slow").fadeOut(5000);
             } else {
                 playlist.smallerror.html("При удалении поиска произошла ошибка. Попробуй еще раз.").fadeIn("slow").fadeOut(10000);
@@ -420,7 +471,7 @@ Playlist.prototype.search_remove = function (id) {
     });
 };
 
-Playlist.prototype.search_refresh = function () {
+Playlist.prototype.searchRefresh = function () {
     this.loaders.search.show();
     var playlist = this;
     $.ajax({
@@ -432,8 +483,8 @@ Playlist.prototype.search_refresh = function () {
                 var html = "";
                 if ((data["status"] == "OK") && (data["count"] > 0)) {
                     for (var i = 0; i < data["count"]; i++) {
-                        html += "<li><span onclick=\"player.controls.vk_search('" + data["lists"][i]["name"] + "');\"><img src=\"/images/icons/playlist.png\" alt=\">\" /> " + data["lists"][i]["name"] + "</span> ";
-                        html += "<small onclick=\"player.playlist.search_remove('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/cross.png\" alt=\"del\" /></small></li>";
+                        html += "<li><span onclick=\"player.vk_api.search('" + data["lists"][i]["name"] + "');\"><img src=\"/images/icons/playlist.png\" alt=\">\" /> " + data["lists"][i]["name"] + "</span> ";
+                        html += "<small onclick=\"player.playlist.searchRemove('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/cross.png\" alt=\"del\" /></small></li>";
                     }
                 }
             } else {
@@ -477,7 +528,6 @@ Playlist.prototype.unlove = function (id) {
             data: ({ id: id }),
             dataType: "json",
             success: function(data) {
-                console.debug(data);
                 if (data["status"] == "OK") {
                     playlist.smallok.html("Треки удален из любимых").fadeIn("slow").fadeOut(5000);
                 } else {
@@ -489,16 +539,17 @@ Playlist.prototype.unlove = function (id) {
     }   
 };
 
-Playlist.prototype.love_list = function () {
-    this.loaders.smart.show();
+Playlist.prototype.loveList = function () {
+    var player = this.player;
     var playlist = this;
+    this.loaders.smart.show();
     $.ajax({
         url: "/ajax/love/list",
         type: "POST",
         dataType: "json",
         success: function(data) {          
             if (data["status"] == "OK") {
-                playlist.controls.vk_get_by_id(data["tracks"], "love");
+                player.vk_api.getById(data["tracks"], "love");
             } else {
                 playlist.smallerror.html("При отображении любимого я сломалась. Я говно. Я хуевая программа.").fadeIn("slow").fadeOut(10000);
             }
@@ -508,21 +559,17 @@ Playlist.prototype.love_list = function () {
     document.location.hash = "love";
 };
 
-Playlist.prototype.distinct = function (list) {
-    if (!list) return [];
-    var newlist = [];    
-};
-
 Playlist.prototype.nowlistening = function() {
-    this.loaders.smart.show();
+    var player = this.player;
     var playlist = this;
+    this.loaders.smart.show();
     $.ajax({
         url: "/ajax/nowlistening",
         type: "POST",
         dataType: "json",
         success: function(data) {
             if (data["status"] == "OK") {
-                playlist.controls.vk_get_by_id(data["tracks"], "last");
+                player.vk_api.getById(data["tracks"], "last");
             } else {
                 playlist.smallerror.html("При отображении последних треков я сломалась. Я говно. Я хуевая программа.").fadeIn("slow").fadeOut(10000);
             }
@@ -533,9 +580,88 @@ Playlist.prototype.nowlistening = function() {
 };
 
 Playlist.prototype.userPlaylist = function(ids) {
-    this.loaders.smart.show();
+    var player = this.player;
     var playlist = this;
+    this.loaders.smart.show();
+
     document.location.hash = "my";
-    playlist.controls.vk_get_by_id(ids, "my");
+    player.vk_api.getById(ids, "my");
     playlist.loaders.smart.hide();
+};
+
+Playlist.prototype.filterDoubles = function() {
+    var new_tracklist = [];
+    var artist = "";
+    var title = "";
+    new_tracklist.push(this.tracklist[0]);
+
+    for (var i = 1; i < this.tracklist.length; i++) {
+        artist = this.tracklist[i].artist.toLowerCase();
+        title = this.tracklist[i].title.toLowerCase();
+        found = false;
+
+        for (var j = 0; j < new_tracklist.length; j++) {
+            if ((new_tracklist[j].artist.toLowerCase() == artist) && (new_tracklist[j].title.toLowerCase() == title)) {
+                found = true;
+            }
+        }
+
+        if (!found) {
+            new_tracklist.push(this.tracklist[i]);
+        }
+    }
+    this.tracklist = new_tracklist;
+    this.update(new_tracklist, this.now_type);
+};
+
+Playlist.prototype.toggleCheckAll = function() {
+    var checkbox;
+    this.list.find("li").each(function () {
+        checkbox = $(this).find("input[type=checkbox]");
+        checkbox[0].checked = !checkbox[0].checked;
+        checkbox.parent().toggleClass("selected");
+    });
+};
+
+Playlist.prototype.filterOnlyArtist = function() {
+    var query = $("#q").val().toLowerCase();
+    var new_tracklist = [];
+    for (var i = 0; i < this.tracklist.length; i++) {
+        if (this.tracklist[i].artist.toLowerCase().indexOf(query) + 1) {
+            new_tracklist.push(this.tracklist[i]);
+        }
+    }
+    this.tracklist = new_tracklist;
+    this.update(new_tracklist, this.now_type);
+};
+
+Playlist.prototype.filterOnlyTitle = function() {
+    var query = $("#q").val().toLowerCase();
+    var new_tracklist = [];
+    for (var i = 0; i < this.tracklist.length; i++) {
+        if (this.tracklist[i].title.toLowerCase().indexOf(query) + 1) {
+            new_tracklist.push(this.tracklist[i]);
+        }
+    }
+    this.tracklist = new_tracklist;
+    this.update(new_tracklist, this.now_type);
+};
+
+Playlist.prototype.toggleShuffle = function () {
+    this.tracklist.sort(function (a, b) {
+        var max = 1;
+        var min = -1;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    });
+    this.update(this.tracklist, this.now_type);
+};
+
+Playlist.prototype.toggleRepeat = function () {
+    this.repeat_all = !this.repeat_all;
+    this.repeat_one = false;
+    if (this.repeat_all) {
+        this.player.controls.ui_repeat_status.html("all");
+    } else {
+        this.player.controls.ui_repeat_status.html("off");
+    }
 };

@@ -212,3 +212,40 @@
     opacity: 0.5;
     padding: 20px;
 }
+
+#playlist_controls {
+    background-color: #D9DEE5;
+    border-bottom: solid 1px #BBBBBB;
+    overflow: hidden;
+}
+
+    #playlist_controls input {
+        float: left;
+        display: block;
+        margin-top: 10px;
+        margin-left: 15px;
+    }
+
+    #playlist_controls div {
+        float: left;
+        margin-bottom: 3px;
+        margin-top: 3px;
+        width: 20%;
+        margin-left: 5%;
+    }
+
+    #playlist_controls button {
+        width: 100%;
+        min-width: 200px;
+        height: 25px;
+        font-size: 11px;
+    }
+
+#show_more {
+    display: none;
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+    background-color: #D1D3D4;
+    padding: 5px 0;
+}

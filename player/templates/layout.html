@@ -33,7 +33,14 @@
             <div id="button_prev"><button></button></div>
             <div id="button_play"><button></button></div>
             <div id="button_next"><button></button></div>
-            <div id="volume"><div id="vol_slider"></div></div>
+            <div id="volume">
+                <div id="volume_buttons">
+                    <div id="button_shuffle"><button></button></div>
+                    <div id="button_repeat"><button></button></div>
+                    <span id="repeat_status">on</span>
+                </div>
+                <div id="vol_slider"></div>
+            </div>
             <div id="progress">
                 <div id="progressbar"></div>
                 <div id="trackposition"></div>
@@ -48,12 +55,21 @@
         <section id="middle">
             <div id="container">
                 <div id="playlist">
+                    <div id="playlist_controls">
+                        <input type="checkbox" id="check-all" onclick="player.playlist.toggleCheckAll();" />
+                        <div id="button_doubles"><button>Удалить дубли</button></div>
+                        <div id="button_only_artist"><button>Только по исполнителю</button></div>
+                        <div id="button_only_title"><button>Только в названии</button></div>
+                    </div>
                     <img src="/images/loaders/big-playlist.gif" alt="LOADING..." id="big_loader" />
                     <div id="playlist_error"></div>
                     <div id="playlist_search">
                         <input type="text" name="q" id="pq" placeholder="search" /><button id="pok">Поиск</button>
                     </div>
                     <ul id="sortable"></ul>
+                    <div id="show_more" onclick="player.vk_api.searchMore();">
+                        Get moar &darr;
+                    </div>
                 </div>
             </div><!-- #container-->
 
@@ -67,7 +83,8 @@
                 <span class="dir">НЕДАВНИЕ ПОИСКИ</span>
                     <ul id="lastsearches"></ul>
 
-                <img src="/images/loaders/sidebar.gif" alt="X" id="search_loader" /> <span class="dir">СОХРАНЕННЫЕ ПОИСКИ <small onclick="player.playlist.search_save();"><img src="/images/icons/add.png" alt="new" title="Добавить текущую поисковую строку" /></small> <small onclick="player.playlist.search_refresh();"><img src="/images/icons/repeat.png" alt="refresh" title="Обновить" /></small></span>
+                <div class="only_auth">
+                <img src="/images/loaders/sidebar.gif" alt="X" id="search_loader" /> <span class="dir">СОХРАНЕННЫЕ ПОИСКИ <small onclick="player.playlist.searchSave();"><img src="/images/icons/add.png" alt="new" title="Добавить текущую поисковую строку" /></small> <small onclick="player.playlist.searchRefresh();"><img src="/images/icons/repeat.png" alt="refresh" title="Обновить" /></small></span>
                     <ul id="savedsearches"></ul>
 
                 <img src="/images/loaders/sidebar.gif" alt="X" id="playlist_loader" /> <span class="dir">ПЛЕЙЛИСТЫ <small onclick="$('#newplaylist').toggle('fast');"><img src="/images/icons/add.png" alt="new" title="Создать новый плейлист" /></small> <small onclick="player.playlist.refresh();"><img src="/images/icons/repeat.png" alt="refresh" title="Обновить" /></small></span>
@@ -79,11 +96,12 @@
 
                 <img src="/images/loaders/sidebar.gif" alt="X" id="smart_loader" /> <span class="dir">ВКУСНЯШКИ</span>
                     <ul>
-                        <li onclick="player.controls.vk_getuserinfo(true);"><img src="/images/icons/playlist.png" alt=">" /> Мои аудиозаписи</li>
-                        <li onclick="player.playlist.love_list();"><img src="/images/icons/playlist.png" alt=">" /> Любимые</li>
+                        <li onclick="player.vk_api.getUserInfo(true);"><img src="/images/icons/playlist.png" alt=">" /> Мои аудиозаписи</li>
+                        <li onclick="player.playlist.loveList();"><img src="/images/icons/playlist.png" alt=">" /> Любимые</li>
                         <li onclick="player.playlist.nowlistening();"><img src="/images/icons/playlist.png" alt=">" /> Недавно прослушанные</li>
                         <li><img src="/images/icons/playlist.png" alt=">" /> <s>Часто слушаемые</s></li>
                     </ul>
+                 </div>
                 <div id="small_error"></div>
                 <div id="small_ok">Все хорошо, ок! Я хорошая программа и я должна много кушать.</div>
             </section><!-- #sideLeft -->
@@ -111,7 +129,7 @@
             <a href="#" onclick="window.open('http://www.lastfm.ru/api/auth?api_key=6f557f2c836b0fff474c3b6cfcf0ccf4', 'Last.fm login', 'width=800,height=600,resizable=yes,scrollbars=yes,status=no'); return false;">
                 <img src="/images/icons/lastfm.png" alt="Last.fm" title="Авторизоваться на last.fm" />
             </a>
-            <a href="#" onclick="player.vk_login(); return false;">
+            <a href="#" onclick="player.vk_api.login(); return false;">
                 <img src="/images/icons/vkontakte.png" alt="Vkontakte" title="Залогиниться вконтакте" />
             </a>
         </div>
@@ -122,7 +140,8 @@
     </div>
 
     <div id="dialog-vk" title="Залогинься!" style="display: none; text-align: center; font-size: 14px;">
-        Чтобы работал поиск и воспроизведение, нужно залогиниться вконтактике. Поэтому вот волшебная кнопочка: <center><span id="login_vk" onclick="player.vk_login();"></span></center>
+        Чтобы работал поиск и воспроизведение, нужно залогиниться вконтактике. Поэтому вот волшебная кнопочка: <center><span id="login_vk" onclick="player.vk_api.login();"></span></center>
+        <br/> Hint: Иногда после этого надо обновить страницу.
     </div>
 
     <div id="vk_api_transport" style="display: none;"></div>
@@ -135,6 +154,8 @@
     <script type="text/javascript" src="/js/player.class.js"></script>
     <script type="text/javascript" src="/js/controls.class.js"></script>
     <script type="text/javascript" src="/js/playlist.class.js"></script>
+    <script type="text/javascript" src="/js/vkontakte.api.class.js"></script>
+    <script type="text/javascript" src="/js/lastfm.api.class.js"></script>
     <script type="text/javascript" src="/js/main.js"></script>
     <script type="text/javascript" src="http://yandex.st/json2/2009-09-29/json2.min.js"></script>
     <!-- Yandex.Metrika -->

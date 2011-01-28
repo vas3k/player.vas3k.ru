@@ -123,13 +123,13 @@ class LastfmController(BaseController):
         try:
             lst = self.connection.player.listening.Listening()
             lst["user"] = ObjectId(self.userid)
-            lst["track"]["title"] = track["title"]
-            lst["track"]["artist"] = track["artist"]
-            lst["track"]["aid"] = track["aid"]
-            lst["track"]["owner_id"] = track["owner_id"]
+            lst["track"]["title"] = unicode(track["title"])
+            lst["track"]["artist"] = unicode(track["artist"])
+            lst["track"]["aid"] = unicode(track["aid"])
+            lst["track"]["owner_id"] = unicode(track["owner_id"])
             lst.save()
-        except:
-            return json.dumps({ "status": "NeOK", "message": "Fail! Save fail" })
+        except Exception, e:
+            return json.dumps({ "status": "NeOK", "message": "Fail! Save fail %s" % e })
 
         try:
             if not artist: raise Exception(u"No artist")

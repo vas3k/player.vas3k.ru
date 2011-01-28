@@ -21,7 +21,7 @@ $(function () {
     });
 
     $(".show_searches").click(function () {
-        player.playlist.search_refresh();
+        player.playlist.searchRefresh();
         $('#savedsearches').show();
         $('#menu').slideToggle('slow');
         $("#nav_icon_searches").show("fast");
@@ -35,7 +35,7 @@ $(function () {
     });
 
     $(".show_love").click(function () {
-        player.playlist.love_list();
+        player.playlist.loveList();
         $('#playlist').show();
         $('#menu').slideToggle('slow');
         $("#nav_icon_love").show("fast");

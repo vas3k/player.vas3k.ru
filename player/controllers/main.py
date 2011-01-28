@@ -44,8 +44,8 @@ class MainController(BaseController):
             self.connection.player.users.update({ "login": login }, { "$set": {
                 "hash": hash
             }})
-            response.set_cookie("userhash", hash, max_age=3600000)
-            response.set_cookie("userid", user["_id"], max_age=3600000)
+            response.set_cookie("userhash", unicode(hash), max_age=3600000)
+            response.set_cookie("userid", unicode(user["_id"]), max_age=3600000)
             redirect("/")
         else:
             # show form
@@ -76,8 +76,8 @@ class MainController(BaseController):
                 self.connection.player.users.update({ "login": login }, { "$set": {
                     "hash": hash
                 }})
-                response.set_cookie("userhash", hash, max_age=3600000)
-                response.set_cookie("userid", user["_id"], max_age=3600000)
+                response.set_cookie("userhash", unicode(hash), max_age=3600000)
+                response.set_cookie("userid", unicode(user["_id"]), max_age=3600000)
             except Exception, e:
                 c.message = e
                 return render("/user/error.html")

@@ -1,11 +1,6 @@
 $(function () {
-    player = new Player(false);
-    player.initializeControls();
-    player.initializeVK();
-    player.initializeAuth();
-    player.initializeByHash(document.location.hash);
     VK.UI.button('login_vk');
-    player.controls.vk_getuserinfo();
+    player = new Player(false);
 
     player.playlist.container.css("height", $("body").height() - 102);
     player.playlist.sidebar.css("height", $("body").height() - 95);

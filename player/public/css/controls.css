@@ -31,6 +31,41 @@
         height: 40px;
     }
 
+#volume_buttons {
+    float: left;
+    margin-left: 30px;
+}
+
+    #volume_buttons #repeat_status {
+        color: #999;
+        padding-left: 5px;
+    }
+
+    #button_shuffle, #button_repeat {
+        float: left;
+    }
+
+    #button_shuffle button, #button_repeat button {
+        width: 20px;
+        height: 20px;
+        padding: 0;
+        margin: 0;
+    }
+
+    #button_shuffle button {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    #button_repeat button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+#pq {
+    padding-right: 20px;
+}
+
 #qok {
     position: absolute;
     right: -1px;
@@ -105,10 +140,11 @@
 #volume {
     float: left;
     padding: 0 10px;
-    padding-top: 33px;
+    padding-top: 20px;
 }
 
     #vol_slider {
+        clear: both;
         width: 100px;
         border-radius: 10px;
         -moz-border-radius: 10px;
@@ -134,3 +170,19 @@
     #search input {
         width: 200px;
     }
+
+
+
+#popup_error {
+    display: none;
+    position: absolute;
+    top: 0;
+    width: 50%;
+    margin-left: 25%;
+    padding: 20px;
+    background-color: #4687CB;
+    cursor: pointer;
+    z-index: 99999;
+    text-align: center;
+    font-size: 14px;
+}

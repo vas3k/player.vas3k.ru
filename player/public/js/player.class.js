@@ -1,14 +1,10 @@
 function Player (is_mobile) {
     // Initialization
     this.is_mobile = is_mobile;
-    this.controls = new Controls(is_mobile);
-    this.playlist = new Playlist(is_mobile);
-    this.controls.setPlaylist(this.playlist);
-    this.playlist.setControls(this.controls);
-
     this.is_authorized = false;
     this.vk_id = 0;
     this.is_lastfm = false;
+    this.search_query = "";
 
     soundManager.url = '/swf/';
     soundManager.debugMode = false;
@@ -18,7 +14,10 @@ function Player (is_mobile) {
     soundManager.useHTML5Audio = true;
     soundManager.useHighPerformance = true;
 
+    var player = this;
     soundManager.onready(function() {
+        player.initializeAuth();
+        player.initializeByHash(document.location.hash);
         if (soundManager.supported()) {
         } else {
             $("#dialog-unsupported").dialog({
@@ -27,42 +26,22 @@ function Player (is_mobile) {
             });
         }
     });
-};
 
-Player.prototype.initializeControls = function () {
-    this.controls.initialize(this.is_mobile);
-};
-
-Player.prototype.initializeVK = function () {
-    var controls = this.controls;
-    var player = this;
-    VK.init({
-        apiId: 1934554,
-        nameTransportPath: "http://player.vas3k.ru/js/xd_receiver.html"
-    });
-    VK.Auth.getLoginStatus(function (r) {
-        if (r.session) {
-            $("#vk_search_login").hide();
-            controls.is_logged_in = true;
-            player.vk_id = r.session["mid"];
-        } else {
-            $("#dialog-vk").dialog({
-                height: 140,
-                modal: true
-            });
-        }
-    });
+    this.controls = new Controls(this);
+    this.playlist = new Playlist(this);
+    this.lastfm_api = new LastfmAPI(this);
+    this.vk_api = new VkontakteAPI(this);
 };
 
 Player.prototype.initializeByHash = function (hash) {
     if ((hash == "") || (hash == "#")) return;
 
     if (hash.indexOf("#search") == 0) {
-        this.controls.vk_search(hash.replace("#search:", "").replace(new RegExp("\\+", 'g'), " "));
+        this.vk_api.search(hash.replace("#search:", "").replace(new RegExp("\\+", 'g'), " "));
     }
 
     if (hash.indexOf("#love") == 0) {
-        this.playlist.love_list();
+        this.playlist.loveList();
     }
     
     if (hash.indexOf("#playlist") == 0) {
@@ -70,7 +49,7 @@ Player.prototype.initializeByHash = function (hash) {
     }
 
     if (hash.indexOf("#track") == 0) {
-        this.controls.vk_get_by_id([hash.replace("#track:", ""),], "playlist", true);
+        this.vk_api.getById([hash.replace("#track:", ""),], "playlist", true);
     }
 
     if (hash.indexOf("#last") == 0) {
@@ -78,7 +57,7 @@ Player.prototype.initializeByHash = function (hash) {
     }
 
     if (hash.indexOf("#my") == 0) {
-        this.controls.vk_getuserinfo(true);
+        this.vk_api.getUserInfo(true);
     }
 };
 
@@ -93,23 +72,21 @@ Player.prototype.initializeAuth = function () {
 
     if (this.is_authorized) {
         this.playlist.refresh();
-        this.playlist.search_refresh();
+        this.playlist.searchRefresh();
         $("#button_register").hide();
         $("#button_login").hide();
     } else {
-        $("#savedsearches").html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Нужно <a href='/register'>зарегаться</a>");
-        $("#playlistlist").html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;или <a href='/login'>войти</a>");
+        $(".only_auth").html("<div style='padding: 20px;'>Надо бы <a href='/register'>зарегаться</a>, а может <a href='/login'>просто войти</a>. Вот тогда точно ад и содомия.</div>");
         $("#button_exit").hide();
     }
 };
 
-Player.prototype.vk_login = function () {
-    VK.Auth.login(function () {
-            $("#vk_search_login").hide();
-            controls.is_logged_in = true;
-        },
-        VK.access.FRIENDS | VK.access.AUDIO
-    );
+Player.prototype.changeFavicon = function(filename) {
+    var link = document.createElement('link');
+    link.type = 'image/x-icon';
+    link.rel = 'shortcut icon';
+    link.href = '/images/' + filename;
+    document.getElementsByTagName('head')[0].appendChild(link);
 };
 
 function timeFormat (milliseconds) {

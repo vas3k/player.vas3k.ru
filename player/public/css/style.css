@@ -194,7 +194,8 @@ input {
 	position: relative;
 	background: #D9DEE5;
     border-right: solid 1px #BBBBBB;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 10px;
 }
 
@@ -229,3 +230,4 @@ input {
     position: absolute;
     top: -20px;
 }
+
