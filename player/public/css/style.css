@@ -119,6 +119,7 @@ input {
 	overflow: hidden;
     margin-top: -6px;
 }
+
 #playlist {
 	margin: 0 222px 0 200px;
 }
@@ -203,6 +204,16 @@ input {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 10px;
+}
+
+#sideRightClose {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 16px;
+    height: 16px;
+	background-image: url("../images/icons/cross.png");
+    cursor: pointer;
 }
 
 

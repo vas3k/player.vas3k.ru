@@ -6,6 +6,8 @@ function Playlist (player) {
 
     this.tracks = 0; // количество треков (DEPRECATED)
     this.current = -1; // ID текущего трека в this.tracklist
+    this.current_aid = -1; // AID текущего трека
+    this.current_fullid = -1; // Full ID текущего трека (Owner ID + AID)
     this.shuffle = false; // шаффл? (DEPRECATED)
     this.repeat_one = false; // повтор одного трека
     this.repeat_all = true;  // повтор всех
@@ -64,6 +66,8 @@ Playlist.prototype.initialize = function () {
     this.button_only_title.button().click(function () {
         playlist.filterOnlyTitle();
     });
+
+    //this.sidebarRight.resizable();
 };
 
 Playlist.prototype.update = function (trackslist, type) {
@@ -104,8 +108,13 @@ Playlist.prototype.update = function (trackslist, type) {
                         '<div class="pl_duration">' + timeFormat(element.duration * 1000) + '</div>' +
                     '</li>';
         }
-    };
-    this.list.html(html);
+    }
+    if (html) {
+        this.list.html(html);
+    } else {
+        this.list.html(" ");
+        this.error.html("Список пуст").fadeIn("slow").fadeOut(10000);
+    }
     this.bind();
     if (type == "playlist") {
         this.bindPlaylist();
@@ -119,13 +128,19 @@ Playlist.prototype.update = function (trackslist, type) {
 Playlist.prototype.bind =  function () {
     var playlist = this;
     var player = this.player;
+
+    // чтобы не сбилось проигрывание треков, после частичной чистки
+    $("#" + playlist.current_fullid).addClass("playing");
+    var new_n = playlist.getNById(playlist.current_aid);
+    if (new_n) playlist.current = new_n;
+
     $(".playbutton").click(function () {
         playlist.repeat_one = false;
         player.controls.destroyCurrent();
-        if ($(this).parent().attr("data-type") != "search") {
-            playlist.tracklist = playlist.almost_tracklist;
-        }
-        playlist.current = playlist.getNById($(this).parent().attr("data-id"));
+        playlist.tracklist = playlist.almost_tracklist;
+        playlist.current_aid = $(this).parent().attr("data-id");
+        playlist.current_fullid = $(this).parent().attr("id");
+        playlist.current = playlist.getNById(playlist.current_aid);
         playlist.playTrack(playlist.current);
     });
 
@@ -254,6 +269,12 @@ Playlist.prototype.restruct = function () {
 Playlist.prototype.deltrack = function (aid) {
     var id = this.getNById(aid);
     this.tracklist.splice(id,1);
+};
+
+// Список воспроизведения
+Playlist.prototype.showCurrent = function() {
+    this.update(this.tracklist, this.now_type);
+    this.show_more.hide();
 };
 
 // Управление плейлистами
@@ -506,7 +527,7 @@ Playlist.prototype.searchRefresh = function () {
                 var html = "";
                 if ((data["status"] == "OK") && (data["count"] > 0)) {
                     for (var i = 0; i < data["count"]; i++) {
-                        html += "<li><span onclick=\"player.vk_api.search('" + data["lists"][i]["name"] + "');\"><img src=\"/images/icons/playlist.png\" alt=\">\" /> " + data["lists"][i]["name"] + "</span> ";
+                        html += "<li><span onclick=\"player.vk_api.search('" + data["lists"][i]["name"] + "');\"><img src=\"/images/icons/saved_searches.png\" alt=\">\" /> " + data["lists"][i]["name"] + "</span> ";
                         html += "<small onclick=\"player.playlist.searchRemove('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/cross.png\" alt=\"del\" /></small></li>";
                     }
                 }
@@ -569,6 +590,7 @@ Playlist.prototype.loveList = function () {
     var player = this.player;
     var playlist = this;
     this.loaders.smart.show();
+    playlist.loaders.big.show();
     $.ajax({
         url: "/ajax/love/list",
         type: "POST",
@@ -580,6 +602,10 @@ Playlist.prototype.loveList = function () {
                 playlist.smallerror.html("При отображении любимого я сломалась. Я говно. Я хуевая программа.").fadeIn("slow").fadeOut(10000);
             }
             playlist.loaders.smart.hide();
+            playlist.loaders.big.hide();
+        },
+        error: function () {
+            playlist.loaders.big.hide();
         }
     });
     document.location.hash = "love";
@@ -589,6 +615,7 @@ Playlist.prototype.nowlistening = function() {
     var player = this.player;
     var playlist = this;
     this.loaders.smart.show();
+    playlist.loaders.big.show();
     $.ajax({
         url: "/ajax/nowlistening",
         type: "POST",
@@ -600,6 +627,10 @@ Playlist.prototype.nowlistening = function() {
                 playlist.smallerror.html("При отображении последних треков я сломалась. Я говно. Я хуевая программа.").fadeIn("slow").fadeOut(10000);
             }
             playlist.loaders.smart.hide();
+            playlist.loaders.big.hide();
+        },
+        error: function () {
+            playlist.loaders.big.hide();
         }
     });
     document.location.hash = "last";

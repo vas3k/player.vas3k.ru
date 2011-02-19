@@ -79,6 +79,9 @@
                     <ul>
                         <li class="active" onclick="player.controls.clear_search();"><img src="/images/icons/vkontakte.ico" alt=">" /> Вконтакте <small id="vk_search_login" onclick="player.vk_login();">[войти]</small></li>
                     </ul>-->
+                <ul>
+                    <li onclick="player.playlist.showCurrent();"><img src="/images/icons/nowplaying.png" alt=">" />  Список воспроизведения</li>
+                </ul>
 
                 <span class="dir">НЕДАВНИЕ ПОИСКИ</span>
                     <ul id="lastsearches"></ul>
@@ -96,10 +99,10 @@
 
                 <span class="dir"><img src="/images/loaders/sidebar.gif" alt="X" id="smart_loader" /> ВКУСНЯШКИ</span>
                     <ul>
-                        <li onclick="player.vk_api.getUserInfo(true);"><img src="/images/icons/playlist.png" alt=">" /> Мои аудиозаписи</li>
-                        <li onclick="player.playlist.loveList();"><img src="/images/icons/playlist.png" alt=">" /> Любимые</li>
-                        <li onclick="player.playlist.nowlistening();"><img src="/images/icons/playlist.png" alt=">" /> Недавно прослушанные</li>
-                        <li><img src="/images/icons/playlist.png" alt=">" /> <s>Часто слушаемые</s></li>
+                        <li onclick="player.vk_api.getUserInfo(true);"><img src="/images/icons/my_audio.png" alt=">" /> Мои аудиозаписи</li>
+                        <li onclick="player.playlist.loveList();"><img src="/images/icons/love.png" alt=">" /> Любимые</li>
+                        <li onclick="player.playlist.nowlistening();"><img src="/images/icons/recent.png" alt=">" /> Недавно прослушанные</li>
+                        <li><img src="/images/icons/often.png" alt=">" /> <s>Часто слушаемые</s></li>
                     </ul>
                  </div>
                 <div id="small_error"></div>

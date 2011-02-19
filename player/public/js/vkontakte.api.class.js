@@ -78,13 +78,12 @@ VkontakteAPI.prototype.search = function (query, offset, count) {
                 player.playlist.error.html("Поиск не дал результатов. Попробуйте другой запрос.").fadeIn("slow").fadeOut(10000);
                 return false;
             }
-            player.playlist.tracklist = r.response.slice(1);
-            for (var i = 0; i < player.playlist.tracklist.length; i++) {
-                player.playlist.tracklist[i]["artist"] = vk.pidoffkaFilter(player.playlist.tracklist[i]["artist"]);
-                player.playlist.tracklist[i]["title"] = vk.pidoffkaFilter(player.playlist.tracklist[i]["title"]);
+            player.playlist.almost_tracklist = r.response.slice(1);
+            for (var i = 0; i < player.playlist.almost_tracklist.length; i++) {
+                player.playlist.almost_tracklist[i]["artist"] = vk.pidoffkaFilter(player.playlist.almost_tracklist[i]["artist"]);
+                player.playlist.almost_tracklist[i]["title"] = vk.pidoffkaFilter(player.playlist.almost_tracklist[i]["title"]);
             }
-            player.playlist.almost_tracklist = player.playlist.tracklist;
-            player.playlist.update(player.playlist.tracklist, "search");
+            player.playlist.update(player.playlist.almost_tracklist, "search");
         }
         player.playlist.loaders.big.hide();
         player.playlist.playlist_controls.show();
