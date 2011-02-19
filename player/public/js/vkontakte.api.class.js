@@ -88,10 +88,21 @@ VkontakteAPI.prototype.search = function (query, offset, count) {
         player.playlist.loaders.big.hide();
         player.playlist.playlist_controls.show();
         player.playlist.show_more.show();
+
+        // очистка
+        if (player.controls.ui_filter_artist.attr("checked")) {
+            player.playlist.filterOnlyArtist();
+        }
+        if (player.controls.ui_filter_track.attr("checked")) {
+            player.playlist.filterOnlyTitle();
+        }
+        if (player.controls.ui_filter_duplicates.attr("checked")) {
+            player.playlist.filterDoubles();
+        }
     });
     document.location.hash = "search:" + query.replace(new RegExp(" ", 'g'), "+");
     $("#q").val(query);
-    $("#lastsearches").prepend('<li onclick="player.vk_api.search(\'' + query + '\');"><span>' + query + '</span></li>');
+    $("#lastsearches").prepend('<li onclick="player.vk_api.search(\'' + query + '\');"><span><img src="/images/icons/search.png" alt=">" /> ' + query + '</span></li>');
     $("#playlist_search").hide();
     player.controls.ui_repeat_status.html("all");
     if (player.is_mobile) {

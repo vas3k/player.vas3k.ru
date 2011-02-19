@@ -33,6 +33,10 @@ function Controls (player) {
     this.ui_psearchbutton = $("#pok");
     this.ui_smallinfo = $("#smallinfo");
 
+    this.ui_filter_artist = $("#onlyArtist");
+    this.ui_filter_track = $("#onlyTrack");
+    this.ui_filter_duplicates = $("#removeDuplicates");
+
     this.initialize();
 };
 

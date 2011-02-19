@@ -167,11 +167,11 @@
 #search {
     position: relative;
     margin-right: 10px;
-    margin-top: 22px;
+    margin-top: 15px;
     float: right;
 }
 
-    #search input {
+    #search input[type=text] {
         position: absolute;
         top: 0;
         right: 0;
@@ -183,6 +183,22 @@
         border-bottom-right-radius: 0;
         -moz-border-radius-topright: 0;
         -moz-border-radius-bottomright: 0;
+    }
+
+    #searchOptions1 {
+        position: absolute;
+        top: 25px;
+        right: 0;
+        font-size: 10px;
+        width: 200px;
+    }
+
+    #searchOptions2 {
+        position: absolute;
+        top: 40px;
+        right: 0;
+        font-size: 10px;
+        width: 200px;
     }
 
     #qok {
