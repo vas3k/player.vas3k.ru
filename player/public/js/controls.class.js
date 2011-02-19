@@ -6,7 +6,7 @@ function Controls (player) {
     this.is_logged_in = false;
     this.current = null;
     this.next = null;
-    this.volume = 100;
+    this.volume = player.storage["volume"]||100;
 
     this.track = {
         artist: "Unknown Artist",
@@ -39,7 +39,7 @@ function Controls (player) {
 Controls.prototype.initialize = function () {
     var player = this.player;
 
-     this.ui_prevbutton.button({
+    this.ui_prevbutton.button({
         disabled: true,
         text: false,
         icons: {
@@ -67,12 +67,8 @@ Controls.prototype.initialize = function () {
         }
     }).click(function () {
         if ( player.controls.is_playing) {
-            $(this).button("option", "icons", { primary: 'ui-icon-play' });
-             player.changeFavicon("favicon_pause.png");
              player.controls.pauseCurrent();
         } else {
-            $(this).button("option", "icons", { primary: 'ui-icon-pause' });
-             player.changeFavicon("favicon_play.png");
              player.controls.playCurrent();
         }
     });
@@ -122,13 +118,15 @@ Controls.prototype.initialize = function () {
         range: false,
         min: 0,
         max: 100,
-        value: 100,
+        value: this.volume,
         slide: function (event, ui) {
-             player.controls.volume = ui.value;
-             player.controls.current.setVolume(ui.value);
+            player.controls.volume = ui.value;
+            player.storage["volume"] = ui.value;
+            player.controls.current.setVolume(ui.value);
             soundManager.setVolume(ui.value);
         }
     });
+
 
     this.ui_bar.progressbar({
         value: 0
@@ -165,7 +163,7 @@ Controls.prototype.initialize = function () {
 Controls.prototype.setCurrent = function (sound) {
     var player = this.player;
     var controls = this;
-    controls.stopCurrent();
+    controls.destroyCurrent();
     controls.track = sound;
     controls.ui_durationlabel.html(timeFormat(controls.track.duration * 1000));
     controls.ui_slider.slider("option", "max", controls.track.duration * 100);
@@ -238,19 +236,30 @@ Controls.prototype.setPosition = function (pos) {
 Controls.prototype.playCurrent = function () {
     soundManager.play('current');
     this.is_playing = true;
+    player.changeFavicon("favicon_play.png");
+    this.ui_playbutton.button("option", "icons", { primary: 'ui-icon-pause' });
 };
 
 Controls.prototype.pauseCurrent = function () {
     soundManager.pause('current');
     this.is_playing = false;
+    player.changeFavicon("favicon_pause.png");
+    this.ui_playbutton.button("option", "icons", { primary: 'ui-icon-play' });
+};
+
+Controls.prototype.destroyCurrent = function () {
+    this.pauseCurrent();
+    soundManager.destroySound('current');
+    this.ui_slider.slider("option", "value", 0);
+    this.ui_durationlabel.html("00:00");
+    this.ui_positionlabel.html("00:00");
 };
 
 Controls.prototype.stopCurrent = function () {
     this.pauseCurrent();
-    soundManager.destroySound('current');
-    this.ui_bar.progressbar("option", "value", 0);
-    this.ui_playbutton.button("option", "icons", { primary: 'ui-icon-play' });
-    this.ui_durationlabel.html("(00:00)");
+    this.setPosition(0);
+    this.ui_slider.slider("option", "value", 0);
+    this.ui_durationlabel.html("00:00");
     this.ui_positionlabel.html("00:00");
 };
 

@@ -5,6 +5,11 @@ function Player (is_mobile) {
     this.vk_id = 0;
     this.is_lastfm = false;
     this.search_query = "";
+    try {
+        this.storage = window.localStorage||window.globalStorage[document.domain];
+    } catch(e) {
+        this.storage = {};
+    }
 
     soundManager.url = '/swf/';
     soundManager.debugMode = false;
@@ -31,6 +36,7 @@ function Player (is_mobile) {
     this.playlist = new Playlist(this);
     this.lastfm_api = new LastfmAPI(this);
     this.vk_api = new VkontakteAPI(this);
+    //this.radio = new Radio(this);
 };
 
 Player.prototype.initializeByHash = function (hash) {
@@ -38,27 +44,38 @@ Player.prototype.initializeByHash = function (hash) {
 
     if (hash.indexOf("#search") == 0) {
         this.vk_api.search(hash.replace("#search:", "").replace(new RegExp("\\+", 'g'), " "));
+        return;
     }
 
     if (hash.indexOf("#love") == 0) {
         this.playlist.loveList();
+        return;
     }
-    
+
     if (hash.indexOf("#playlist") == 0) {
         this.playlist.show(hash.replace("#playlist:", ""));
+        return;
     }
 
     if (hash.indexOf("#track") == 0) {
         this.vk_api.getById([hash.replace("#track:", ""),], "playlist", true);
+        return;
     }
 
     if (hash.indexOf("#last") == 0) {
         this.playlist.nowlistening();
+        return;
     }
 
     if (hash.indexOf("#my") == 0) {
         this.vk_api.getUserInfo(true);
+        return;
     }
+
+    /*if (hash.indexOf("#radio") == 0) {
+        this.radio.update();
+        return;
+    }*/
 };
 
 Player.prototype.initializeAuth = function () {

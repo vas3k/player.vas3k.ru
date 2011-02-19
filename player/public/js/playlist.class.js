@@ -1,15 +1,16 @@
 function Playlist (player) {
     this.player = player;
-    this.is_mobile = false;
-    this.is_restructing = false;
-    this.now_type = "search";
+    this.is_mobile = false; // мобильная версия?
+    this.is_restructing = false; // мютекс, якобы включаемый пока плейлист обновляется
+    this.now_type = "search"; // текущий тип воспроизведения = ["search", "playlist", "love", "my"]
 
-    this.tracks = 0;
-    this.current = -1;
-    this.shuffle = false;
-    this.repeat_one = false;
-    this.repeat_all = true;
+    this.tracks = 0; // количество треков (DEPRECATED)
+    this.current = -1; // ID текущего трека в this.tracklist
+    this.shuffle = false; // шаффл? (DEPRECATED)
+    this.repeat_one = false; // повтор одного трека
+    this.repeat_all = true;  // повтор всех
 
+    // Описание гуев
     this.container = $("#playlist");
     this.list = $("#playlist ul");
     this.error = $("#playlist_error");
@@ -31,7 +32,10 @@ function Playlist (player) {
     this.button_only_title = $("#button_only_title button");
     this.show_more = $("#show_more");
 
+    // Треклист
     this.tracklist = [];
+
+    // "почти треклист" (когда жмешь на плейлист, чтобы старый треклист продолжал играть)
     this.almost_tracklist = [];
 
     this.initialize();
@@ -117,7 +121,7 @@ Playlist.prototype.bind =  function () {
     var player = this.player;
     $(".playbutton").click(function () {
         playlist.repeat_one = false;
-        player.controls.stopCurrent();
+        player.controls.destroyCurrent();
         if ($(this).parent().attr("data-type") != "search") {
             playlist.tracklist = playlist.almost_tracklist;
         }
@@ -188,6 +192,7 @@ Playlist.prototype.bindLast = function () {
 };
 
 Playlist.prototype.playTrack = function (id) {
+    var player = this.player;
     id = this.repeat_all ? parseInt(id) % this.tracklist.length : parseInt(id);
     try {
         var aid = this.tracklist[id]["aid"];
@@ -196,6 +201,7 @@ Playlist.prototype.playTrack = function (id) {
         player.controls.setCurrent(this.tracklist[id]);
         player.controls.playCurrent();
     } catch (e) {
+        player.controls.stopCurrent();
     }
 };
 
@@ -263,7 +269,7 @@ Playlist.prototype.refresh = function () {
             var html = "";
             if ((data["status"] == "OK") && (data["count"] > 0)) {
                 for (var i = 0; i < data["count"]; i++) {
-                    html += "<li><span onclick=\"player.playlist.show('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/playlist.png\" alt=\">\" /> " + data["lists"][i]["name"] + "</span>";
+                    html += "<li data-id=\"" + data['lists'][i]['_id'] + "\"><span onclick=\"player.playlist.show('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/playlist.png\" alt=\">\" /> " + data["lists"][i]["name"] + "</span>";
                     html += " <small onclick=\"player.playlist.addTo('" + data["lists"][i]["_id"] + "');\">";
                     html += "<img src=\"/images/icons/add.png\" alt=\"add\" /></small> ";
                     html += "<small onclick=\"player.playlist.remove('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/cross.png\" alt=\"del\" /></small></li>";
@@ -404,8 +410,11 @@ Playlist.prototype.restructSave = function (playlist_id, newarray) {
 };
 
 Playlist.prototype.show = function (playlist_id) {
-    this.loaders.playlist.show();
     var playlist = this;
+    playlist.list.html("");
+    playlist.loaders.playlist.show();
+    playlist.loaders.big.show();
+
     if (playlist_id) {
         $.ajax({
             url: "/ajax/playlist/get",
@@ -419,6 +428,12 @@ Playlist.prototype.show = function (playlist_id) {
                     playlist.smallerror.html("Все сломалось. Плейлист не отображается. Попробуй еще раз.").fadeIn("slow").fadeOut(10000);
                 }
                 playlist.loaders.playlist.hide();
+                playlist.loaders.big.hide();
+            },
+            error: function () {
+                playlist.smallerror.html("Все сломалось. Плейлист не отображается. Попробуй еще раз.").fadeIn("slow").fadeOut(10000);
+                playlist.loaders.playlist.hide();
+                playlist.loaders.big.hide();
             }
         });
     }
@@ -446,6 +461,10 @@ Playlist.prototype.searchSave = function (search_name) {
                 playlist.smallerror.html("При сохранении поиска потеряна связь с космосом... это печально").fadeIn("slow").fadeOut(10000);
             }
             playlist.loaders.search.hide();
+        },
+        error: function () {
+            playlist.smallerror.html("При сохранении поиска потеряна связь с космосом... это печально").fadeIn("slow").fadeOut(10000);
+            playlist.loaders.search.hide();
         }
     });
 };
@@ -466,6 +485,10 @@ Playlist.prototype.searchRemove = function (id) {
             } else {
                 playlist.smallerror.html("При удалении поиска произошла ошибка. Попробуй еще раз.").fadeIn("slow").fadeOut(10000);
             }
+            playlist.loaders.search.hide();
+        },
+        error: function () {
+            playlist.smallerror.html("При удалении поиска произошла ошибка. Попробуй еще раз.").fadeIn("slow").fadeOut(10000);
             playlist.loaders.search.hide();
         }
     });
@@ -491,6 +514,9 @@ Playlist.prototype.searchRefresh = function () {
                 html = "<li>Нет сохраненных</li>";
             }
             $("#savedsearches").html(html);
+            playlist.loaders.search.hide();
+        },
+        error: function () {
             playlist.loaders.search.hide();
         }
     });
@@ -590,6 +616,7 @@ Playlist.prototype.userPlaylist = function(ids) {
 };
 
 Playlist.prototype.filterDoubles = function() {
+    this.tracklist = this.almost_tracklist;
     var new_tracklist = [];
     var artist = "";
     var title = "";
@@ -610,11 +637,12 @@ Playlist.prototype.filterDoubles = function() {
             new_tracklist.push(this.tracklist[i]);
         }
     }
-    this.tracklist = new_tracklist;
+    this.almost_tracklist = this.tracklist = new_tracklist;
     this.update(new_tracklist, this.now_type);
 };
 
 Playlist.prototype.toggleCheckAll = function() {
+    this.tracklist = this.almost_tracklist;
     var checkbox;
     this.list.find("li").each(function () {
         checkbox = $(this).find("input[type=checkbox]");
@@ -624,6 +652,7 @@ Playlist.prototype.toggleCheckAll = function() {
 };
 
 Playlist.prototype.filterOnlyArtist = function() {
+    this.tracklist = this.almost_tracklist;
     var query = $("#q").val().toLowerCase();
     var new_tracklist = [];
     for (var i = 0; i < this.tracklist.length; i++) {
@@ -631,11 +660,12 @@ Playlist.prototype.filterOnlyArtist = function() {
             new_tracklist.push(this.tracklist[i]);
         }
     }
-    this.tracklist = new_tracklist;
+    this.almost_tracklist = this.tracklist = new_tracklist;
     this.update(new_tracklist, this.now_type);
 };
 
 Playlist.prototype.filterOnlyTitle = function() {
+    this.tracklist = this.almost_tracklist;
     var query = $("#q").val().toLowerCase();
     var new_tracklist = [];
     for (var i = 0; i < this.tracklist.length; i++) {
@@ -643,11 +673,12 @@ Playlist.prototype.filterOnlyTitle = function() {
             new_tracklist.push(this.tracklist[i]);
         }
     }
-    this.tracklist = new_tracklist;
+    this.almost_tracklist = this.tracklist = new_tracklist;
     this.update(new_tracklist, this.now_type);
 };
 
 Playlist.prototype.toggleShuffle = function () {
+    this.tracklist = this.almost_tracklist;
     this.tracklist.sort(function (a, b) {
         var max = 1;
         var min = -1;

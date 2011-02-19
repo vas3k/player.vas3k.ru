@@ -31,6 +31,7 @@ VkontakteAPI.prototype.initialize = function () {
 
 VkontakteAPI.prototype.login = function () {
     $("#popup_error").hide();
+    $("#dialog-vk").hide();
     var player = this.player;
 
     VK.Auth.login(function () {
@@ -82,6 +83,7 @@ VkontakteAPI.prototype.search = function (query, offset, count) {
                 player.playlist.tracklist[i]["artist"] = vk.pidoffkaFilter(player.playlist.tracklist[i]["artist"]);
                 player.playlist.tracklist[i]["title"] = vk.pidoffkaFilter(player.playlist.tracklist[i]["title"]);
             }
+            player.playlist.almost_tracklist = player.playlist.tracklist;
             player.playlist.update(player.playlist.tracklist, "search");
         }
         player.playlist.loaders.big.hide();
@@ -123,6 +125,7 @@ VkontakteAPI.prototype.searchMore = function() {
                 player.playlist.tracklist[i]["artist"] = vk.pidoffkaFilter(player.playlist.tracklist[i]["artist"]);
                 player.playlist.tracklist[i]["title"] = vk.pidoffkaFilter(player.playlist.tracklist[i]["title"]);
             }
+            player.playlist.almost_tracklist = player.playlist.tracklist;
             player.playlist.update(player.playlist.tracklist, "search");
         }
     });
@@ -132,7 +135,7 @@ VkontakteAPI.prototype.getById = function (id, type, play_now) {
     var vk = this;
     var player = this.player;
     var id_str = typeof(id) == "string" ? id : id.join(",");
-    player.playlist.playlist_controls.hide();
+    //player.playlist.playlist_controls.hide();
     player.playlist.show_more.hide();
 
     VK.Api.call('audio.getById', { "audios": id_str }, function(r) {
