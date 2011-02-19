@@ -94,6 +94,7 @@ VkontakteAPI.prototype.search = function (query, offset, count) {
     $("#q").val(query);
     $("#lastsearches").prepend('<li onclick="player.vk_api.search(\'' + query + '\');"><span>' + query + '</span></li>');
     $("#playlist_search").hide();
+    player.controls.ui_repeat_status.html("all");
     if (player.is_mobile) {
         $("#menu").hide();
         $('#playlistlist').hide();
