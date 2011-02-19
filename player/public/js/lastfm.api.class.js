@@ -14,6 +14,7 @@ LastfmAPI.prototype.scrobble = function (o_rly) {
         type: "POST",
         success: function (e) {
             //console.debug(e)
+            //console.debug(player.controls.track);
         }
     });
 };

@@ -56,10 +56,9 @@ class LastfmController(BaseController):
         lastfm_session = request.cookies.get("lastfm_session", "")
         lastfm_session_key = request.cookies.get("lastfm_session_key", "")
         lastfm_login = request.cookies.get("lastfm_login", "")
-        artist = urllib.quote(request.params.get("artist", "Unknown Artist").encode("utf-8", "ignore"))
+        artist = urllib.quote(request.params.get("artist", "Unknown Artist").encode("utf-8", "ignore").replace("&#39;", "\'"))
         duration = urllib.quote(request.params.get("duration", "360").encode("utf-8", "ignore"))
-        song = urllib.quote(request.params.get("title", "Track 1").encode("utf-8", "ignore"))
-        #return song
+        song = urllib.quote(request.params.get("title", "Track 1").encode("utf-8", "ignore").replace("&#39;", "\'"))
 
         #api_sig = md5(unicode(ur'api_key' + self.API_KEY + 'artist' + artist + 'methodtrack.updateNowPlaying' + 'sk' + lastfm_session_key + 'track' + song + self.API_SECRET_KEY, "utf-8")).hexdigest()
         #url = 'http://ws.audioscrobbler.com/2.0/'
@@ -95,9 +94,9 @@ class LastfmController(BaseController):
         lastfm_session = request.cookies.get("lastfm_session", "")
         lastfm_session_key = request.cookies.get("lastfm_session_key", "")
         lastfm_login = request.cookies.get("lastfm_login", "")
-        artist = urllib.quote(request.params.get("artist", "Unknown Artist").encode("utf-8", "ignore"))
+        artist = urllib.quote(request.params.get("artist", "Unknown Artist").encode("utf-8", "ignore").replace("&#39;", "\'"))
         duration = urllib.quote(request.params.get("duration", "360").encode("utf-8", "ignore"))
-        song = urllib.quote(request.params.get("title", "Track 1").encode("utf-8", "ignore"))
+        song = urllib.quote(request.params.get("title", "Track 1").encode("utf-8", "ignore").replace("&#39;", "\'"))
 
         #api_sig = md5(u'api_key' + self.API_KEY + 'artist' + artist + 'methodtrack.scrobble' + 'sk' + lastfm_session_key + 'timestamp' + nowtime + 'track' + song + self.API_SECRET_KEY).hexdigest()
         #url = 'http://ws.audioscrobbler.com/2.0/'

@@ -644,7 +644,7 @@ Playlist.prototype.filterDoubles = function() {
 Playlist.prototype.toggleCheckAll = function() {
     this.tracklist = this.almost_tracklist;
     var checkbox;
-    this.list.find("li").each(function () {
+    this.list.find("li:visible").each(function () {
         checkbox = $(this).find("input[type=checkbox]");
         checkbox[0].checked = !checkbox[0].checked;
         checkbox.parent().toggleClass("selected");
