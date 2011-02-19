@@ -6,6 +6,8 @@ from pylons import request, response, session, tmpl_context as c, url
 from pylons.controllers.util import abort, redirect
 
 from player.lib.base import BaseController, render
+from mongokit import ObjectId
+import simplejson as json
 
 log = logging.getLogger(__name__)
 
@@ -51,6 +53,38 @@ class MainController(BaseController):
             # show form
             return render("/user/reg_form.html")
 
+    def register_vk(self):
+        if request.method == "POST":
+            # register
+            try:
+                login = request.params.get("login", "")
+                password = request.params.get("password", "")
+            except:
+                c.message = u"Ошибка при получении данных с формы"
+                return render("/user/error.html")
+            try:
+                if not login: raise Exception(u"Логин пуст")
+                if not password: raise Exception(u"Пароль пуст")
+            except Exception, e:
+                c.message = e
+                return render("/user/error.html")
+            user = self.connection.player.users.Users()
+            user["login"] = login
+            user["password"] = unicode(md5(password).hexdigest())
+            user.save()
+            from random import randint
+            hash = md5(str(randint(1, 9999))).hexdigest()
+            self.connection.player.users.update({ "login": login }, { "$set": {
+                "hash": hash
+            }})
+            response.set_cookie("userhash", unicode(hash), max_age=3600000)
+            response.set_cookie("userid", unicode(user["_id"]), max_age=3600000)
+            redirect("/")
+        else:
+            # show form
+            return render("/user/reg_form.html")
+
+
     def login(self):
         if request.method == "POST":
             # login
@@ -91,6 +125,12 @@ class MainController(BaseController):
         response.set_cookie("userhash", "", max_age=0)
         response.set_cookie("userid", "", max_age=0)
         redirect("/")
+
+    def update_vk_id(self):
+        id = request.params.get("id", "")
+        if not id: return json.dumps({ "status": "NeOK", "message": u"No id" })
+        self.connection.player.users.update({ "_id": ObjectId(self.userid) }, { "$set": { "vk_name": id }})
+        return json.dumps({ "status": "OK", "message": u"Ok %s" % id })
 
     def faq(self):
         return render("/static/faq.html")

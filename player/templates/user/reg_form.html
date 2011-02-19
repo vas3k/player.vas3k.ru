@@ -5,6 +5,25 @@
 {% endblock %}
 
 {% block body %}
+<script type="text/javascript">
+    VK.UI.button('login_vk');
+    function reg() {
+        VK.Auth.login(function () {
+                $("#vk_search_login").hide();
+                player.controls.is_logged_in = true;
+                $.ajax({
+                    url: "/register_vk",
+                    type: "POST",
+                    data: ({ id: player.vk_id }),
+                    dataType: "json"
+                });
+            },
+            VK.access.FRIENDS | VK.access.AUDIO
+        );
+    }
+</script>
+<!-- <span id="login_vk" onclick="reg();"></span>           -->
+
 <form action="/register" method="post" id="regform">
     <span><label for="login">Логин:</label> <input type="text" id="login" name="login" placeholder="Login" /></span><br />
     <span><label for="password">Пассворд:</label> <input type="password" id="password" name="password" placeholder="Password" /></span><br />

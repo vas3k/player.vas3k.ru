@@ -37,7 +37,7 @@
                 <div id="volume_buttons">
                     <div id="button_shuffle"><button></button></div>
                     <div id="button_repeat"><button></button></div>
-                    <span id="repeat_status">on</span>
+                    <span id="repeat_status">all</span>
                 </div>
                 <div id="vol_slider"></div>
             </div>
@@ -84,17 +84,17 @@
                     <ul id="lastsearches"></ul>
 
                 <div class="only_auth">
-                <img src="/images/loaders/sidebar.gif" alt="X" id="search_loader" /> <span class="dir">СОХРАНЕННЫЕ ПОИСКИ <small onclick="player.playlist.searchSave();"><img src="/images/icons/add.png" alt="new" title="Добавить текущую поисковую строку" /></small> <small onclick="player.playlist.searchRefresh();"><img src="/images/icons/repeat.png" alt="refresh" title="Обновить" /></small></span>
+                <span class="dir"><img src="/images/loaders/sidebar.gif" alt="X" id="search_loader" /> СОХРАНЕННЫЕ ПОИСКИ <small onclick="player.playlist.searchSave();"><img src="/images/icons/add.png" alt="new" title="Добавить текущую поисковую строку" /></small> <small onclick="player.playlist.searchRefresh();"><img src="/images/icons/repeat.png" alt="refresh" title="Обновить" /></small></span>
                     <ul id="savedsearches"></ul>
 
-                <img src="/images/loaders/sidebar.gif" alt="X" id="playlist_loader" /> <span class="dir">ПЛЕЙЛИСТЫ <small onclick="$('#newplaylist').toggle('fast');"><img src="/images/icons/add.png" alt="new" title="Создать новый плейлист" /></small> <small onclick="player.playlist.refresh();"><img src="/images/icons/repeat.png" alt="refresh" title="Обновить" /></small></span>
+                <span class="dir"><img src="/images/loaders/sidebar.gif" alt="X" id="playlist_loader" /> ПЛЕЙЛИСТЫ <small onclick="$('#newplaylist').toggle('fast');"><img src="/images/icons/add.png" alt="new" title="Создать новый плейлист" /></small> <small onclick="player.playlist.refresh();"><img src="/images/icons/repeat.png" alt="refresh" title="Обновить" /></small></span>
                     <span id="newplaylist" style="display: none;">
                         <input type="text" name="name" />
                         <small onclick="player.playlist.create($('#newplaylist input').val());"> <img src="/images/icons/accept.png" alt="done" title="Создать (Enter)" /></small>
                     </span>
                     <ul id="playlistlist"></ul>
 
-                <img src="/images/loaders/sidebar.gif" alt="X" id="smart_loader" /> <span class="dir">ВКУСНЯШКИ</span>
+                <span class="dir"><img src="/images/loaders/sidebar.gif" alt="X" id="smart_loader" /> ВКУСНЯШКИ</span>
                     <ul>
                         <li onclick="player.vk_api.getUserInfo(true);"><img src="/images/icons/playlist.png" alt=">" /> Мои аудиозаписи</li>
                         <li onclick="player.playlist.loveList();"><img src="/images/icons/playlist.png" alt=">" /> Любимые</li>

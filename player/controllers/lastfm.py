@@ -77,8 +77,16 @@ class LastfmController(BaseController):
         url = "http://post2.audioscrobbler.com:80/np_1.2"
         req = Request(url, u's=' + lastfm_session + '&a=' + artist + '&t=' + song + '&b=&l=' + duration + '&n=&m=')
         try:
-            data = urlopen(req)
-            return data
+            data = urlopen(req).read().strip()
+            if data == "BADSESSION":
+                lastfm_session = self.handshake(lastfm_login, lastfm_session_key)
+                response.set_cookie("lastfm_session", lastfm_session, max_age=36000000)
+                req = Request(url, u's=' + lastfm_session + '&a=' + artist + '&t=' + song + '&b=&l=' + duration + '&n=&m=')
+                data = urlopen(req).read().strip()
+                ans = "%s %s" % (data, "SECOND")
+            else:
+                ans = "%s %s" % (data, "FIRST")
+            return "%s %s" % (lastfm_session, ans)
         except:
             return "FAIL"
 
@@ -106,8 +114,16 @@ class LastfmController(BaseController):
         url = "http://post2.audioscrobbler.com:80/protocol_1.2"
         req = Request(url, u's=' + lastfm_session + '&a[0]=' + artist + '&t[0]=' + song + '&i[0]=' + str(nowtime) + '&o[0]=P&r[0]=&l[0]=' + duration + '&b[0]=&n[0]=&m[0]=')
         try:
-            data = urlopen(req)
-            return data
+            data = urlopen(req).read().strip()
+            if data == "BADSESSION":
+                lastfm_session = self.handshake(lastfm_login, lastfm_session_key)
+                response.set_cookie("lastfm_session", lastfm_session, max_age=36000000)
+                req = Request(url, u's=' + lastfm_session + '&a[0]=' + artist + '&t[0]=' + song + '&i[0]=' + str(nowtime) + '&o[0]=P&r[0]=&l[0]=' + duration + '&b[0]=&n[0]=&m[0]=')
+                data = urlopen(req).read().strip()
+                ans = "%s %s" % (data, "SECOND")
+            else:
+                ans = "%s %s" % (data, "FIRST")
+            return "%s %s" % (lastfm_session, ans)
         except:
             return "FAIL"
 

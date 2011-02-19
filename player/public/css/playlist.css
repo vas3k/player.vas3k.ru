@@ -66,7 +66,7 @@
 
 #playlist_search {
     border-radius: 10px;
-    -moz-border-radius: 5px;
+    -moz-border-radius: 10px;
     border: solid 1px #999;
     padding: 20px;
     margin: 10px;
@@ -75,11 +75,15 @@
 
     #playlist_search input {
         border-radius: 10px;
+        -moz-border-radius: 10px;
         border: solid 1px #CCC;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
+        -moz-border-radius-topright: 0;
+        -moz-border-radius-bottomright: 0;
         font-size: 18px;
         height: 30px;
+        margin-top: -4px;
         padding: 0 3px;
         width: 90%;
     }
@@ -89,6 +93,13 @@
         height: 32px;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
+        -moz-border-radius-topleft: 0;
+        -moz-border-radius-bottomleft: 0;
+        font-size: 1em;
+    }
+
+    x:-moz-any-link:nth-child(0), #playlist_search button .ui-icon {
+        top: 13px !important;
     }
 
 /* SIDEBAR */
@@ -172,6 +183,12 @@
 #search_loader, #playlist_loader, #smart_loader, #big_loader {
     display: none;
     vertical-align: middle;
+}
+
+#search_loader, #playlist_loader, #smart_loader {
+    float: left;
+    padding-top: 3px;
+    padding-right: 3px;
 }
 
 #big_loader {
