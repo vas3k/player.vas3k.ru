@@ -103,13 +103,7 @@
     }
 
 /* SIDEBAR */
-
-#sideLeft > ul {
-    margin: 10px 0;
-}
-
 #sideLeft li {
-    padding-left: 10px;
     cursor: pointer;
 }
 

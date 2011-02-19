@@ -33,6 +33,7 @@ function Playlist (player) {
     this.button_only_artist = $("#button_only_artist button");
     this.button_only_title = $("#button_only_title button");
     this.show_more = $("#show_more");
+    this.nowplaying_count = $("#nowplayingCount");
 
     // Треклист
     this.tracklist = [];
@@ -142,6 +143,7 @@ Playlist.prototype.bind =  function () {
         playlist.current_fullid = $(this).parent().attr("id");
         playlist.current = playlist.getNById(playlist.current_aid);
         playlist.playTrack(playlist.current);
+        playlist.nowplaying_count.html("(" + playlist.tracklist.length + ")");
     });
 
     $(".linkbutton").click(function () {
@@ -292,8 +294,8 @@ Playlist.prototype.refresh = function () {
                 for (var i = 0; i < data["count"]; i++) {
                     html += "<li data-id=\"" + data['lists'][i]['_id'] + "\"><span onclick=\"player.playlist.show('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/playlist.png\" alt=\">\" /> " + data["lists"][i]["name"] + "</span>";
                     html += " <small onclick=\"player.playlist.addTo('" + data["lists"][i]["_id"] + "');\">";
-                    html += "<img src=\"/images/icons/add.png\" alt=\"add\" /></small> ";
-                    html += "<small onclick=\"player.playlist.remove('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/cross.png\" alt=\"del\" /></small></li>";
+                    html += "<img src=\"/images/icons/action_add.png\" alt=\"add\" /></small> ";
+                    html += "<small onclick=\"if (confirm(\'Правда удалить плейлист?\')) player.playlist.remove('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/action_delete.png\" alt=\"del\" /></small></li>";
                 }
             } else {
                 html = "<li>Нет плейлистов</li>";
@@ -528,7 +530,7 @@ Playlist.prototype.searchRefresh = function () {
                 if ((data["status"] == "OK") && (data["count"] > 0)) {
                     for (var i = 0; i < data["count"]; i++) {
                         html += "<li><span onclick=\"player.vk_api.search('" + data["lists"][i]["name"] + "');\"><img src=\"/images/icons/saved_searches.png\" alt=\">\" /> " + data["lists"][i]["name"] + "</span> ";
-                        html += "<small onclick=\"player.playlist.searchRemove('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/cross.png\" alt=\"del\" /></small></li>";
+                        html += "<small onclick=\"if (confirm(\'Удалить этот поиск?\')) player.playlist.searchRemove('" + data["lists"][i]["_id"] + "');\"><img src=\"/images/icons/action_delete.png\" alt=\"del\" /></small></li>";
                     }
                 }
             } else {

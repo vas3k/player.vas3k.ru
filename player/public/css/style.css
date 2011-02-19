@@ -189,8 +189,18 @@ input {
         float: none;
     }
 
+    #sideLeft li {
+        padding-left: 20px;
+    }
+
     #sideLeft small:hover {
         opacity: 1.0;
+    }
+
+    #sidebarMainMenu li {
+        margin-bottom: 3px;
+        margin-top: 3px;
+        padding-left: 10px;
     }
 
 #sideRight {

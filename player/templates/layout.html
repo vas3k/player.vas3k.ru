@@ -79,25 +79,29 @@
                     <ul>
                         <li class="active" onclick="player.controls.clear_search();"><img src="/images/icons/vkontakte.ico" alt=">" /> Вконтакте <small id="vk_search_login" onclick="player.vk_login();">[войти]</small></li>
                     </ul>-->
-                <ul>
-                    <li onclick="player.playlist.showCurrent();"><img src="/images/icons/nowplaying.png" alt=">" />  Список воспроизведения</li>
+                <ul id="sidebarMainMenu">
+                    <li class="forNonAnonymous" onclick="player.playlist.showCurrent();"><img src="/images/icons/nowplaying.png" alt=">" /> Играет сейчас <span id="nowplayingCount"></span></li>
+                    <li onclick="document.location.href='/faq/'"><img src="/images/icons/faq.png" alt=">" /> FAQ</li>
+                    <li class="forNonAnonymous" onclick="document.location.href='/logout/'"><img src="/images/icons/logout.png" alt=">" /> Выход</li>
+                    <li class="forAnonymous" onclick="document.location.href='/register/'"><img src="/images/icons/register.png" alt=">" /> Регистрация</li>
+                    <li class="forAnonymous" onclick="document.location.href='/login/'"><img src="/images/icons/login.png" alt=">" /> Вход</li>
                 </ul>
 
                 <span class="dir">НЕДАВНИЕ ПОИСКИ</span>
                     <ul id="lastsearches"></ul>
 
                 <div class="only_auth">
-                <span class="dir"><img src="/images/loaders/sidebar.gif" alt="X" id="search_loader" /> СОХРАНЕННЫЕ ПОИСКИ <small onclick="player.playlist.searchSave();"><img src="/images/icons/add.png" alt="new" title="Добавить текущую поисковую строку" /></small> <small onclick="player.playlist.searchRefresh();"><img src="/images/icons/repeat.png" alt="refresh" title="Обновить" /></small></span>
+                <span class="dir"> СОХРАНЕННЫЕ ПОИСКИ <small onclick="player.playlist.searchSave();"><img src="/images/icons/action_bigadd.png" alt="new" title="Добавить текущую поисковую строку" /></small> <img src="/images/loaders/sidebar.gif" alt="X" id="search_loader" /></span>
                     <ul id="savedsearches"></ul>
 
-                <span class="dir"><img src="/images/loaders/sidebar.gif" alt="X" id="playlist_loader" /> ПЛЕЙЛИСТЫ <small onclick="$('#newplaylist').toggle('fast');"><img src="/images/icons/add.png" alt="new" title="Создать новый плейлист" /></small> <small onclick="player.playlist.refresh();"><img src="/images/icons/repeat.png" alt="refresh" title="Обновить" /></small></span>
+                <span class="dir"> ПЛЕЙЛИСТЫ <small onclick="$('#newplaylist').toggle('fast');"><img src="/images/icons/action_bigadd.png" alt="new" title="Создать новый плейлист" /></small> <img src="/images/loaders/sidebar.gif" alt="X" id="playlist_loader" /></span>
                     <span id="newplaylist" style="display: none;">
                         <input type="text" name="name" />
-                        <small onclick="player.playlist.create($('#newplaylist input').val());"> <img src="/images/icons/accept.png" alt="done" title="Создать (Enter)" /></small>
+                        <small onclick="player.playlist.create($('#newplaylist input').val());"> <img src="/images/icons/action_accept.png" alt="done" title="Создать (Enter)" /></small>
                     </span>
                     <ul id="playlistlist"></ul>
 
-                <span class="dir"><img src="/images/loaders/sidebar.gif" alt="X" id="smart_loader" /> ВКУСНЯШКИ</span>
+                <span class="dir"> ВКУСНЯШКИ <img src="/images/loaders/sidebar.gif" alt="X" id="smart_loader" /></span>
                     <ul>
                         <li onclick="player.vk_api.getUserInfo(true);"><img src="/images/icons/my_audio.png" alt=">" /> Мои аудиозаписи</li>
                         <li onclick="player.playlist.loveList();"><img src="/images/icons/love.png" alt=">" /> Любимые</li>
@@ -123,10 +127,8 @@
 
     <footer id="footer">
         <div id="footer_links">
-            <a href="/faq"><img src="/images/icons/faq.png" alt="FAQ" title="FAQ" style="height: 22px;" /></a>
             <a href="/register" id="button_register"><img src="/images/icons/register.png" alt="Register" title="Зарегистрироваться" style="height: 22px;" /></a>
             <a href="/login" id="button_login"><img src="/images/icons/login.png" alt="Login" title="Войти" style="height: 22px;" /></a>
-            <a href="/logout" id="button_exit"><img src="/images/icons/logout.png" alt="Logout" title="Свалить" style="height: 22px;" /></a>
         </div>
         <div id="buttons">
             <a href="#" onclick="window.open('http://www.lastfm.ru/api/auth?api_key=6f557f2c836b0fff474c3b6cfcf0ccf4', 'Last.fm login', 'width=800,height=600,resizable=yes,scrollbars=yes,status=no'); return false;">

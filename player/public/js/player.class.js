@@ -92,8 +92,12 @@ Player.prototype.initializeAuth = function () {
         this.playlist.searchRefresh();
         $("#button_register").hide();
         $("#button_login").hide();
+        $(".forAnonymous").hide();
+        $(".forNonAnonymous").show();
     } else {
         $(".only_auth").html("<div style='padding: 20px;'>Надо бы <a href='/register'>зарегаться</a>, а может <a href='/login'>просто войти</a>. Вот тогда точно ад и содомия.</div>");
+        $(".forAnonymous").show();
+        $(".forNonAnonymous").hide();
         $("#button_exit").hide();
     }
 };
