@@ -93,7 +93,6 @@ VkontakteAPI.prototype.search = function (query, offset, count) {
         // очистка
         if (player.controls.ui_filter_artist.attr("checked")) {
             player.playlist.filterOnlyArtist();
-            player.lastfm_api.getAlbums(query);
         }
         if (player.controls.ui_filter_track.attr("checked")) {
             player.playlist.filterOnlyTitle();
@@ -101,6 +100,8 @@ VkontakteAPI.prototype.search = function (query, offset, count) {
         if (player.controls.ui_filter_duplicates.attr("checked")) {
             player.playlist.filterDoubles();
         }
+
+        player.lastfm_api.getAlbums(query);
     });
     document.location.hash = "search:" + query.replace(new RegExp(" ", 'g'), "+");
     $("#q").val(query);

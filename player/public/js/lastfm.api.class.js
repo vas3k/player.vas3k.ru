@@ -106,7 +106,7 @@ LastfmAPI.prototype.getAlbumTracks = function(artist, album) {
                     }
                     track_id++;
                     if (track_id > all_tracks) clearInterval(fetchTracks);
-                }, 400);
+                }, 1100);
             } else {
                 player.playlist.smallerror.html("Видимо для этого альбома last.fm больше не хочет давать нам список треков. Печально :(").fadeIn("slow").fadeOut(10000);
             }
