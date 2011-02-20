@@ -27,6 +27,7 @@ function Playlist (player) {
     this.loaders.playlist = $("#playlist_loader");
     this.loaders.smart = $("#smart_loader");
     this.loaders.big = $("#big_loader");
+    this.loaders.recommend = $("#recommend_loader");
 
     this.playlist_controls = $("#playlist_controls");
     this.button_doubles = $("#button_doubles button");
@@ -34,6 +35,10 @@ function Playlist (player) {
     this.button_only_title = $("#button_only_title button");
     this.show_more = $("#show_more");
     this.nowplaying_count = $("#nowplayingCount");
+
+    this.recommendations_container = $("#recommendationsContainer");
+    this.album_container = $("#playlist_albums");
+    this.album_flow = new ImageFlow();
 
     // Треклист
     this.tracklist = [];
@@ -114,7 +119,7 @@ Playlist.prototype.update = function (trackslist, type) {
         this.list.html(html);
     } else {
         this.list.html(" ");
-        this.error.html("Список пуст").fadeIn("slow").fadeOut(10000);
+        this.error.html("Список пуст").fadeIn("slow").fadeOut(1000);
     }
     this.bind();
     if (type == "playlist") {

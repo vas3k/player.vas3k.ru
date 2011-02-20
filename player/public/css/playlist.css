@@ -174,7 +174,7 @@
     overflow: hidden;
 }
 
-#search_loader, #playlist_loader, #smart_loader, #big_loader {
+#search_loader, #playlist_loader, #smart_loader, #big_loader, #recommend_loader {
     display: none;
     vertical-align: middle;
 }
@@ -208,8 +208,8 @@
     max-width: 250px;
     color: #000;
     background-color: #DB3B34;
-    opacity: 0.5;
     padding: 20px;
+    z-index: 999;
 }
 
 #small_ok {
@@ -220,8 +220,8 @@
     max-width: 250px;
     background-color: #4687CB;
     color: #000;
-    opacity: 0.5;
     padding: 20px;
+    z-index: 999;
 }
 
 #playlist_controls {
@@ -251,6 +251,13 @@
         height: 25px;
         font-size: 11px;
     }
+
+#playlist_albums {
+    background-color: #D9DEE5;
+    border-bottom: solid 1px #BBBBBB;
+    overflow: hidden;
+    display: none;
+}
 
 #show_more {
     display: none;

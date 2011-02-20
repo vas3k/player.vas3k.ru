@@ -70,6 +70,7 @@ VkontakteAPI.prototype.search = function (query, offset, count) {
     player.playlist.error.hide();
     player.playlist.loaders.big.show();
     player.playlist.show_more.hide();
+    player.playlist.album_container.hide();
     query = query.replace(new RegExp("<",'g'), "").replace(new RegExp(">",'g'), "");
     VK.Api.call('audio.search', { "q": query, "offset": offset, "count": count }, function(r) {
         if(r.response) {
@@ -92,6 +93,7 @@ VkontakteAPI.prototype.search = function (query, offset, count) {
         // очистка
         if (player.controls.ui_filter_artist.attr("checked")) {
             player.playlist.filterOnlyArtist();
+            player.lastfm_api.getAlbums(query);
         }
         if (player.controls.ui_filter_track.attr("checked")) {
             player.playlist.filterOnlyTitle();
@@ -148,6 +150,7 @@ VkontakteAPI.prototype.getById = function (id, type, play_now) {
     var id_str = typeof(id) == "string" ? id : id.join(",");
     //player.playlist.playlist_controls.hide();
     player.playlist.show_more.hide();
+    player.playlist.album_container.hide();
 
     VK.Api.call('audio.getById', { "audios": id_str }, function(r) {
         if (r.response) {
@@ -177,6 +180,27 @@ VkontakteAPI.prototype.getById = function (id, type, play_now) {
         $('#savedsearches').hide();
         $('#playlist').show();
     }
+};
+
+VkontakteAPI.prototype.getOneTrack = function(artist, track) {
+    var player = this.player;
+    player.playlist.show_more.hide();
+    artist = artist.toLowerCase();
+    track = track.toLowerCase();
+    var query = artist + " " + track;
+    query = query.toLowerCase();
+    VK.Api.call('audio.search', { "q": query, "count": 30 }, function(r) {
+        if(r.response) {
+            if (r.response[0] == "0") return;
+            for (var i = 1; i < r.response.length; i++) {
+                if ((r.response[i].artist.toLowerCase().indexOf(artist) + 1) && (r.response[i].title.toLowerCase().indexOf(track) + 1)) {
+                    player.playlist.almost_tracklist.push(r.response[i]);
+                    break;
+                }
+            }
+            player.playlist.update(player.playlist.almost_tracklist, "search");
+        }
+    });
 };
 
 VkontakteAPI.prototype.getUserInfo = function (show) {

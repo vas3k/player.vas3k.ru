@@ -9,6 +9,7 @@ from pylons.controllers.util import abort, redirect
 from player.lib.base import BaseController, render
 from mongokit import ObjectId  
 import simplejson as json
+from lxml import etree
 
 log = logging.getLogger(__name__)
 
@@ -127,8 +128,6 @@ class LastfmController(BaseController):
             return "FAIL"
 
     def getartistinfo(self):
-        from lxml import etree
-
         try:
             track = json.loads(request.params.get("track").encode("utf-8", "ignore"))#.encode("utf-8", "ignore")
             artist = track["artist"].encode("utf-8", "ignore")
@@ -161,6 +160,65 @@ class LastfmController(BaseController):
             }
             return json.dumps({ "status": "OK", "artist": answer })
         except Exception, e:
-            return json.dumps({ "status": "NeOK", "message": "Fail!" })
+            return json.dumps({ "status": "NeOK", "message": "Fail! %s" % e })
+
+    def getalbums(self):
+        try:
+            artist = urllib.quote(request.params.get("artist", "").encode("utf-8", "ignore"))
+            if not artist: raise Exception(u"No artist")
+        except:
+            return json.dumps({ "status": "NeOK", "message": "No artist" })
+
+        try:
+            url = u"http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&format=json&lang=ru&artist=%s&api_key=%s" % (artist, self.API_KEY)
+            answer = json.loads(urllib.urlopen(url).read())
+            albums = []
+            for album in answer["topalbums"]["album"]:
+                albums.append({ "name": album["name"], "artist": album["artist"]["name"], "img": album["image"][2]["#text"] })
+            return json.dumps({ "status": "OK", "albums": albums })
+        except Exception, e:
+            return json.dumps({ "status": "NeOK", "message": "Fail! %s" % e })
+
+    def getalbumtracks(self):
+        try:
+            artist = urllib.quote(request.params.get("artist", "").encode("utf-8", "ignore"))
+            album = urllib.quote(request.params.get("album", "").encode("utf-8", "ignore"))
+            if not artist: raise Exception(u"No artist")
+            if not album: raise Exception(u"No album")
+        except Exception, e:
+            return json.dumps({ "status": "NeOK", "message": "%s" % e })
+
+        try:
+            url = u"http://ws.audioscrobbler.com/2.0/?method=album.getinfo&format=json&lang=ru&api_key=%s&artist=%s&album=%s" % (self.API_KEY, artist, album)
+            answer = json.loads(urllib.urlopen(url).read())
+            tracks = []
+            for track in answer["album"]["tracks"]["track"]:
+                tracks.append(track["name"])
+            return json.dumps({ "status": "OK", "tracks": tracks })
+        except Exception, e:
+            return json.dumps({ "status": "NeOK", "message": "%s" % e })
+
+    def getrecommended(self):
+        lastfm_session_key = request.cookies.get("lastfm_session_key", "")
+        try:
+            api_sig = md5(u"api_key%smethoduser.getRecommendedArtistssk%s%s" % (self.API_KEY, lastfm_session_key, self.API_SECRET_KEY)).hexdigest()
+            url = u"http://ws.audioscrobbler.com/2.0/?api_key=%s&method=user.getRecommendedArtists&sk=%s&api_sig=%s" % (self.API_KEY, lastfm_session_key, api_sig)
+            tree = etree.fromstring(urllib.urlopen(url).read())
+            if not tree: raise Exception(u"No info")
+            tree = tree.find("recommendations")
+            recommendations = []
+            for artist in tree.findall("artist"):
+                recommendations.append(artist.find("name").text)
+            return json.dumps({ "status": "OK", "artists": recommendations })
+        except Exception, e:
+            return json.dumps({ "status": "NeOK", "message": "Fail! %s" % e })
+
+
+
+
+
+
+
+
         
         

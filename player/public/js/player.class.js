@@ -85,6 +85,7 @@ Player.prototype.initializeAuth = function () {
 
     if (getCookie("lastfm_session")) {
         this.is_lastfm = true;
+        this.lastfm_api.getRecommendations();
     }
 
     if (this.is_authorized) {
