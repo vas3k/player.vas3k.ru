@@ -1,0 +1,282 @@
+/* Внимание, щас будет костыль для Firefox */
+x:-moz-any-link:nth-child(0), .ui-icon {
+    top: 5px !important;
+}
+
+/*CONTROLS*/
+#button_full {
+    float: left;
+    padding-top: 10px;
+    margin: 0 10px;
+}
+
+    #button_full img {
+        width: 50px;
+        height: 50px;
+    }
+
+#button_play {
+    float: left;
+    padding-top: 15px;
+}
+
+    #button_play button {
+        width: 40px;
+        height: 40px;
+        font-size: 1em;
+    }
+
+#progress {
+    width: 500px;
+    float: left;
+    padding: 20px 5px;
+    margin-top: -5px;
+    position: relative;
+    color: #4E5045;
+}
+
+    #progressbar {
+        width: 99%;
+        height: 42px;
+        background: url("../images/itunes/bg_progress.png") center center;
+    }
+
+    .ui-progressbar-value {
+        background-color: #696B61;
+    }
+
+    .progressbar-ani {
+        background-image: url("../images/pbar-ani.gif");
+    }
+
+    #trackposition {
+        position: absolute;
+        top: 32px;
+        left: 10px;
+    }
+
+    #tracktitle {
+        position: absolute;
+        top: 22px;
+        line-height: 1.1em;
+        left: 50px;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    #trackduration {
+        position: absolute;
+        top: 32px;
+        right: 20px;
+    }
+
+    #trackslider {
+        position: absolute;
+        top: 50px;
+        left: 43px;
+        width: 90%;
+    }
+
+    #trackslider .ui-slider-handle {
+        width: 9px;
+        height: 9px;
+    }
+
+    #smallinfo {
+        font-size: 10px;
+        position: absolute;
+        top: 45px;
+        right: 40px;
+    }
+
+#volume {
+    float: left;
+    padding: 0 10px;
+    padding-top: 20px;
+}
+
+    #vol_slider {
+        clear: both;
+        width: 100px;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        border: solid 1px #9A9A9A;
+    }
+
+    #vol_slider .ui-widget {
+        font-size: 1.0em;
+    }
+
+    #vol_slider .ui-slider-handle {
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+    }
+
+#popup_error {
+    display: none;
+    position: absolute;
+    top: 0;
+    width: 50%;
+    margin-left: 25%;
+    padding: 20px;
+    background-color: rgba(51, 51, 255, 0.7);
+    cursor: pointer;
+    z-index: 99999;
+    text-align: center;
+    font-size: 14px;
+    color: #FFF;
+}
+
+
+/*TRACK*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+:focus {
+	outline: 0;
+}
+ins {
+	text-decoration: none;
+}
+del {
+	text-decoration: line-through;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+html {
+	height: 100%;
+}
+header, nav, section, article, aside, footer {
+	display: block;
+}
+body {
+	font: 12px/18px Arial, Tahoma, Verdana, sans-serif;
+	height: 100%;
+}
+a {
+	color: #333;
+	outline: none;
+	text-decoration: underline;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+p {
+    text-indent: 20px;
+	margin: 0 0 18px;
+    font-size: 14px;
+}
+
+h1 {
+    font-size: 16px;
+    padding-bottom: 10px;
+}
+
+img {
+	border: none;
+    vertical-align: middle;
+}
+
+input {
+	vertical-align: middle;
+}
+
+#wrapper {
+    margin: 0 auto;
+	width: 500px;
+	min-width: 600px;
+    overflow: hidden;
+}
+
+#header {
+	height: 73px;
+	background-image: url("../images/itunes/bg_controls.png");
+}
+    #tracktitle {
+        max-width: 290px;
+    }
+
+    #trackslider {
+        position: absolute;
+        top: 50px;
+        left: 43px;
+        width: 300px;
+    }
+
+    #smallinfo {
+        font-size: 10px;
+        position: absolute;
+        top: 45px;
+        right: 60px;
+    }
+
+#header_buttons {
+    padding-top: 10px;
+    paddding-left: 5px;
+}
+
+    #header_buttons img {
+        width: 20px;
+        height: 20px;
+    }
+
+#volume {
+    float: left;
+    padding: 0 10px;
+    padding-top: 25px;
+}
+
+    #vol_slider {
+        width: 50px;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        border: solid 1px #9A9A9A;
+    }
+
+#progress {
+    width: 390px;
+    float: right;
+}
+
+#urlcode {
+    width: 590px;
+    margin-left: 3px;
+}
+
+#dialog-unsupported {
+    display: none;
+    position: absolute;
+    top: 0;
+    width: 50%;
+    margin-left: 25%;
+    padding: 20px;
+    background-color: rgba(51, 51, 255, 0.7);
+    z-index: 99999;
+    text-align: center;
+    font-size: 14px;
+    color: #FFF;
+}

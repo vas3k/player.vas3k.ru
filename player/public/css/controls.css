@@ -1,9 +1,27 @@
-#button_next, #button_prev {
-    float: left;
-    padding: 20px 5px;
+/* Внимание, щас будет костыль для Firefox */
+x:-moz-any-link:nth-child(0), .ui-icon {
+    top: 5px !important;
 }
+/* костыль окончен */
 
-    button {
+#playbackControl {
+    width: 130px;
+    height: 70px;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+    #button_prev, #button_next {
+        float: left;
+        padding: 20px 5px;
+    }
+
+    #button_next .ui-button, #button_prev .ui-button {
+	    width: 30px;
+    }
+
+    #playbackControl button {
         width: 30px;
         height: 30px;
         border-radius: 10px;
@@ -12,44 +30,162 @@
         padding: 0;
     }
 
-    .ui-button {
+    #playbackControl .ui-button {
         width: 30px;
         height: 30px;
         border-radius: 20px;
         -moz-border-radius: 20px;
     }
 
-    #button_next .ui-button, #button_prev .ui-button {
-	    width: 30px;
-    }
-
-    x:-moz-any-link:nth-child(0), .ui-icon {
-        top: 5px !important;
-    }
-
-#button_play {
-    float: left;
-    padding-top: 15px;
-}
-
-    #button_play button {
-        width: 40px;
-        height: 40px;
-        font-size: 1em;
-    }
-
-#volume_buttons {
-    float: left;
-    margin-left: 30px;
-}
-
-    #volume_buttons #repeat_status {
-        color: #999;
-        padding-left: 5px;
-    }
-
-    #button_shuffle, #button_repeat {
+    #button_play {
         float: left;
+        padding-top: 15px;
+    }
+
+        #button_play .ui-button {
+            width: 40px;
+            height: 40px;
+            font-size: 1em;
+        }
+
+
+#volume {
+    width: 130px;
+    height: 70px;
+    overflow: hidden;
+    position: absolute;
+    left: 150px;
+    top: 0;
+}
+    #tweetTrack {
+        position: absolute;
+        top: 30px;
+        right: 0;
+    }
+
+    #vol_slider {
+        position: absolute;
+        top: 30px;
+        clear: both;
+        width: 100px;
+        height: 12px;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        border: solid 1px #9A9A9A;
+    }
+
+    #vol_slider .ui-widget {
+        height: 15px;
+    }
+
+    #vol_slider .ui-slider-handle {
+        width: 11px;
+        height: 11px;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        top: -1px;
+        margin-left: -1.2em !important;
+    }
+
+#progress {
+    width: 40%;
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+    color: #4E5045;
+    font-size: 11px;
+}
+
+    #progressbar {
+        position: absolute;
+        top: 15px;
+        width: 99%;
+        margin: 0 1px;
+        height: 42px;
+        overflow: hidden;
+        border: solid 1px #5E5E5E;
+        border-radius: 10px;
+        background: url("../images/itunes/bg_progress.png") center center;
+    }
+
+    .ui-progressbar-value {
+        background-color: #696B61;
+        border-radius: 10px;
+        opacity: 0.5;
+    }
+
+    .progressbar-ani {
+        background-image: url("../images/pbar-ani.gif");
+    }
+
+    #trackposition {
+        position: absolute;
+        top: 30px;
+        left: 10px;
+    }
+
+    #tracktitle {
+        position: absolute;
+        top: 20px;
+        line-height: 1.1em;
+        left: 50px;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    #trackduration {
+        position: absolute;
+        top: 30px;
+        right: 10px;
+    }
+
+    #trackslider {
+        position: absolute;
+        top: 45px;
+        margin: 0 50px;
+        width: 80%;
+    }
+
+    #trackslider .ui-slider-handle {
+        width: 8px;
+        height: 8px;
+        margin-top: -2px;
+        top: 0 !important;
+    }
+
+    #smallinfo {
+        font-size: 10px;
+        position: absolute;
+        top: 17px;
+        right: 10px;
+        display: none;
+    }
+
+#player_buttons {
+    width: 100px;
+    height: 70px;
+    overflow: hidden;
+    position: absolute;
+    right: 200px;
+    top: 0;
+}
+    #repeat_status {
+        position: absolute;
+        top: 30px;
+        right: 15px;
+    }
+
+    #button_shuffle {
+        position: absolute;
+        top: 25px;
+        right: 60px;
+    }
+
+    #button_repeat {
+        position: absolute;
+        top: 25px;
+        right: 40px;
     }
 
     #button_shuffle button, #button_repeat button {
@@ -74,162 +210,91 @@
         -moz-border-radius-bottomleft: 0;
     }
 
-#pq {
-    padding-right: 20px;
+#search {
+    height: 70px;
+    width: 200px;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
-#progress {
-    width: 500px;
-    float: left;
-    padding: 20px 5px;
-    margin-top: -5px;
-    position: relative;
-    color: #4E5045;
-}
-
-    #progressbar {
-        width: 99%;
-        height: 42px;
-        background: url("../images/itunes/bg_progress.png") center center;
-    }
-
-    .ui-progressbar-value {
-        background-color: #696B61;
-    }
-
-    .progressbar-ani {
-        background-image: url("../images/pbar-ani.gif"); 
-    }
-
-    #trackposition {
+    #q {
         position: absolute;
-        top: 32px;
-        left: 10px;
+        top: 20px;
+        border-radius: 10px;
+        border: solid 1px #5E5E5E;
+        width: 160px;
+        height: 20px;
+        padding-left: 25px;
+        z-index: 25;
     }
 
-    #tracktitle {
+    #searchOptions {
         position: absolute;
-        top: 22px;
-        line-height: 1.1em;
-        left: 50px;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-
-    #trackduration {
-        position: absolute;
-        top: 32px;
+        top: 45px;
         right: 20px;
     }
 
-    #trackslider {
+    #showSearchCombo {
         position: absolute;
-        top: 50px;
-        left: 43px;
-        width: 90%;
+        top: 23px;
+        left: 5px;
+        z-index: 30;
+        cursor: pointer;
     }
 
-    #trackslider .ui-slider-handle {
-        width: 9px;
-        height: 9px;
-    }
-
-    #smallinfo {
-        font-size: 10px;
+    #searchOptionsCombo {
+        display: none;
         position: absolute;
-        top: 45px;
+        z-index: 30;
+        background-color: #FFFFFF;
+        color: #000;
+        min-height: 35px;
+        width: 150px;
+        padding: 5px;
         right: 40px;
-    }
-
-#volume {
-    float: left;
-    padding: 0 10px;
-    padding-top: 20px;
-}
-
-    #vol_slider {
-        clear: both;
-        width: 100px;
-        border-radius: 10px;
-        -moz-border-radius: 10px;
-        border: solid 1px #9A9A9A;
-    }
-
-    #vol_slider .ui-widget {
-        font-size: 1.0em;
-    }
-
-    #vol_slider .ui-slider-handle {
-        border-radius: 10px;
-        -moz-border-radius: 10px;         
-    }
-
-#search {
-    position: relative;
-    margin-right: 10px;
-    margin-top: 15px;
-    float: right;
-}
-
-    #search input[type=text] {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 173px;
-        height: 20px;
-        padding: 2px;
-        margin-right: 23px;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        -moz-border-radius-topright: 0;
-        -moz-border-radius-bottomright: 0;
-    }
-
-    #searchOptions1 {
-        position: absolute;
-        top: 25px;
-        right: 0;
-        font-size: 10px;
-        width: 200px;
-    }
-
-    #searchOptions2 {
-        position: absolute;
         top: 40px;
-        right: 0;
-        font-size: 10px;
-        width: 200px;
+        border-radius: 10px;
     }
 
-    #qok {
-        position: absolute;
-        right: -1px;
-        top: 0;
-        width: 24px;
-        height: 25px;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        -moz-border-radius-topleft: 0;
-        -moz-border-radius-bottomleft: 0;
-        font-size: 1em;
-    }
+/* SIDEBAR RIGHT */
 
-    x:-moz-any-link:nth-child(0), #qok .ui-icon {
-        top: 10px !important;
-    }
+#rightSidebar {
+    line-height: 1.5em;
+}
 
+#artist_title {
+    font-size: 16px;
+}
 
+#artist_url a {
+    font-size: 10px;
+}
 
-#popup_error {
-    display: none;
-    position: absolute;
-    top: 0;
-    width: 50%;
-    margin-left: 25%;
-    padding: 20px;
-    background-color: #4687CB;
+#artist_similar {
+    font-size: 11px;
+}
+
+#artist_img img {
+    max-width: 150px;
+    max-height: 200px;
+    border: 0;
+    margin: 10px;
+}
+
+#artist_text {
+    font-size: 11px;
+    margin: 3px;
+    display: block;
+}
+
+.usertrack {
+    padding: 5px 10px;
+    padding-top: 10px;
     cursor: pointer;
-    z-index: 99999;
-    text-align: center;
-    font-size: 14px;
+}
+
+#useraudio {
+    cursor: pointer;
 }

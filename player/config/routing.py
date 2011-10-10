@@ -27,6 +27,8 @@ def make_map(config):
     map.connect('/register_vk/', controller="main", action="register_vk")
     map.connect('/login', controller="main", action="login")
     map.connect('/login/', controller="main", action="login")
+    map.connect('/login_reg', controller="main", action="login_ajax")
+    map.connect('/login_reg/', controller="main", action="login_ajax")
     map.connect('/logout', controller="main", action="logout")
     map.connect('/logout/', controller="main", action="logout")
     map.connect('/faq', controller="main", action="faq")

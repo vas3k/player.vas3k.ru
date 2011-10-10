@@ -3,8 +3,8 @@
 {% block title %}Ошибочка{% endblock %}
 
 {% block body %}
-        <div id="regform" style="color: #DB3B34;">
+        <div id="usererror" style="color: #DB3B34;">
             {{ c.message }}<br/><br/>
-            <a href="#" onclick="history.back();">&larr; Назад</a>
+            <a href="javascript: history.go(-1)">&larr; Назад</a>
         </div>
 {% endblock %}         

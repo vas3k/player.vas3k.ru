@@ -33,6 +33,7 @@ class AjaxController(BaseController):
                 for list in lists:
                     list["_id"] = unicode(list["_id"])
                     list["userid"] = unicode(list["userid"])
+                    list["track_count"] = len(list["tracks"])
                     del list["tracks"]
                     pl.append(list)
                     count += 1
@@ -64,7 +65,7 @@ class AjaxController(BaseController):
                 if not id:
                     return json.dumps({ "status": "NeOK", "message": u"No ID" })
                 self.connection.player.playlists.update({ "_id": ObjectId(id) }, { "$pushAll": { "tracks": tracks }})
-                return json.dumps({ "status": "OK", "message": u"Tracks added" })
+                return json.dumps({ "status": "OK", "message": u"Tracks added %s" % request.params.get("tracks") })
 
             if pl_action == "get":
                 id = request.params.get("id")

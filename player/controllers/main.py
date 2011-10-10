@@ -14,9 +14,9 @@ log = logging.getLogger(__name__)
 class MainController(BaseController):
 
     def index(self):
-        # Return a rendered template
-        #return render('/main.mako')
-        # or, return a string
+        if not request.cookies.get("userhash", ""):
+            redirect("/login")
+
         return render('/layout.html')
 
     def track(self):
@@ -120,6 +120,9 @@ class MainController(BaseController):
         else:
             # show form
             return render("/user/login_form.html")
+
+    def login_ajax(self):
+        return render("/user/login_reg_form.html")
 
     def logout(self):
         response.set_cookie("userhash", "", max_age=0)

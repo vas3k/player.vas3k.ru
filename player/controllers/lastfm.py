@@ -7,9 +7,12 @@ from pylons import request, response, session, tmpl_context as c, url
 from pylons.controllers.util import abort, redirect
 
 from player.lib.base import BaseController, render
-from mongokit import ObjectId  
+from mongokit import ObjectId
 import simplejson as json
 from lxml import etree
+
+import socket
+socket.setdefaulttimeout(15)
 
 log = logging.getLogger(__name__)
 
@@ -18,10 +21,7 @@ class LastfmController(BaseController):
     API_SECRET_KEY = "7fb1e8f80db62587b190910fef20379c"
 
     def index(self):
-        # Return a rendered template
-        #return render('/lastfm.mako')
-        # or, return a string
-        return 'Hello World'
+        return 'WHAHAH'
 
     def handshake(self, lastfm_login, lastfm_session):
         # теперь пожмем ручки
@@ -58,7 +58,7 @@ class LastfmController(BaseController):
         lastfm_session_key = request.cookies.get("lastfm_session_key", "")
         lastfm_login = request.cookies.get("lastfm_login", "")
         artist = urllib.quote(request.params.get("artist", "Unknown Artist").encode("utf-8", "ignore").replace("&#39;", "\'"))
-        duration = urllib.quote(request.params.get("duration", "360").encode("utf-8", "ignore"))
+        duration = urllib.quote(request.params.get("duration_ms", "360").encode("utf-8", "ignore"))
         song = urllib.quote(request.params.get("title", "Track 1").encode("utf-8", "ignore").replace("&#39;", "\'"))
 
         #api_sig = md5(unicode(ur'api_key' + self.API_KEY + 'artist' + artist + 'methodtrack.updateNowPlaying' + 'sk' + lastfm_session_key + 'track' + song + self.API_SECRET_KEY, "utf-8")).hexdigest()
@@ -96,7 +96,7 @@ class LastfmController(BaseController):
         lastfm_session_key = request.cookies.get("lastfm_session_key", "")
         lastfm_login = request.cookies.get("lastfm_login", "")
         artist = urllib.quote(request.params.get("artist", "Unknown Artist").encode("utf-8", "ignore").replace("&#39;", "\'"))
-        duration = urllib.quote(request.params.get("duration", "360").encode("utf-8", "ignore"))
+        duration = urllib.quote(request.params.get("duration_ms", "360").encode("utf-8", "ignore"))
         song = urllib.quote(request.params.get("title", "Track 1").encode("utf-8", "ignore").replace("&#39;", "\'"))
 
         #api_sig = md5(u'api_key' + self.API_KEY + 'artist' + artist + 'methodtrack.scrobble' + 'sk' + lastfm_session_key + 'timestamp' + nowtime + 'track' + song + self.API_SECRET_KEY).hexdigest()
@@ -162,42 +162,6 @@ class LastfmController(BaseController):
         except Exception, e:
             return json.dumps({ "status": "NeOK", "message": "Fail! %s" % e })
 
-    def getalbums(self):
-        try:
-            artist = urllib.quote(request.params.get("artist", "").encode("utf-8", "ignore"))
-            if not artist: raise Exception(u"No artist")
-        except:
-            return json.dumps({ "status": "NeOK", "message": "No artist" })
-
-        try:
-            url = u"http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&format=json&lang=ru&artist=%s&api_key=%s" % (artist, self.API_KEY)
-            answer = json.loads(urllib.urlopen(url).read())
-            albums = []
-            for album in answer["topalbums"]["album"]:
-                albums.append({ "name": album["name"], "artist": album["artist"]["name"], "img": album["image"][2]["#text"] })
-            return json.dumps({ "status": "OK", "albums": albums })
-        except Exception, e:
-            return json.dumps({ "status": "NeOK", "message": "Fail! %s" % e })
-
-    def getalbumtracks(self):
-        try:
-            artist = urllib.quote(request.params.get("artist", "").encode("utf-8", "ignore"))
-            album = urllib.quote(request.params.get("album", "").encode("utf-8", "ignore"))
-            if not artist: raise Exception(u"No artist")
-            if not album: raise Exception(u"No album")
-        except Exception, e:
-            return json.dumps({ "status": "NeOK", "message": "%s" % e })
-
-        try:
-            url = u"http://ws.audioscrobbler.com/2.0/?method=album.getinfo&format=json&lang=ru&api_key=%s&artist=%s&album=%s" % (self.API_KEY, artist, album)
-            answer = json.loads(urllib.urlopen(url).read())
-            tracks = []
-            for track in answer["album"]["tracks"]["track"]:
-                tracks.append(track["name"])
-            return json.dumps({ "status": "OK", "tracks": tracks })
-        except Exception, e:
-            return json.dumps({ "status": "NeOK", "message": "%s" % e })
-
     def getrecommended(self):
         lastfm_session_key = request.cookies.get("lastfm_session_key", "")
         try:
@@ -212,13 +176,3 @@ class LastfmController(BaseController):
             return json.dumps({ "status": "OK", "artists": recommendations })
         except Exception, e:
             return json.dumps({ "status": "NeOK", "message": "Fail! %s" % e })
-
-
-
-
-
-
-
-
-        
-        

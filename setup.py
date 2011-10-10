@@ -7,7 +7,7 @@ except ImportError:
 
 setup(
     name='player',
-    version='0.1',
+    version='1.99',
     description='',
     author='',
     author_email='',
