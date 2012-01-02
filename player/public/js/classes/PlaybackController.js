@@ -36,6 +36,9 @@ PlaybackController.prototype.playTrack = function(track) {
             gui.ui_bar.removeClass("progressbar-ani");
             gui.ui_bar.progressbar("value", 0);
             gui.ui_smallinfo.fadeOut("slow");
+
+            // Время скробблинга (либо половина, либо 320 секунд)
+            this.scrobble_time = Math.min(this.duration / 2, 320000);
         },
         whileloading: function () {
             gui.ui_smallinfo.html("загружено: " + parseInt(this.bytesLoaded / 1024) + " из " + parseInt(this.bytesTotal / 1024) + " кБ");
@@ -46,7 +49,7 @@ PlaybackController.prototype.playTrack = function(track) {
             gui.ui_positionlabel.html(timeFormat(_this.current.position));
         },
         onjustbeforefinish: function () {
-            _this.player.fireEvent("TrackJustBeforeFinish");
+            _this.player.fireEvent("TrackJustBeforeFinish");              
         },
         onfinish: function () {
             _this.playNextTrack();
@@ -125,7 +128,7 @@ PlaybackController.prototype.seekPosition = function(position) {
 
 PlaybackController.prototype.seekVolume = function(volume) {
     this.volume = volume;
-    this.current.setVolume(this.volume);
+    if (this.current) this.current.setVolume(this.volume);
     this.player.storage["volume"] = this.volume;
 };
 

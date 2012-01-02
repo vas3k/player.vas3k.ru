@@ -92,7 +92,7 @@ class AjaxController(BaseController):
                 self.connection.player.playlist.update({ "_id": ObjectId(id) }, { "$set": { "tracks": tracks}})
                 return json.dumps({ "status": "OK", "message": u"Tracks saved" })
         except Exception, e:
-            return json.dumps({ "status": "NeOK", "message": e })            
+            return json.dumps({ "status": "NeOK", "message": str(e) })
 
 
     def searches(self, se_action):
@@ -128,7 +128,7 @@ class AjaxController(BaseController):
                     count += 1
                 return json.dumps({ "status": "OK", "count": count, "lists": pl })
         except Exception, e:
-            return json.dumps({ "status": "NeOK", "message": e })
+            return json.dumps({ "status": "NeOK", "message": str(e) })
 
 
     def love(self, l_action):
@@ -137,16 +137,17 @@ class AjaxController(BaseController):
             return json.dumps({ "status": "NeOK", "message": u"Bad action '%s'" % l_action })
 
         if not self.userid:
-            return json.dumps({ "status": "NeOK", "message": u"Bad userid '%s" %self.userid })
+            return json.dumps({ "status": "NeOK", "message": u"Bad userid '%s" % self.userid })
 
         try:
             if l_action == "add":
-                id = request.params.get("id", "")
-                owner = request.params.get("owner", "")
-                search = self.connection.player.love.Love()
-                search["userid"] = ObjectId(self.userid)
-                search["trackid"] = unicode("%s_%s" % (owner, id))
-                search.save()
+                tracks = json.loads(request.params.get("tracks"))
+                for track_id in tracks:                    
+                    search = self.connection.player.love.Love()
+                    search["userid"] = ObjectId(self.userid)
+                    search["trackid"] = unicode("%s" % track_id)
+                    search.save()
+
                 return json.dumps({ "status": "OK", "message": u"Fall in love" })
 
             if l_action == "remove":
@@ -163,7 +164,7 @@ class AjaxController(BaseController):
                     count += 1
                 return json.dumps({ "status": "OK", "count": count, "tracks": pl })
         except Exception, e:
-            return json.dumps({ "status": "NeOK", "message": e })
+            return json.dumps({ "status": "NeOK", "message": str(e) })
 
     def nowlistening(self):
         if not self.userid:
@@ -178,7 +179,7 @@ class AjaxController(BaseController):
                 count += 1
             return json.dumps({ "status": "OK", "count": count, "tracks": pl })
         except Exception, e:
-            return json.dumps({ "status": "NeOK", "message": e })
+            return json.dumps({ "status": "NeOK", "message": str(e) })
 
 
 

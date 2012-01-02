@@ -159,7 +159,7 @@ Gui.prototype.linkSearchEvents = function() {
 
 Gui.prototype.linkSliderEvents = function() {
     this.ui_volumebar.slider({
-        disabled: true,
+        disabled: false,
         range: false,
         min: 0,
         max: 100,
@@ -241,7 +241,6 @@ Gui.prototype.activateControls = function(track) {
     this.ui_titlelabel.html("<b>" + track.artist + "</b><br />" + track.title);
     this.changeWindowTitle(track.artist + " - " + track.title);
     
-    this.ui_volumebar.slider("option", "disabled", false);
     this.ui_prevbutton.button("option", "disabled", false);
     this.ui_playbutton.button("option", "disabled", false);
     this.ui_nextbutton.button("option", "disabled", false);
@@ -262,7 +261,6 @@ Gui.prototype.deactivateControls = function() {
     this.ui_titlelabel.html("");
     this.changeWindowTitle("");
 
-    this.ui_volumebar.slider("option", "disabled", true);
     this.ui_prevbutton.button("option", "disabled", true);
     this.ui_playbutton.button("option", "disabled", true);
     this.ui_nextbutton.button("option", "disabled", true);

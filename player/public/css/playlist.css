@@ -104,11 +104,21 @@
         opacity: 0.6;
     }
 
+    .track .downloadbutton,
+    .track .linkbutton {
+        display: none;
+    }
+
+    .track:hover .downloadbutton,
+    .track:hover .linkbutton {
+        display: inline;
+    }
+
     .track .deletebutton:hover,
     .track .lovebutton:hover,
     .track .linkbutton:hover,
     .track .lyricsbutton:hover,
-    .track .downloadbutton:hover{
+    .track .downloadbutton:hover {
         opacity: 1;
     }
 

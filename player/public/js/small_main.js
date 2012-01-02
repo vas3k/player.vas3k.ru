@@ -31,7 +31,7 @@ $(function () {
     soundManager.url = '/swf/';
     soundManager.debugMode = false;
     soundManager.flashVersion = 9; // optional: shiny features (default = 8)
-    soundManager.useFlashBlock = false; // optionally, enable when you're ready to dive in
+    soundManager.useFlashBlock = true; // optionally, enable when you're ready to dive in
     soundManager.useHTML5Audio = true; // enable HTML5 audio support, if you're feeling adventurous.
     soundManager.useHighPerformance = true;
 
@@ -84,7 +84,9 @@ $(function () {
         $.ajax({
             url: "/ajax/love/add",
             type: "POST",
-            data: ({ id: track_aid, owner: track_owner }),
+            data: ({
+                tracks: JSON.stringify([track_owner + "_" + track_aid])
+            }),
             dataType: "json",
             success: function(data) {
                 if (data["status"] == "OK") {}
@@ -143,13 +145,12 @@ $(function () {
 
     var vk_id = document.location.hash.replace("#track:", "");
     if (!vk_id) window.close();
-    vkSearch = new VKSearchEngine(undefined);
-    setTimeout(function() {
-        if (!vkSearch.is_activated) {
+    vkSearch = new VKSearchEngine(undefined, function(obj) {
+        if (!obj.is_activated) {
             $("#popup_error").fadeIn();
-        }
-    }, 0);
-    vkSearch.searchByIds(vk_id, playTrack);
+        }          
+        obj.searchByIds(vk_id, playTrack);
+    });
 
     $("#urlcode").val('<a href="' + document.location.href + '" onclick="javascript:window.open(\'' + document.location.href + '\', \'player.vas3k.ru\', \'top=300,left=200,menubar=0,toolbar=0,location=0,directories=0,status=0,scrollbars=0,resizable=0,width=600,height=110\');return false;">[ссылка]</a>');
 });

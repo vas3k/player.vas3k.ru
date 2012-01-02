@@ -1,4 +1,4 @@
-function VKSearchEngine(controller) {
+function VKSearchEngine(controller, activateCallback) {
     AbstractSearchEngine.call(this); // copy methods
     this.controller = controller;
     this.now_offset = 0;
@@ -19,6 +19,7 @@ function VKSearchEngine(controller) {
             _this.is_activated = false;
             _this.id = 0;
         }
+        if (activateCallback) activateCallback(_this);
     });
 }
 

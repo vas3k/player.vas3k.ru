@@ -4,7 +4,7 @@ function LoveList(controller) {
     this.current_index = 0;
     this.list = [];
     this.is_deletable = false;
-    this.is_addable = false;
+    this.is_addable = true;
     this.is_label = false;
     this.is_getmore = false;
     this.show_albums = false;
@@ -56,21 +56,34 @@ LoveList.prototype.getList = function(successCallback) {
     });
 };
 
-LoveList.prototype.push = function(track) {
-    if (track) {
-        var _this = this;
-        $.ajax({
-            url: "/ajax/love/add",
-            type: "POST",
-            data: ({ id: track.aid, owner: track.owner_id }),
-            dataType: "json",
-            success: function(data) {
-                if (data["status"] == "OK") {
-                    _this.list.push(track);
-                }
-            }
-        });
+LoveList.prototype.push = function(tracks) {
+    if (!tracks) return;
+    var tracks_ids = [];
+    if (tracks instanceof Array) {
+        for (var i = 0; i < tracks.length; i++) {
+            tracks_ids.push(tracks[i].id);
+        }
+    } else {
+        try {
+            tracks_ids.push(tracks.id);
+        } catch(e) {
+            return;
+        }
     }
+    var _this = this;
+    $.ajax({
+        url: "/ajax/love/add",
+        type: "POST",
+        data:  ({
+            tracks: JSON.stringify(tracks_ids)
+        }),
+        dataType: "json",
+        success: function(data) {
+            if (data["status"] == "OK") {
+                _this.list.push(tracks);
+            }
+        }
+    });
 };
 
 LoveList.prototype.removeById = function(id) {

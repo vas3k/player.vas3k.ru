@@ -8,7 +8,7 @@ function SidebarGui() {
     this.ui_radios = $("#radiolist");
     this.ui_create_playlist_form = $('#newplaylist');
     this.sidebar_item_template = '<li>' +
-                '<img src="{{icon}}" alt="" /> {{name}} ' +
+                '<img src="{{icon}}" alt="" /> <span class="sidebarName">{{name}}</span> ' +
                 '{{#label}}<span class="sidebarCount">{{label}}</span>{{/label}}' +
                 '{{#remove}}<small class="sidebarDelete" data-id="{{{id}}}"><img src="/images/icons/action_delete.png" alt="del" /></small>{{/remove}}' +
                 '{{#add}}<small class="sidebarAdd" data-id="{{{id}}}"><img src="/images/icons/action_add.png" alt="add" /></small>{{/add}}' +
@@ -65,6 +65,20 @@ SidebarGui.prototype.linkSidebarItems = function() {
     });
 
     this.ui_other.find("li").live("click", on_sidebar_click);
+
+    this.ui_other.find(".sidebarAdd").live("click", function (event) {
+        var list = player.listController.shown_list;
+        if (!list) return;
+        var tracks = [];
+
+        gui.list_gui.ui_playlist.find("input:checked").each(function () {
+            var track = list.getById($(this).parent().attr("id"));
+            tracks.push(track);
+        });
+
+        player.listController.addTo("other", "love", tracks);
+        event.stopPropagation();
+    });
     
     this.ui_recommendations.find("li").live("click", on_sidebar_click);
 
@@ -129,20 +143,6 @@ SidebarGui.prototype.renderSidebar = function(lists) {
             var playlist_id = $(this).attr("data-id");
             player.listController.addTo("playlists", playlist_id, track);
             player.listController.loadPlaylists();
-            event.stopPropagation();
-        }
-    });
-
-    this.ui_other.find("li[data-id=love]").droppable({
-        accept: ".track",
-        activeClass: "droppable",
-        hoverClass: "droppable_hover",
-        drop: function(event, ui) {
-            var list = player.listController.shown_list;
-            if (!list) return;
-            var track_id = ui.draggable.attr("id");
-            var track = list.getById(track_id);
-            player.listController.addTo("other", "love", track);
             event.stopPropagation();
         }
     });

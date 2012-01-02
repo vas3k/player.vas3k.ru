@@ -26,8 +26,8 @@ class MainController(BaseController):
         if request.method == "POST":
             # register
             try:
-                login = request.params.get("login", "")
-                password = request.params.get("password", "")
+                login = unicode(request.params.get("login", ""))
+                password = unicode(request.params.get("password", ""))
             except:
                 c.message = u"Ошибка при получении данных с формы"
                 return render("/user/error.html")
@@ -37,10 +37,15 @@ class MainController(BaseController):
             except Exception, e:
                 c.message = e
                 return render("/user/error.html")
-            user = self.connection.player.users.Users()
-            user["login"] = login
-            user["password"] = unicode(md5(password).hexdigest())
-            user.save()
+            try:
+                user = self.connection.player.users.Users()
+                user["login"] = login
+                user["password"] = unicode(md5(password).hexdigest())
+                user.save()
+            except Exception, e:
+                c.message = u"А давайте не будем использовать кириллицу в логине и пароле? Мало ли что."
+                return render("/user/error.html")
+
             from random import randint
             hash = md5(str(randint(1, 9999))).hexdigest()
             self.connection.player.users.update({ "login": login }, { "$set": {

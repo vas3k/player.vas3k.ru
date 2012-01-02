@@ -149,7 +149,6 @@ ListController.prototype.setShownAsPlayingList = function() {
 
 ListController.prototype.showList = function(show_list) {
     clearInterval(this.update_list_interval);
-    console.debug("Interval cleared");
     var _this = this;
     setTimeout(function () {
         _this.shown_list = show_list;

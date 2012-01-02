@@ -11,7 +11,7 @@ function RecentList(controller) {
     this.show_deletetrack = false;
     this.id = "";
     this.label = "";
-    this.name = "Недавно прослушанные";
+    this.name = "История";
     this.icon = "/images/icons/recent.png";
 }
 
