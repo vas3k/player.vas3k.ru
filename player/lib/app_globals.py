@@ -1,5 +1,4 @@
 """The application's Globals object"""
-
 from beaker.cache import CacheManager
 from beaker.util import parse_cache_config_options
 

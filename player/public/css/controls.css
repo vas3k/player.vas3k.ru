@@ -1,9 +1,3 @@
-/* Внимание, щас будет костыль для Firefox */
-x:-moz-any-link:nth-child(0), .ui-icon {
-    top: 5px !important;
-}
-/* костыль окончен */
-
 #playbackControl {
     width: 130px;
     height: 70px;

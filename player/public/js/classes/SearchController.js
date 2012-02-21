@@ -57,6 +57,7 @@ SearchController.prototype.searchByQueryWithOffset = function(query, offset, cou
         if (_this.active_filters["doubles"]) filters.push(new FilterDoubles());
         if (_this.active_filters["artist"]) filters.push(new FilterArtist(query));
         if (_this.active_filters["title"]) filters.push(new FilterTitle(query));
+        filters.push(new FilterBanlist());
 
         var i = 0;
         var is_deleted = false;

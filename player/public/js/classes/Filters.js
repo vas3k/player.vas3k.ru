@@ -35,3 +35,40 @@ FilterTitle.prototype.isApproved = function(track) {
     return track.title.toLowerCase().indexOf(this.title) + 1;
 };
 
+
+
+function FilterBanlist() {
+}
+
+FilterBanlist.banlist = {};
+
+FilterBanlist.loadBanlist = function() {
+    if (FilterBanlist.banlist) {
+        // загрузить банлист с сервера
+        var _this = this;
+        $.ajax({
+            url: "/ajax/banlist/list",
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                FilterBanlist.banlist = data.tracks;
+            }
+        });
+    }
+};
+
+FilterBanlist.addToBanlist = function(track) {
+    var _this = this;
+    $.ajax({
+        url: "/ajax/banlist/add",
+        data: { "track": track.toJSON() },
+        type: "GET",
+        dataType: "json",
+        success: function(data) {}
+    });
+};
+
+FilterBanlist.prototype.isApproved = function(track) {
+    if (!track) return false;
+    return FilterBanlist.banlist[track["id"]] == undefined;
+};

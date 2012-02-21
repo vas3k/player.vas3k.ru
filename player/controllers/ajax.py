@@ -182,6 +182,51 @@ class AjaxController(BaseController):
             return json.dumps({ "status": "NeOK", "message": str(e) })
 
 
+    def banlist(self, b_action):
+        actions = ["add", "remove", "list"]
+        if b_action not in actions:
+            return json.dumps({ "status": "NeOK", "message": u"Bad action '%s'" % l_action })
+
+        if not self.userid:
+            return json.dumps({ "status": "NeOK", "message": u"Bad userid '%s" % self.userid })
+
+        try:
+            engine = request.params.get("engine", u"vk")
+            
+            if b_action == "add":
+                track = json.loads(request.params.get("track"))
+                track_obj = self.connection.player.banlist.find_one({ "trackid": track["id"], "engine": engine })
+                if not track_obj:
+                    ban = self.connection.player.banlist.Banlist()
+                    ban["trackid"] = unicode(track["id"])
+                    ban["userid"] = ObjectId(self.userid)
+                    ban["trackname"] = u"%s - %s" % (track["artist"], track["title"])
+                    ban["username"] = self.connection.player.users.find_one({ "_id": ObjectId(self.userid) })["login"]
+                    ban["engine"] = engine
+                    ban["ip"] = unicode(request.environ.get("REMOTE_ADDR"))
+                    ban.save()
+                return json.dumps({ "status": "OK", "track_id": track["id"] })
+
+            if b_action == "remove":
+                track_id = request.params.get("id")
+                if not track_id:
+                    return json.dumps({ "status": "NeOK", "id": track_id })
+                self.connection.player.banlist.remove({ "_id": ObjectId(track_id), "engine": engine })
+                return json.dumps({ "status": "OK", "track_id": track_id })
+
+            if b_action == "list":
+                tracks = self.connection.player.banlist.find({ "engine": engine })
+                banlist = {}
+                for ban in tracks:
+                    banlist.update({ ban["trackid"]: 1 })
+                return json.dumps({ "status": "OK", "tracks": banlist, "list": list(tracks) })
+            
+        except Exception, e:
+            return json.dumps({ "status": "NeOK", "message": str(e) })
+
+
+
+
 
 
 

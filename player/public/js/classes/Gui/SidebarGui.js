@@ -8,10 +8,10 @@ function SidebarGui() {
     this.ui_radios = $("#radiolist");
     this.ui_create_playlist_form = $('#newplaylist');
     this.sidebar_item_template = '<li>' +
-                '<img src="{{icon}}" alt="" /> <span class="sidebarName">{{name}}</span> ' +
                 '{{#label}}<span class="sidebarCount">{{label}}</span>{{/label}}' +
-                '{{#remove}}<small class="sidebarDelete" data-id="{{{id}}}"><img src="/images/icons/action_delete.png" alt="del" /></small>{{/remove}}' +
                 '{{#add}}<small class="sidebarAdd" data-id="{{{id}}}"><img src="/images/icons/action_add.png" alt="add" /></small>{{/add}}' +
+                '<img src="{{icon}}" alt="" /> <span class="sidebarName">{{name}}</span> ' +
+                '{{#remove}}<small class="sidebarDelete" data-id="{{{id}}}"><img src="/images/icons/action_delete.png" alt="del" /></small>{{/remove}}' +
             '</li>';
 
     this.ui_info_sidebar = $("#rightSidebar .innertube");

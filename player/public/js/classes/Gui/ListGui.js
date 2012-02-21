@@ -21,6 +21,7 @@ function ListGui() {
    // this.ui_track_time = $(".playlist_time");
     this.ui_track_delete = $(".deletebutton");
     this.ui_track_lyrics = $(".lyricsbutton");
+    this.ui_track_ban = $(".banlistbutton");
     //this.ui_track_download = $(".downloadbutton");
     this.ui_track_link = $(".linkbutton");
 
@@ -67,6 +68,18 @@ ListGui.prototype.linkTrackEvents = function() {
     this.ui_track_lyrics.live("click", function() {
         var lyrics_id = $(this).attr("data-lyrics");
         player.searchController.getLyrics(lyrics_id, gui.showLyrics);
+    });
+
+    this.ui_track_ban.live("click", function() {
+        if (confirm("Добавить трек в бан-лист? Вы больше никогда не увидите его в выдаче")) {
+            var track_id = $(this).parent().attr("id");
+            var list = player.listController.shown_list;
+            if (!list) return;
+            FilterBanlist.addToBanlist(list.getById(track_id));
+            if (list.removeById(track_id)) {
+                $(this).parent().fadeOut();
+            }
+        }
     });
 
     this.ui_getmore.live("click", function() {

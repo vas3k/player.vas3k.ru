@@ -96,7 +96,8 @@
     .track .lovebutton,
     .track .linkbutton,
     .track .lyricsbutton,
-    .track .downloadbutton {
+    .track .downloadbutton,
+    .track .banlistbutton {
         float: right;
         cursor: pointer;
         margin-right: 10px;
@@ -105,7 +106,8 @@
     }
 
     .track .downloadbutton,
-    .track .linkbutton {
+    .track .linkbutton,
+    .track .banlistbutton {
         display: none;
     }
 
@@ -118,7 +120,8 @@
     .track .lovebutton:hover,
     .track .linkbutton:hover,
     .track .lyricsbutton:hover,
-    .track .downloadbutton:hover {
+    .track .downloadbutton:hover,
+    .track .banlistbutton:hover {
         opacity: 1;
     }
 
@@ -203,7 +206,7 @@
 .playlist_trackname {
     display: inline-block;
     white-space: nowrap;
-    max-width: 75% !important;
+    max-width: 72% !important;
     overflow: hidden;
 }
 

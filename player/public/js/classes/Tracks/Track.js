@@ -17,6 +17,7 @@ Track.template  = '<li id="{{owner_id}}_{{aid}}" class="track" data-artist="{{ar
             '<span class="time">{{duration}}</span> ' +
             '{{#show_deletetrack}}<img src="/images/icons/delete.png" alt="X" title="Удалить трек" class="deletebutton"> {{/show_deletetrack}}' +
             '{{#lyrics_id}}<img src="/images/icons/lyrics.png" alt="X" data-lyrics="{{{lyrics_id}}}" title="Показать текст" class="lyricsbutton"> {{/lyrics_id}}' +
+            '<img src="/images/icons/attention.png" alt="Ban" title="Добавить в бан-лист" class="banlistbutton" />' +
             '<a href="{{url}}"><img src="/images/icons/arrow_down.png" alt="X" title="Скачать mp3 (это не пермалинк, он меняется!)" class="downloadbutton" /></a> ' +
             '<img src="/images/icons/link.png" alt="X" title="Открыть в отдельном окне" class="linkbutton"> ' +
         '</li>';

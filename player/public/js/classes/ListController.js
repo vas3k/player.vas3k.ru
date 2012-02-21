@@ -28,6 +28,7 @@ function ListController(player) {
     this.loadPlaylists(this.lists["playlists"]["items"]);
     this.loadRecommendations(this.lists["recommendations"]["items"]);
     this.loadRadios(this.lists["radios"]["items"]);
+    FilterBanlist.loadBanlist();
 }
 
 ListController.prototype.loadSavedSearches = function(items) {
@@ -336,6 +337,10 @@ ListController.prototype.applyArtistFilter = function() {
 ListController.prototype.applyTitleFilter = function() {
     var title = gui.ui_search.val();
     this.applyFilter(new FilterTitle(title));
+};
+
+ListController.prototype.applyBanlistFilter = function() {
+    this.applyFilter(new FilterBanlist());
 };
 
 ListController.prototype.applyRemoveSelected = function() {

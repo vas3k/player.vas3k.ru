@@ -67,15 +67,18 @@ InfoController.prototype.loadAlbums = function() {
             artist: artist
         }),
         type: "GET",
-        crossDomain: true,
-        dataType: "json",
+        dataType: "jsonp",
         success: function (data) {
+            if (!data["topalbums"]["album"]) return;
             for (var i = 0; i < data["topalbums"]["album"].length; i++) {
                 gui.albums_gui.appendAlbum(data["topalbums"]["album"][i]);
             }
             gui.albums_gui.initAlbums();
         },
-        error: function() {
+        error: function(xhr, error, errorText) {
+            console.debug(xhr);
+            console.debug(error);
+            console.debug(errorText);
         }
     });
 };

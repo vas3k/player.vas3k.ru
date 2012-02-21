@@ -39,6 +39,7 @@ def make_map(config):
     map.connect('/ajax/playlist/:pl_action', controller="ajax", action="playlist")
     map.connect('/ajax/searches/:se_action', controller="ajax", action="searches")
     map.connect('/ajax/love/:l_action', controller="ajax", action="love")
+    map.connect('/ajax/banlist/:b_action', controller="ajax", action="banlist")
     map.connect('/nowlistening', controller="ajax", action="nowlistening")
     map.connect('/', controller='main', action='index')
 
@@ -46,6 +47,8 @@ def make_map(config):
     map.connect('/m/', controller="mobile", action="index")
     map.connect('/m/menu', controller="mobile", action="menu")
     map.connect('/m/menu/', controller="mobile", action="menu")
+
+    map.connect('/instruments/ban_stat', controller="instruments", action="ban_stat")
 
     map.connect('/{controller}/{action}')
     map.connect('/{controller}/{action}/{id}')
