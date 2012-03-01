@@ -1,0 +1,21 @@
+{% extends "static_layout.html" %}
+
+{% block title %}Миграция{% endblock %}
+
+{% block body %}
+
+
+    <form method="get" action=".">
+        <span><label for="key"><a href="http://p.vas3k.ru/migrate" style="font-size: 24px;">Ключ:</a>&nbsp;&nbsp;</label> <input type="text" id="key" name="id" /></span>
+        <span><input type="submit" value="Перенести" onclick="$(this).hide(); $('#loader').show();" /></span>
+        <span><img id="loader" src="/images/loaders/big-playlist.gif" style="display: none;" /></span>
+    </form>
+{% endblock %}
+
+{% block additional_block %}
+    <div style="position: absolute; top: 40%; left: 50%; margin-left: -500px; width: 300px; text-align: right; background-color: rgba(255, 255, 255, 0); z-index: 20; padding: 20px;">
+        В связи с переездом на новую СУБД всем придется вручную перенести свои плейлисты в новый аккаунт.
+        Перенос аккаунтов со старого плеера усложнен из-за разных моделей хеширования паролей.
+        Поэтому вам придется залогиниться в старом плеере, пройти <a href="http://p.vas3k.ru/migrate">сюда</a> и
+        и нажать "Перенести", либо скопировать ваш личный ключ и ввести в поле справа.</div>
+{% endblock %}

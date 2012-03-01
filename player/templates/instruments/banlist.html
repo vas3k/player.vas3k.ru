@@ -1,5 +1,0 @@
-{% for track in c.tracks %}
-- [{{ track.time.strftime('%Y-%m-%d') }}] [{{ track.username }}:{{ track.ip }}] {{ track.trackname }}
-    http://player.vas3k.ru/ajax/banlist/remove?id={{ track._id }}
-        
-{% endfor %}
