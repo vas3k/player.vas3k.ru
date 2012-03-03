@@ -144,15 +144,20 @@ VKSearchEngine.prototype.searchOneGoodTrack = function(artist, title, successCal
     VK.Api.call('audio.search', { "q": query, "count": 40, "auto_complete": 1 }, function(r) {
         if(r.response) {
             if (r.response[0] == "0") return;
-            var track;
+            var goodtrack=-1;
             for (var i = 1; i < r.response.length; i++) {
-                if ((r.response[i].artist.toLowerCase().indexOf(artist) + 1) &&
-                    (r.response[i].title.toLowerCase().indexOf(title) + 1)) {
-                    if (successCallbackObject) {
-                        successCallbackObject.push(_this.getTrackFromResponse(r.response[i]));
-                    }
+                if ( r.response[i].artist.toLowerCase() == artist &&
+                     r.response[i].title.toLowerCase() == title ){
+                    goodtrack=i;
                     break;
                 }
+                if ((r.response[i].artist.toLowerCase().indexOf(artist) + 1) &&
+                    (r.response[i].title.toLowerCase().indexOf(title) + 1)) {
+                    goodtrack = i;
+                }
+            }
+            if (goodtrack>-1 && successCallbackObject) {
+                successCallbackObject.push(_this.getTrackFromResponse(r.response[goodtrack]));
             }
         }
     });
