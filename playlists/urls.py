@@ -8,4 +8,5 @@ urlpatterns = patterns('playlists.views',
     (r'add$', 'add'),
     (r'get$', 'get'),
     (r'delete$', 'delete'),
+    (r'sorted', 'sorted')
 )

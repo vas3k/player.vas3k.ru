@@ -41,6 +41,9 @@ class Love(models.Model):
     def __unicode__(self):
         return u"%s любит %s" % (self.user, self.track_id)
 
+    def save_without_recount(self, *args, **kwargs):
+        super(Love, self).save(*args, **kwargs)
+
     def save(self, *args, **kwargs):
         self.track_position = Love.objects.filter(user=self.user).count()
         super(Love, self).save(*args, **kwargs)

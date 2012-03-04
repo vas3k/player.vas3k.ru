@@ -110,3 +110,22 @@ LoveList.prototype.removeByIndex = function(index) {
     var track_id = this.list[index].id;
     return this.removeById(track_id);
 };
+
+LoveList.prototype.sorted = function(positions) {
+    // Сохраним на сервере
+    $.ajax({
+        url: "/ajax/love/sorted",
+        data: ({
+            sorted: JSON.stringify(positions)
+        }),
+        type: "POST",
+        dataType: "json",
+        success: function(data) {
+            if (data["status"] == "OK") {
+            }
+        }
+    });
+
+    // Переформируем список на фронтенде
+    AbstractList.prototype.sorted.call(this, positions);
+};

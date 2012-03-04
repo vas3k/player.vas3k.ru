@@ -171,7 +171,7 @@ ListController.prototype.loadAlbumTracks = function(artist, title) {
 
 ListController.prototype.setShownAsPlayingList = function() {
     if (!this.shown_list) return;
-    this.lists["nowplaying"] = new NowPlayingList(this, this.shown_list);
+    this.lists["nowplaying"] = this.shown_list;
 };
 
 ListController.prototype.showList = function(show_list) {

@@ -14,6 +14,7 @@ Track.template  = '<li id="{{owner_id}}_{{aid}}" class="track" data-artist="{{ar
             '<img src="/images/icons/play.png" alt=">" class="playbutton"> ' +
             '<span class="playlist_trackname"><b><span class="playlist_artist">{{artist}}</span></b> ' +
             '<span class="playlist_title">{{title}}</span></span> ' +
+            '<img src="/images/icons/sortable.png" alt="=" title="Сортировать" class="sort_helper" />' +
             '<span class="time">{{duration}}</span> ' +
             '{{#show_deletetrack}}<img src="/images/icons/delete.png" alt="X" title="Удалить трек" class="deletebutton"> {{/show_deletetrack}}' +
             '{{#lyrics_id}}<img src="/images/icons/lyrics.png" alt="X" data-lyrics="{{{lyrics_id}}}" title="Показать текст" class="lyricsbutton"> {{/lyrics_id}}' +

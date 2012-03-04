@@ -122,10 +122,13 @@ ListGui.prototype.showList = function(list_object) {
     }
     gui.list_gui.ui_playlist.html(html);
 
-    $(".track").draggable({
-        revert: "invalid",
-        helper: "clone",
-        cursor: "move"
+    $("#sortable").sortable({
+        axis: 'y',
+        handle: '.sort_helper',
+        cursor: 'move',
+        stop: function(event, ui) {
+            player.listController.shown_list.sorted($(this).sortable("toArray"));
+        }
     });
 
     if (player.playbackController.current_track) {

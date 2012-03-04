@@ -131,21 +131,6 @@ SidebarGui.prototype.renderSidebar = function(lists) {
             }
         }
     }
-
-    this.ui_playlists.find("li").droppable({
-        accept: ".track",
-        activeClass: "droppable",
-        hoverClass: "droppable_hover",
-        drop: function(event, ui) {
-            var list = player.listController.shown_list;
-            if (!list) return;
-            var track = list.getById(ui.draggable.attr("id"));
-            var playlist_id = $(this).attr("data-id");
-            player.listController.addTo("playlists", playlist_id, track);
-            player.listController.loadPlaylists();
-            event.stopPropagation();
-        }
-    });
 };
 
 SidebarGui.prototype.setInfoSidebar = function(text) {

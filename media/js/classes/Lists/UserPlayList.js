@@ -113,3 +113,24 @@ UserPlayList.prototype.removeByIndex = function(index) {
     var track_id = this.list[index].id;
     return this.removeById(track_id);
 };
+
+UserPlayList.prototype.sorted = function(positions) {
+    // Сохраним на сервере
+    var _this = this;
+    $.ajax({
+        url: "/ajax/playlist/sorted",
+        data: ({
+            id: _this.id,
+            sorted: JSON.stringify(positions)
+        }),
+        type: "POST",
+        dataType: "json",
+        success: function(data) {
+            if (data["status"] == "OK") {
+            }
+        }
+    });
+
+    // Переформируем список на фронтенде
+    AbstractList.prototype.sorted.call(this, positions);
+};

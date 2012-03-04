@@ -83,6 +83,9 @@ class PlaylistTracks(models.Model):
     def for_json(self):
         return "%s" % self.track_id
 
+    def save_without_recount(self, *args, **kwargs):
+        super(PlaylistTracks, self).save(*args, **kwargs)
+
     def save(self, *args, **kwargs):
         self.playlist.count = self.playlist.count_playlist_tracks()
         self.playlist.save()

@@ -2,7 +2,7 @@ function TrackOverflow() {} // бросается при выходе за гр�
 
 function AbstractList(controller) {
     this.controller = controller;
-    this.current_index = 0;         // исключительно для getNext, getPrev, etc. PlaybackController сам хранит свой индекс
+    this.current_index = 0;         // исключительно для getNext, getPrev, etc.
     this.list = [];                 // список объектов Track
     this.is_deletable = false;      // сам список можно удалить?
     this.is_addable = false;        // а добавить в него?
@@ -113,4 +113,25 @@ AbstractList.prototype.removeById = function(id) {
         }
     }
     return false;
+};
+
+AbstractList.prototype.sorted = function(positions) {
+    // Сортировка листа согласно новым позициям из списка id
+    var current_track_id = this.list[this.current_index].id;
+    var newlist = [];
+    for (var i = 0; i < positions.length; i++) {
+        // Найти трек в списке по id и вставить в новый список
+        // TODO: это пиздец как тупо, сделай уже не список, а map =/
+        for(var j = 0; j < this.list.length; j++) {
+            if (this.list[j].id === positions[i]) {
+                newlist.push(this.list[j]);
+                break;
+            }
+        }
+        // Проверить, вдруг изменился индекс играющего сейчас трека
+        if (positions[i] === current_track_id) {
+            this.current_index = i;
+        }
+    }
+    this.list = newlist;
 };

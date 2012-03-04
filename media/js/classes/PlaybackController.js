@@ -117,10 +117,6 @@ PlaybackController.prototype.playNextTrack = function() {
     this.player.fireEvent("NextTrackPlay");
 };
 
-PlaybackController.prototype.setCurrent = function(new_stream, and_play) {
-    alert("Это баг с кодовым названием ДВЕРЬ МНЕ СДЕЛАЛ БЛЯТЬ. Если вы видите это, сообщите мне. Например на me@vas3k.ru или в твиттер @player_vas3k_ru.");
-};
-
 PlaybackController.prototype.seekPosition = function(position) {
     position = parseInt(position) * 10;
     this.current.setPosition(position);

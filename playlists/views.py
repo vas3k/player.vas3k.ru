@@ -74,3 +74,24 @@ def delete(request):
         return { "status": "OK", "message": u"Трек с ID %s удален" % track_id }
     except Exception, ex:
         return { "status": "NeOK", "message": u"Проблема с удалением из плейлиста: %s" % ex }
+
+@render_as_json
+@login_required
+def sorted(request):
+    playlist_id = request.POST.get("id")
+    sorted_ids = json.loads(request.POST.get("sorted"))
+    if not playlist_id:
+        return { "status": "NeOK", "message": u"Не задан ID плейлиста" }
+    if not sorted_ids:
+        return { "status": "NeOK", "message": u"Список пуст" }
+
+    try:
+        for position, track_id in enumerate(sorted_ids):
+            track = PlaylistTracks.objects.get(playlist__id=playlist_id, track_id=track_id)
+            if track:
+                track.track_position = position
+                track.save_without_recount()
+
+        return { "status": "OK", "message": u"Плейлист успешно сохранен" }
+    except Exception, ex:
+        return { "status": "NeOK", "message": "%s" % ex }

@@ -5,4 +5,5 @@ urlpatterns = patterns('love.views',
     (r'list$', 'list'),
     (r'remove$', 'remove'),
     (r'add$', 'add'),
+    (r'sorted', 'sorted')
 )

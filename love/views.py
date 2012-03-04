@@ -36,3 +36,21 @@ def remove(request):
         return { "status": "OK", "message": u"Трек удален из любимых" }
     except:
         return { "status": "NeOk", "message": u"Трека с таким ID нет" }
+
+@render_as_json
+@login_required
+def sorted(request):
+    sorted_ids = json.loads(request.POST.get("sorted"))
+    if not sorted_ids:
+        return { "status": "NeOK", "message": u"Список пуст" }
+
+    try:
+        for position, track_id in enumerate(sorted_ids):
+            track = Love.objects.get(user=request.user, track_id=track_id)
+            if track:
+                track.track_position = position
+                track.save_without_recount()
+
+        return { "status": "OK", "message": u"Любимое успешно сохранено" }
+    except Exception, ex:
+        return { "status": "NeOK", "message": "%s" % ex }
