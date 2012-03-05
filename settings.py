@@ -163,3 +163,9 @@ LASTFM_KEY = ""
 LASTFM_SECRET = ""
 
 # IT'S A TEST
+
+# Local settings
+try:
+    from local_settings import *
+except ImportError:
+    pass
