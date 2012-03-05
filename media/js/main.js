@@ -33,7 +33,6 @@ function getCookie(name) {
 
 $(function () {
     $.support.cors = true;
-    VK.UI.button('login_vk');
     player = new Player();
     gui = new Gui();
 });

@@ -20,13 +20,6 @@ SearchController.prototype.handleEvent = function(event) {
     }
 };
 
-SearchController.prototype.onNoSidebarInfo = function() {
-    var search_engine = this.search_engines[this.default_search_engine];
-    setTimeout(function() {
-        search_engine.loadUserInfo(gui.sidebar_gui.showUserInfoSidebar);
-    }, 0);
-};
-
 SearchController.prototype.performSearch = function(query, search_engine_id) {
     search_engine_id = search_engine_id || this.default_search_engine;
     query = this.clearQuery(query);
@@ -36,11 +29,6 @@ SearchController.prototype.performSearch = function(query, search_engine_id) {
     this.player.listController.addToLists("recent_searches", search);
     this.player.listController.showList(search);
     this.player.fireEvent("Search");
-};
-
-SearchController.prototype.activate = function(search_engine_id) {
-    search_engine_id = search_engine_id || this.default_search_engine;
-    return this.search_engines[search_engine_id].activate();
 };
 
 SearchController.prototype.searchByQuery = function(query, successCallback, search_engine_id) {
