@@ -161,5 +161,3 @@ APPEND_SLASH = True
 # Application settings
 LASTFM_KEY = ""
 LASTFM_SECRET = ""
-
-# IT'S A TEST

@@ -104,7 +104,7 @@ SidebarGui.prototype.renderSidebar = function(lists) {
             var li = $(Mustache.to_html(this.sidebar_item_template,
                 {
                     "icon": item.icon,
-                    "name": item.getName(),
+                    "name": "Играет сейчас",
                     "label": item.is_label ? item.label : false,
                     "remove": item.is_deletable,
                     "add": item.is_addable,
