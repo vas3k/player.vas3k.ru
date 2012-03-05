@@ -36,7 +36,6 @@
             <div id="volume">
                 <div id="vol_slider"></div>
                 <div id="header_buttons">
-                    <a href="#" onclick="vkSearch.activate(); event.preventDefault();"><img src="/images/icons/vkontakte.png" alt="Vkontakte" title="Залогиниться вконтакте" /></a>
                     <img src="/images/icons/love.png" alt="Love" id="love_one" style="cursor: pointer;" title="Добавить в любимые">
                 </div>
             </div>
@@ -67,8 +66,12 @@
         <div id="track_owner"></div>
     </div>
 
+    <div style="display: none;">
+        <div id="access_token">{{ACCESS_TOKEN}}</div>
+    </div>
+
     <script type="text/javascript" src="http://vkontakte.ru/js/api/openapi.js" charset="windows-1251"></script>
-    <script type="text/javascript" src="/js/frameworks/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="/js/frameworks/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" src="/js/frameworks/jquery-ui-1.8.4.custom.min.js"></script>
     <script type="text/javascript" src="/js/frameworks/soundmanager2.js"></script>
     <script type="text/javascript" src="/js/frameworks/mustache.js"></script>
