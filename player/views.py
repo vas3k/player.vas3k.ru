@@ -5,6 +5,7 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from libs.util import render_as_text
 from player.models import UserProfile
+from settings import ACCESS_TOKEN
 
 def full(request):
     if not request.user.is_authenticated():
@@ -12,7 +13,7 @@ def full(request):
     return render_to_response("layout.html")
 
 def small(request):
-    return render_to_response("small.html")
+    return render_to_response("small.html", { "ACCESS_TOKEN": ACCESS_TOKEN })
 
 def register(request):
     if request.method == "POST":

@@ -144,13 +144,16 @@ $(function () {
     }
 
     var vk_id = document.location.hash.replace("#track:", "");
-    if (!vk_id) window.close();
-    vkSearch = new VKSearchEngine(undefined, function(obj) {
-        if (!obj.is_activated) {
-            $("#popup_error").fadeIn();
-        }          
-        obj.searchByIds(vk_id, playTrack);
+    var access_token = $("#access_token").html();
+    $.ajax({
+     url:"https://api.vkontakte.ru/method/audio.getById?audios="+vk_id+"&access_token="+access_token+"&callback=callbackFunc",
+     dataType: 'jsonp',
+     success:function(json){
+         playTrack(json.response);
+     },
+     error:function(){
+         alert("Все сломалось :(");
+     },
     });
-
     $("#urlcode").val('<a href="' + document.location.href + '" onclick="javascript:window.open(\'' + document.location.href + '\', \'player.vas3k.ru\', \'top=300,left=200,menubar=0,toolbar=0,location=0,directories=0,status=0,scrollbars=0,resizable=0,width=600,height=110\');return false;">[ссылка]</a>');
 });
