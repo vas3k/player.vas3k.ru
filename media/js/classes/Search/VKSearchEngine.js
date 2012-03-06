@@ -6,7 +6,7 @@ function VKSearchEngine(controller, activateCallback) {
     this.is_activated = false;
 
     VK.init({
-        apiId: 2836527,
+        apiId: 1934554,
         nameTransportPath: "http://player.vas3k.ru/js/xd_receiver.html"
     });
 
