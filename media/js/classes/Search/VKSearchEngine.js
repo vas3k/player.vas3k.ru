@@ -2,10 +2,41 @@ function VKSearchEngine(controller, activateCallback) {
     AbstractSearchEngine.call(this); // copy methods
     this.controller = controller;
     this.now_offset = 0;
+    this.id = 0;
+    this.is_activated = false;
+
+    VK.init({
+        apiId: 2836527,
+        nameTransportPath: "http://player.vas3k.ru/js/xd_receiver.html"
+    });
+
+    var _this = this;
+    VK.Auth.getLoginStatus(function (r) {
+        if (r.session) {
+            _this.is_activated = true;
+            _this.id = r.session["mid"];
+        } else {
+            _this.is_activated = false;
+            _this.id = 0;
+        }
+        if (activateCallback) activateCallback(_this);
+    });
     this.access_token = $("#access_token").html();
 }
 
 extend(VKSearchEngine, AbstractSearchEngine);
+
+VKSearchEngine.prototype.activate = function() {
+    // Если требуется какая-то авторизация для использования
+    // поиска, то она делается тут
+    var _this = this;
+    VK.Auth.login(function () {
+            _this.is_activated = true;
+            location.reload();
+        }, VK.access.FRIENDS | VK.access.AUDIO
+    );
+    return true;
+};
 
 VKSearchEngine.prototype.filter = function(track) {
     // Применить фильтры к переданному треку и вернуть
@@ -71,7 +102,6 @@ VKSearchEngine.prototype.search = function(query, offset, count, successCallback
 
 VKSearchEngine.prototype.searchByIds = function(ids, successCallback) {
     // Возвращает список треков по списку ID в поисковой системе
-    if (!this.is_activated) this.activate();
 
     var results = [];
     var _this = this;
@@ -99,22 +129,18 @@ VKSearchEngine.prototype.searchByName = function(artist, title) {
 };
 
 VKSearchEngine.prototype.searchByUser = function(user_id, successCallback) {
+    if (!this.is_activated) alert("Для доступа в мои аудиозаписи нужно залогиниться вконтактике.");
     user_id = user_id || this.id;
     var results = [];
     var _this = this;
 
-    $.ajax({
-        url: "https://api.vkontakte.ru/method/audio.get?uid="+user_id+"&need_user=1"+"&access_token="+this.access_token+"&callback=callbackFunc",
-        dataType: 'jsonp',
-        success: function(r) {
+    VK.Api.call('audio.get', { "uid": user_id, "need_user": 1 }, function(r) {
+        if (r.response) {
             for (var i = 1; i < r.response.length; i++) {
                 results.push(_this.getTrackFromResponse(r.response[i]));
             }
 
             if (successCallback) successCallback(results);
-        },
-        error: function() {
-            alert("Все сломалось :(");
         }
     });
 };
