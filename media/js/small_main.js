@@ -148,8 +148,8 @@ $(function () {
     $.ajax({
         url: "https://api.vkontakte.ru/method/audio.getById?audios="+vk_id+"&access_token="+access_token+"&callback=callbackFunc",
         dataType: 'jsonp',
-        success: function(json) {
-            playTrack(json.response);
+        success: function(r) {
+            playTrack(r.response);
         },
         error: function() {
             alert("Все сломалось :(");

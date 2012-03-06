@@ -10,7 +10,7 @@ from settings import ACCESS_TOKEN
 def full(request):
     if not request.user.is_authenticated():
         return redirect("/login")
-    return render_to_response("layout.html")
+    return render_to_response("layout.html", { "ACCESS_TOKEN": ACCESS_TOKEN })
 
 def small(request):
     return render_to_response("small.html", { "ACCESS_TOKEN": ACCESS_TOKEN })
