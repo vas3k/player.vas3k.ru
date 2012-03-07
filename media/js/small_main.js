@@ -150,10 +150,30 @@ $(function () {
         dataType: 'jsonp',
         success: function(r) {
             playTrack(r.response);
+            console.debug(r.response);
+
+            var lyrics_id = r.response[0].lyrics_id;
+            if (lyrics_id) {
+                $.ajax({
+                    url: "https://api.vkontakte.ru/method/audio.getLyrics?lyrics_id="+lyrics_id+"&access_token="+access_token+"&callback=callbackFunc",
+                    dataType: 'jsonp',
+                    success: function(r) {
+                        if (r.response.text.length > 200) // ебаная реклама
+                        {
+                            $("#lyrics").show();
+                            $("#lyrics").html(r.response.text);
+                        }
+                    },
+                    error: function() {
+                        alert("Все сломалось :(");
+                    }
+                });
+            }
         },
         error: function() {
             alert("Все сломалось :(");
         }
     });
+
     $("#urlcode").val('<a href="' + document.location.href + '" onclick="javascript:window.open(\'' + document.location.href + '\', \'player.vas3k.ru\', \'top=300,left=200,menubar=0,toolbar=0,location=0,directories=0,status=0,scrollbars=0,resizable=0,width=600,height=110\');return false;">[ссылка]</a>');
 });

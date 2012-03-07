@@ -205,6 +205,19 @@ input {
 	vertical-align: middle;
 }
 
+#lyrics {
+    display: none;
+    margin: 0 auto;
+	width: 460px;
+	min-width: 560px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    line-height: 1.4em;
+    font-size: 14px;
+    padding: 20px;
+    white-space: pre-wrap;
+}
+
 #wrapper {
     margin: 0 auto;
 	width: 500px;
