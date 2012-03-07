@@ -49,6 +49,8 @@ LoveList.prototype.getList = function(successCallback) {
                     _this.showCallback(_this);
                     debug("LOVE: " + _this.list);
                 });
+            } else {
+                alert(data["message"]);
             }
         },
         error: function () {
@@ -81,6 +83,8 @@ LoveList.prototype.push = function(tracks) {
         success: function(data) {
             if (data["status"] == "OK") {
                 _this.list.push(tracks);
+            } else {
+                alert(data["message"]);
             }
         }
     });
@@ -99,6 +103,8 @@ LoveList.prototype.removeById = function(id) {
                     for(var i = 0; i < _this.list.length; i++) {
                         if (_this.list[i].id === id) _this.list.splice(i, 1);
                     }
+                } else {
+                    alert(data["message"]);
                 }
             }
         });

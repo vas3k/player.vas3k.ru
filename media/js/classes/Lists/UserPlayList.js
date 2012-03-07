@@ -47,8 +47,9 @@ UserPlayList.prototype.getList = function(successCallback) {
                 _this.controller.player.searchController.searchByIds(ids, function(new_list) {
                     _this.list = new_list;
                     successCallback(_this);
-                    debug("THIS PLAYLIST: " + _this.list);
                 });
+            } else {
+                alert(data["message"]);
             }
         },
         error: function () {
@@ -82,6 +83,8 @@ UserPlayList.prototype.push = function(tracks) {
         success: function(data) {
             if (data["status"] == "OK") {
                 _this.list.push(tracks);
+            } else {
+                alert(data["message"]);
             }
         }
     });
@@ -103,6 +106,8 @@ UserPlayList.prototype.removeById = function(track_id) {
                 for(var i = 0; i < _this.list.length; i++) {
                     if (_this.list[i].id === track_id) _this.list.splice(i, 1);
                 }
+            } else {
+                alert(data["message"]);
             }
         }
     });

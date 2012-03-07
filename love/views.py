@@ -7,7 +7,7 @@ from love.models import Love
 @render_as_json
 @login_required
 def list(request):
-    track_objects = Love.objects.filter(user=request.user).order_by("track_position")[:199]
+    track_objects = Love.objects.filter(user=request.user).order_by("track_position")[:150]
     love = [s.for_json() for s in track_objects]
     return { "status": "OK", "count": len(love), "tracks": love }
 
@@ -18,9 +18,15 @@ def add(request):
     if not tracks:
         return { "status": "NeOK", "message": u"Список треков пуст" }
 
+    count = Love.objects.filter(user=request.user).count()
+    if count >= 150:
+        return { "status": "NeOK", "message": u"Достигнут предел в 150 треков. Удалите что-нибудь или перенесите в плейлист" }
+
     for track_id in tracks:
         track_love = Love.objects.create(user=request.user, track_id=track_id)
         track_love.save()
+        if track_love.track_position >= 150:
+            return { "status": "NeOK", "message": u"Некоторые треки не были добавлены потому что достигнут предел в 150 треков. Удалите что-нибудь или перенесите в плейлист" }
 
     return json.dumps({ "status": "OK", "message": u"Трек добавлен в любимые" })
 

@@ -7,7 +7,7 @@ from libs.util import render_as_json
 @render_as_json
 def get_listening_history(request):
     try:
-        track_objects = ListeningHistory.objects.filter(user=request.user).order_by("-id")[:199]
+        track_objects = ListeningHistory.objects.filter(user=request.user).order_by("-id")[:150]
         tracks = [t.for_json() for t in track_objects]
         return { "status": "OK", "count": len(tracks), "tracks": tracks }
     except Exception, e:

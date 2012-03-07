@@ -4,6 +4,7 @@ function VKSearchEngine(controller, activateCallback) {
     this.now_offset = 0;
     this.id = 0;
     this.is_activated = false;
+    this.access_token = $("#access_token").html();
 
     VK.init({
         apiId: 1934554,
@@ -21,7 +22,6 @@ function VKSearchEngine(controller, activateCallback) {
         }
         if (activateCallback) activateCallback(_this);
     });
-    this.access_token = $("#access_token").html();
 }
 
 extend(VKSearchEngine, AbstractSearchEngine);
@@ -123,13 +123,8 @@ VKSearchEngine.prototype.searchByIds = function(ids, successCallback) {
     return true;
 };
 
-VKSearchEngine.prototype.searchByName = function(artist, title) {
-    // Возвращает трек по исполнителю и названию
-    alert("Если вы видите это, это баг, напишите мне куда-нибудь, например на me@vas3k.ru");
-};
-
 VKSearchEngine.prototype.searchByUser = function(user_id, successCallback) {
-    if (!this.is_activated) alert("Для доступа в мои аудиозаписи нужно залогиниться вконтактике.");
+    if (!this.is_activated) alert("Для доступа в мои аудиозаписи нужно залогиниться вконтактике. Кнопочка справа внизу.");
     user_id = user_id || this.id;
     var results = [];
     var _this = this;
@@ -153,11 +148,11 @@ VKSearchEngine.prototype.searchOneGoodTrack = function(artist, title, successCal
         dataType: 'jsonp',
         success: function(r) {
             if (r.response[0] == "0") return;
-            var goodtrack=-1;
+            var goodtrack =- 1;
             for (var i = 1; i < r.response.length; i++) {
                 if ( r.response[i].artist.toLowerCase() == artist &&
                      r.response[i].title.toLowerCase() == title ){
-                    goodtrack=i;
+                    goodtrack = i;
                     break;
                 }
                 if ((r.response[i].artist.toLowerCase().indexOf(artist) + 1) &&
@@ -165,7 +160,7 @@ VKSearchEngine.prototype.searchOneGoodTrack = function(artist, title, successCal
                     goodtrack = i;
                 }
             }
-            if (goodtrack>-1 && successCallbackObject) {
+            if (goodtrack > -1 && successCallbackObject) {
                 successCallbackObject.push(_this.getTrackFromResponse(r.response[goodtrack]));
             }
         },
@@ -177,13 +172,22 @@ VKSearchEngine.prototype.searchOneGoodTrack = function(artist, title, successCal
 
 VKSearchEngine.prototype.getLyrics = function(lyrics_id, successCallback) {
     $.ajax({
-        url: "https://api.vkontakte.ru/method/audio.getLyrics?lyrics_id="+lyrics_id+"&access_token="+access_token+"&callback=callbackFunc",
+        url: "https://api.vkontakte.ru/method/audio.getLyrics?lyrics_id="+lyrics_id+"&access_token="+this.access_token+"&callback=callbackFunc",
         dataType: 'jsonp',
         success: function(r) {
             successCallback(r.response.text);
         },
         error: function() {
             alert("Все сломалось :(");
+        }
+    });
+};
+
+VKSearchEngine.prototype.loadUserInfo = function(successCallback) {
+    var _this = this;
+    VK.Api.call('getProfiles', { "uids": _this.id, "fields": "uid, first_name, last_name, nickname, sex, bdate, city, country, timezone, photo, photo_medium, photo_big, photo_rec" }, function(r) {
+        if (r.response) {
+            if (successCallback) successCallback(r.response[0]);
         }
     });
 };

@@ -42,10 +42,16 @@ def add(request):
     tracks = json.loads(request.POST.get("tracks"))
     if not id:
         return { "status": "NeOK", "message": u"No ID" }
+
     playlist = Playlist.objects.get(id=id)
+    if playlist.count >= 150:
+        return { "status": "NeOK", "message": u"Достигнут предел в 150 треков. Создайте новый плейлист или удалите треки из этого" }
+
     for track in tracks:
         track = PlaylistTracks.objects.create(playlist=playlist, track_id=track)
         track.save()
+        if track.track_position >= 150:
+            return { "status": "NeOK", "message": u"Некоторые треки не были добавлены потому что достигнут предел в 150 треков. Удалите что-нибудь или перенесите в другой плейлист" }
 
     return { "status": "OK", "message": u"Треки добавлены в плейлист" }
 
@@ -57,7 +63,7 @@ def get(request):
     if not id:
         return { "status": "NeOK", "message": u"No ID" }
 
-    track_objects = PlaylistTracks.objects.filter(playlist__id=id).order_by("track_position")[:199]
+    track_objects = PlaylistTracks.objects.filter(playlist__id=id).order_by("track_position")[:150]
     track_list = [t.for_json() for t in track_objects]
     return { "status": "OK", "list": { "_id": id, "tracks": track_list }}
 

@@ -16,7 +16,7 @@ DATABASES = {
         'NAME': 'player',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
@@ -159,9 +159,9 @@ AUTH_PROFILE_MODULE = 'player.UserProfile'
 APPEND_SLASH = True
 
 # Application settings
-LASTFM_KEY = ""
-LASTFM_SECRET = ""
-ACCESS_TOKEN = "" # vkontakte desktop app token
+LASTFM_KEY = "" # lastfm access key
+LASTFM_SECRET = "" # lastfm secret key
+ACCESS_TOKEN = ""  # vkontakte desktop app token
 
 # Local settings
 try:

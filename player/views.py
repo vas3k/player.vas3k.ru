@@ -3,17 +3,15 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render_to_response
 from django.contrib import auth
 from django.contrib.auth.models import User
-from libs.util import render_as_text
-from player.models import UserProfile
-from settings import ACCESS_TOKEN
+from player.models import UserProfile, AccessTokens
 
 def full(request):
     if not request.user.is_authenticated():
         return redirect("/login")
-    return render_to_response("layout.html", { "ACCESS_TOKEN": ACCESS_TOKEN })
+    return render_to_response("layout.html", { "ACCESS_TOKEN": AccessTokens.get_random_token() })
 
 def small(request):
-    return render_to_response("small.html", { "ACCESS_TOKEN": ACCESS_TOKEN })
+    return render_to_response("small.html", { "ACCESS_TOKEN": AccessTokens.get_random_token() })
 
 def register(request):
     if request.method == "POST":
