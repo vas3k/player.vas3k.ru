@@ -1,0 +1,294 @@
+#playbackControl {
+    width: 130px;
+    height: 70px;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+    #button_prev, #button_next {
+        float: left;
+        padding: 20px 5px;
+    }
+
+    #button_next .ui-button, #button_prev .ui-button {
+	    width: 30px;
+    }
+
+    #playbackControl button {
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        font-size: 1em;
+        padding: 0;
+    }
+
+    #playbackControl .ui-button {
+        width: 30px;
+        height: 30px;
+        border-radius: 20px;
+        -moz-border-radius: 20px;
+    }
+
+    #button_play {
+        float: left;
+        padding-top: 15px;
+    }
+
+        #button_play .ui-button {
+            width: 40px;
+            height: 40px;
+            font-size: 1em;
+        }
+
+
+#volume {
+    width: 130px;
+    height: 70px;
+    overflow: hidden;
+    position: absolute;
+    left: 150px;
+    top: 0;
+}
+    #tweetTrack {
+        position: absolute;
+        top: 30px;
+        right: 0;
+    }
+
+    #vol_slider {
+        position: absolute;
+        top: 30px;
+        clear: both;
+        width: 100px;
+        height: 12px;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        border: solid 1px #9A9A9A;
+    }
+
+    #vol_slider .ui-widget {
+        height: 15px;
+    }
+
+    #vol_slider .ui-slider-handle {
+        width: 11px;
+        height: 11px;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        top: -1px;
+        margin-left: -1.2em !important;
+    }
+
+#progress {
+    width: 40%;
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+    color: #4E5045;
+    font-size: 11px;
+}
+
+    #progressbar {
+        position: absolute;
+        top: 15px;
+        width: 99%;
+        margin: 0 1px;
+        height: 42px;
+        overflow: hidden;
+        border: solid 1px #5E5E5E;
+        border-radius: 10px;
+        background: url("../images/itunes/bg_progress.png") center center;
+    }
+
+    .ui-progressbar-value {
+        background-color: #696B61;
+        border-radius: 10px;
+        opacity: 0.5;
+    }
+
+    .progressbar-ani {
+        background-image: url("../images/pbar-ani.gif");
+    }
+
+    #trackposition {
+        position: absolute;
+        top: 30px;
+        left: 10px;
+    }
+
+    #tracktitle {
+        position: absolute;
+        top: 20px;
+        line-height: 1.1em;
+        left: 50px;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    #trackduration {
+        position: absolute;
+        top: 30px;
+        right: 10px;
+    }
+
+    #trackslider {
+        position: absolute;
+        top: 45px;
+        margin: 0 50px;
+        width: 80%;
+    }
+
+    #trackslider .ui-slider-handle {
+        width: 8px;
+        height: 8px;
+        margin-top: -2px;
+        top: 0 !important;
+    }
+
+    #smallinfo {
+        font-size: 10px;
+        position: absolute;
+        top: 17px;
+        right: 10px;
+        display: none;
+    }
+
+#player_buttons {
+    width: 100px;
+    height: 70px;
+    overflow: hidden;
+    position: absolute;
+    right: 200px;
+    top: 0;
+}
+    #repeat_status {
+        position: absolute;
+        top: 30px;
+        right: 15px;
+    }
+
+    #button_shuffle {
+        position: absolute;
+        top: 25px;
+        right: 60px;
+    }
+
+    #button_repeat {
+        position: absolute;
+        top: 25px;
+        right: 40px;
+    }
+
+    #button_shuffle button, #button_repeat button {
+        width: 20px;
+        height: 20px;
+        padding: 0;
+        margin: 0;
+        font-size: 1em;
+    }
+
+    #button_shuffle button {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        -moz-border-radius-topright: 0;
+        -moz-border-radius-bottomright: 0;
+    }
+
+    #button_repeat button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        -moz-border-radius-topleft: 0;
+        -moz-border-radius-bottomleft: 0;
+    }
+
+#search {
+    height: 70px;
+    width: 200px;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+    #q {
+        position: absolute;
+        top: 20px;
+        border-radius: 10px;
+        border: solid 1px #5E5E5E;
+        width: 160px;
+        height: 20px;
+        padding-left: 25px;
+        z-index: 25;
+    }
+
+    #searchOptions {
+        position: absolute;
+        top: 45px;
+        right: 20px;
+    }
+
+    #showSearchCombo {
+        position: absolute;
+        top: 23px;
+        left: 5px;
+        z-index: 30;
+        cursor: pointer;
+    }
+
+    #searchOptionsCombo {
+        display: none;
+        position: absolute;
+        z-index: 30;
+        background-color: #FFFFFF;
+        color: #000;
+        min-height: 35px;
+        width: 150px;
+        padding: 5px;
+        right: 40px;
+        top: 40px;
+        border-radius: 10px;
+    }
+
+/* SIDEBAR RIGHT */
+
+#rightSidebar {
+    line-height: 1.5em;
+}
+
+#artist_title {
+    font-size: 16px;
+}
+
+#artist_url a {
+    font-size: 10px;
+}
+
+#artist_similar {
+    font-size: 11px;
+}
+
+#artist_img img {
+    max-width: 150px;
+    max-height: 200px;
+    border: 0;
+    margin: 10px;
+}
+
+#artist_text {
+    font-size: 11px;
+    margin: 3px;
+    display: block;
+}
+
+.usertrack {
+    padding: 5px 10px;
+    padding-top: 10px;
+    cursor: pointer;
+}
+
+#useraudio {
+    cursor: pointer;
+}

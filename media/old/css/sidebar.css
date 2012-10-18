@@ -1,0 +1,92 @@
+#leftSidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: #000000;
+    font-size: 10px;
+}
+
+.sidebarItem {
+    padding-top: 10px;
+}
+
+.sidebarItem .dir {
+    font-weight: bold;
+    color: #62718F;
+    text-shadow: 1px 1px 1px #FFF;
+    display: block;
+    margin-bottom: 3px;
+    cursor: pointer;
+}
+
+    .sidebarItem .dir img {
+        opacity: 0.6;
+        cursor: pointer;
+        vertical-align: text-bottom;
+    }
+
+    .sidebarItem .dir img:hover {
+        opacity: 1;
+    }
+
+    #leftSidebar .sidebarAdd {
+        float: right;
+    }
+
+    #leftSidebar .sidebarDelete {
+        display: none;
+    }
+
+    #leftSidebar .sidebarName {
+        vertical-align: text-bottom;
+        display: inline-block;
+        max-width: 110px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #leftSidebar #playlistlist .sidebarName {
+        max-width: 85px;
+    }
+
+#leftSidebar li {
+    padding: 3px 0;
+    padding-left: 10px;
+    white-space: nowrap;
+    clear: both;
+}
+
+#leftSidebar li:hover {
+    background-color: #D1D6DC;
+    cursor: pointer;
+}
+
+#leftSidebar li:hover .sidebarDelete {
+    display: inline;
+}
+
+#smart_loader, #recommend_loader, #playlist_loader, #search_loader {
+    display: none;
+}
+
+#leftSidebar .sidebarCount {
+    float: right;
+    border: none;
+    border-radius: 10px;
+    padding: 3px;
+    color: #FFF;
+    font-weight: bold;
+    min-width: 15px;
+    text-align: center;
+    background-color: #99AAC6;
+    vertical-align: text-bottom;
+}
+
+.droppable {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.droppable_hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}

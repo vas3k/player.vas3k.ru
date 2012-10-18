@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Оке</title>
+    <style>
+        div {
+            font-family: Verdana, Arial;
+            margin: 0 auto;
+            text-align: center;
+            width: 400px;
+            margin-bottom: 30px;
+        }
+    </style>
+    <script type="text/javascript" src="/js/frameworks/jquery-1.7.1.min.js"></script>
+    <script>
+        $(function() {
+            var token = "";
+            var user_id = "";
+            var hash = location.hash.replace("#", "").split("&");
+            for (var i = 0; i < hash.length; i++) {
+                var part = hash[i].split("=");
+                if (part) {
+                    if (part[0] == "access_token") {
+                        token = part[1];
+                    }
+
+                    if (part[0] == "user_id") {
+                        user_id = part[1];
+                    }
+                } else {
+                    return;
+                }
+            }
+
+            console.debug("Token: " + token + " user id: " + user_id);
+
+            if (token && user_id) {
+                $.ajax({
+                    url: "/add_token",
+                    data: ({
+                        token: token,
+                        user_id: user_id
+                    }),
+                    type: "POST",
+                    dataType: "json",
+                    success: function(r) {
+
+                    },
+                    error: function() {
+                    }
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+
+
+<div style="font-size: 14px; width: 500px; margin-top: 30%;">Спасибо!</div>
+
+
+</body>
+</html>
