@@ -28,7 +28,6 @@ LoveList.prototype.getList = function(successCallback) {
     // так как асинхронно - ничего не возвращает
     // и нужен каллбек. Если можно сразу - то
     // вызывает каллбек сама
-    gui.changeHash("love");
 
     var _this = this;
     _this.showCallback = successCallback;
@@ -83,8 +82,6 @@ LoveList.prototype.push = function(tracks) {
         success: function(data) {
             if (data["status"] == "OK") {
                 _this.list.push(tracks);
-            } else {
-                alert(data["message"]);
             }
         }
     });

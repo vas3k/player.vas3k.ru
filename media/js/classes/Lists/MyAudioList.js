@@ -23,16 +23,13 @@ MyAudioList.prototype.getName = function() {
 };
 
 MyAudioList.prototype.getList = function(successCallback) {
-    gui.changeHash("my");
-
     var _this = this;
     _this.showCallback = successCallback;
 
     if (this.list.length == 0) {
-        this.controller.player.searchController.searchByUser(false, function(new_list) {
+        var is_success = this.controller.player.searchController.searchByUser(false, function(new_list) {
             _this.list = new_list;
             _this.showCallback(_this);
-            debug("THIS LIST: " + _this.list);
         });
     } else {
         this.showCallback(this);

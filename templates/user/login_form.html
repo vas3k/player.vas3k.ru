@@ -1,22 +1,55 @@
 {% extends "static_layout.html" %}
 
-{% block title %}
-Логин
-{% endblock %}
-
 {% block body %}
-<form action="/login/" method="post" id="regform">
-    <span><label for="login">Логин:&nbsp;&nbsp;</label> <input type="text" id="login" name="login" /></span>
-    <span><label for="password">Пассворд:&nbsp;&nbsp;</label> <input type="password" id="password" name="password" /></span>
-    <span><input type="submit" value="Войти" /></span>
-    <span><a href="/register/">Зарегистрируемся?</a></span>
-    <span><a href="/faq/">FAQ</a></span>
-</form>
+    <div id="preview_block">
+        <img src="/images/preview/small/preview001.png" class="preview_item" id="preview_item_0" />
+        <img src="/images/preview/small/preview002.png" class="preview_item" id="preview_item_1" style="display: none;" />
+        <img src="/images/preview/small/preview003.png" class="preview_item" id="preview_item_2" style="display: none;" />
+        <img src="/images/preview/small/preview004.png" class="preview_item" id="preview_item_3" style="display: none;" />
+    </div>
+
+    <div id="center_block">
+        <div class="center_50_block">
+            <div class="inside_block" style="background-image: url('/images/icons/small/black/2x2_grid_icon&32.png');">
+                <h1>Что это?</h1>
+                <div>Самые сообразительные уже могли догадаться, что это плеер. Для всех остальных: это плеер. Очередной онлайн-плеер музыки.</div>
+            </div>
+        </div>
+
+        <div class="center_50_block">
+            <div class="inside_block" style="background-image: url('/images/icons/small/black/headphones_icon&32.png');">
+                <h1>Откуда музыка?</h1>
+                <div>Из самой большой музыкальной помойки рунета под названием вконтакте. Но мы не предполагаем наличие у вас регистрации там, все работает и так.</div>
+            </div>
+        </div>
+
+        <div class="center_50_block">
+            <div class="inside_block" style="background-image: url('/images/icons/small/black/eye_icon&32.png');">
+                <h1>Почему так выглядит?</h1>
+                <div>Нам нравится интерфейс iTunes.</div>
+            </div>
+        </div>
+
+        <div class="center_50_block">
+            <div class="inside_block" style="background-image: url('/images/icons/small/black/box_icon&32.png');">
+                <h1>Что умеет?</h1>
+                <div>Искать любую доступную музыку, фильтровать ее, создавать плейлисты, искать по исполнителям, альбомам, скробблить и давать рекомендации с lasf.fm. И не мешать.</div>
+            </div>
+        </div>
+
+        <div class="center_50_block">
+            <div class="inside_block" style="background-image: url('/images/icons/small/black/contact_card_icon&32.png');">
+                <h1>Фидбеки</h1>
+                <div>
+                    Twitter: <a href="http://twitter.com/player_vas3k_ru">@player_vas3k_ru</a><br/>
+                    Github: <a href="https://github.com/vas3k/player.vas3k.ru">vas3k/player.vas3k.ru</a> (да-да, мы opensource)<br/>
+                    Email: me@vas3k.ru
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 
 {% block additional_block %}
-    <div style="position: absolute; top: 40%; left: 50%; margin-left: -500px; width: 300px; text-align: right; background-color: rgba(255, 255, 255, 0); z-index: 20; padding: 20px;">
-        <b>Мы обновились</b><br/><br/>И сменили СУБД.<br/> Поэтому вам придется <a href="/register/">зарегистрироваться</a> заново с любым ником и
-        затем пройти по <a href="http://p.vas3k.ru/migrate/">этой ссылке</a> чтобы импортировать свои старые данные, залогинившись под старым юзером и паролем. После этого можно о них забыть.</div>
 {% endblock %}

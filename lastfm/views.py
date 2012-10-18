@@ -7,7 +7,6 @@ from django.shortcuts import render_to_response
 from libs.util import render_as_text, render_as_json
 import simplejson as json
 from lxml import etree
-from other.models import ListeningHistory
 
 def handshake(lastfm_login, lastfm_session):
     # теперь пожмем ручки
@@ -95,38 +94,6 @@ def scrobble(request):
     return response
 
 @render_as_json
-def getartistinfo(request):
-    try:
-        track = json.loads(request.POST.get("track").encode("utf-8", "ignore"))
-        artist = track["artist"].encode("utf-8", "ignore")
-    except:
-        return { "status": "NeOK", "message": "Fail! No track" }
-
-    try:
-        history_track = ListeningHistory.objects.create(user=request.user, track_artist=track["artist"],
-                                                        track_title=track["title"], track_id=track["id"])
-        history_track.save()
-    except Exception, e:
-        return { "status": "NeOK", "message": u"Ошибка сохранения трека: %s" % e }
-
-    try:
-        if not artist: raise Exception(u"No artist")
-        url = u"http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&lang=ru&autocorrect=1&api_key=%s&artist=%s" % (settings.LASTFM_KEY, urllib2.quote(artist))
-        tree = etree.fromstring(urllib2.urlopen(url).read())
-        if not tree: raise Exception(u"No info")
-        tree = tree.find("artist")
-        answer = {
-            "name": tree.find("name").text,
-            "url": tree.find("url").text,
-            "image": [img.text for img in tree.findall("image")],
-            "similar": [art.find("name").text for art in tree.find("similar").findall("artist")],
-            "bio": tree.find("bio").find("summary").text
-        }
-        return { "status": "OK", "artist": answer }
-    except Exception, e:
-        return { "status": "NeOK", "message": "Fail! %s" % e }
-
-@render_as_json
 def getrecommended(request):
     lastfm_session_key = request.COOKIES.get("lastfm_session_key", "")
     try:
@@ -137,7 +104,7 @@ def getrecommended(request):
         tree = tree.find("recommendations")
         recommendations = []
         for artist in tree.findall("artist"):
-            recommendations.append(artist.find("name").text)
+            recommendations.append({ "name": artist.find("name").text, "cover": artist.findall("image")[0].text, "cover_big": artist.findall("image")[3].text })
         return { "status": "OK", "artists": recommendations }
     except Exception, e:
         return { "status": "NeOK", "message": "Fail! %s" % e }

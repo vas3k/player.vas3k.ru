@@ -54,8 +54,8 @@ VKSearchEngine.prototype.filter = function(track) {
     track.artist = track.artist.replace(new RegExp("&#39;", 'g'), "'");
     track.title = track.title.replace(new RegExp("&#39;", 'g'), "'");
 
-    track.artist = track.artist.trim().substring(0, 50);
-    track.title = track.title.trim().substring(0, 50);
+    track.artist = track.artist.trim().substring(0, 70);
+    track.title = track.title.trim().substring(0, 100);
     
     return track;
 };
@@ -124,7 +124,7 @@ VKSearchEngine.prototype.searchByIds = function(ids, successCallback) {
 };
 
 VKSearchEngine.prototype.searchByUser = function(user_id, successCallback) {
-    if (!this.is_activated) alert("Для доступа в мои аудиозаписи нужно залогиниться вконтактике. Кнопочка справа внизу.");
+    if (!this.is_activated) return false;
     user_id = user_id || this.id;
     var results = [];
     var _this = this;
@@ -138,9 +138,11 @@ VKSearchEngine.prototype.searchByUser = function(user_id, successCallback) {
             if (successCallback) successCallback(results);
         }
     });
+
+    return true;
 };
 
-VKSearchEngine.prototype.searchOneGoodTrack = function(artist, title, successCallbackObject) {
+VKSearchEngine.prototype.searchOneGoodTrack = function(artist, title, successCallback) {
     var query = artist + " " + title;
     var _this = this;
     $.ajax({
@@ -160,12 +162,12 @@ VKSearchEngine.prototype.searchOneGoodTrack = function(artist, title, successCal
                     goodtrack = i;
                 }
             }
-            if (goodtrack > -1 && successCallbackObject) {
-                successCallbackObject.push(_this.getTrackFromResponse(r.response[goodtrack]));
+            if (goodtrack > -1 && successCallback) {
+                successCallback(_this.getTrackFromResponse(r.response[goodtrack]));
             }
         },
         error: function() {
-            alert("Все сломалось :(");
+            console.debug("Превышен интервал запросов. ВОТ ЭТО ПОВОРОТ!");
         }
     });
 };

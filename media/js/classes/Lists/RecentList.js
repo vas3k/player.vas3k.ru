@@ -28,8 +28,6 @@ RecentList.prototype.getList = function(successCallback) {
     // и нужен каллбек. Если можно сразу - то
     // вызывает каллбек сама
 
-    gui.changeHash("recent");
-
     var _this = this;
     _this.showCallback = successCallback;
 
@@ -47,7 +45,6 @@ RecentList.prototype.getList = function(successCallback) {
                 _this.controller.player.searchController.searchByIds(ids, function(new_list) {
                     _this.list = new_list;
                     _this.showCallback(_this);
-                    debug("RECENT: " + _this.list);
                 });
             }
         },

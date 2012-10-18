@@ -100,7 +100,8 @@ $(function () {
 
         $("#trackduration").html(timeFormat(tracks[0].duration * 1000));
         $("#trackslider").slider("option", "max", parseInt(tracks[0].duration * 100));
-        $("#tracktitle").html("<b>" + tracks[0].artist + "</b><br />" + tracks[0].title);
+        $("#tracktitle").html(tracks[0].title);
+        $("#trackartist").html(tracks[0].artist);
         $("title").html(tracks[0].artist + " - " + tracks[0].title);
 
         soundManager.onready(function() {
@@ -150,7 +151,6 @@ $(function () {
         dataType: 'jsonp',
         success: function(r) {
             playTrack(r.response);
-            console.debug(r.response);
 
             var lyrics_id = r.response[0].lyrics_id;
             if (lyrics_id) {

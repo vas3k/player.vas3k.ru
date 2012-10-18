@@ -1,0 +1,231 @@
+<!--Force IE6 into quirks mode with this comment tag WHAHAHAH -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>player.vas3k.ru</title>
+
+    <!-- meta tags: -->
+    <meta name="author" content="V@s3K (vas3k.ru)" />
+    <meta name="description" content="Плеер музыки из вконтакте со скробблингом
+	 и рекомендациями last.fm, плейлистами, альбомами и вкусняшками" />
+    <meta name="copyright" content="vas3k.ru 2010-2012" />
+    <meta name="robots" content="" />
+    <meta name="generator" content="" />
+    <meta name="keywords" content="vkontakte, player, last.fm, recommendations, playlist, music
+	вконтакте, ластфм, скробблинг, рекоменации, альбомы, вкусняшки, плейлисты, музыка" />
+
+    <link rel="icon" href="/images/favicon.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png" />
+
+    <!-- css: -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css?v=3.0" />
+    <link rel="stylesheet" type="text/css" href="/css/top.css?v=3.0" />
+    <link rel="stylesheet" type="text/css" href="/css/middle.css?v=3.0" />
+    <link rel="stylesheet" type="text/css" href="/css/modules.css?v=3.0" />
+
+    <!--[if IE]>
+        <script type="text/javascript" src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!--[if IE]>
+        <script type="text/javascript">
+            document.createElement('header');
+            document.createElement('nav');
+            document.createElement('section');
+            document.createElement('article');
+            document.createElement('aside');
+            document.createElement('footer');
+        </script>
+    <![endif]-->
+
+</head>
+<body>
+    <div id="big-container">
+        <div id="top">
+            <div id="top-controls">
+                <div id="top-controls-prev"></div>
+                <div id="top-controls-play" class="playbutton-play"></div>
+                <div id="top-controls-next"></div>
+                <div id="top-controls-volume">
+                    <div id="volume_slider">
+                        <div style="position: relative; width: 90px;">
+                            <div class="ui-slider-handle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="top-info">
+                <div id="top-info-cover" style="">
+                    <img src="/images/icons/show_lyrics.png" id="top-show-lyrics" title="Показать текст" alt="" />
+                    <img src="/images/icons/show_mini.png" id="top-open-mini" title="Открыть в миниплеере" alt="" />
+                </div>
+                <div id="top-info-title"></div>
+                <div id="top-info-artist"></div>
+
+                <div id="top-info-progress">
+                    <div id="top-info-progress-left_time"></div>
+                    <div id="top-info-progress-slider">
+                        <div style="position: absolute; left: 0; right: 10px;">
+                            <div class="ui-slider-handle"></div>
+                        </div>
+                        <div id="loading_bar"></div>
+                    </div>
+                    <div id="top-info-progress-right_time"></div>
+                </div>
+
+                <div id="top-info-nowplaying" onclick="$('#nowplaying_list').toggle(); event.preventDefault();">
+                    <img src="/images/icons/small/black/list_num_icon&16.png" alt="!" />
+                </div>
+
+                <div id="top-info-tweet" onclick="player.tweetNowPlaying(); event.preventDefault();">
+                    <img src="/images/icons/small/black/twitter_2_icon&16.png" alt="!" />
+                </div>
+            </div>
+
+            <div id="top-search">
+                <input type="text" name="query" id="top-search-filter" placeholder="Быстрый поиск" />
+            </div>
+
+            <div id="top-buttons">
+                <a href="/logout/" title="Выйти">
+                    <img src="/images/icons/small/black/round_delete_icon&16.png" alt="Logout" />
+                </a>
+                <a href="#" id="login_vk" title="Подключить к vk.com" onclick="Player.toggleVk(); return false;">
+                    <img src="/images/icons/vk_logo_16.png" alt="vk" />
+                </a>
+                <a href="#" id="login_lastfm" title="Подключить к last.fm" onclick="Player.toggleLastfm(); return false;">
+                    <img src="/images/icons/as_logo_16.png" alt="as" />
+                </a>
+            </div>
+        </div>
+
+        <div id="nowplaying_list">
+            <div id="nowplaying_list-header">
+                <strong>Играет сейчас</strong>
+                <div id="shuffle"></div>
+            </div>
+            <div id="nowplaying_list-list"></div>
+        </div>
+
+        <div id="container">
+            <div id="mode-list">
+                <div class="mode-list-item active" id="tab-title-user" onclick="gui.activateTab('user');">{{ user.username }}</div>
+                <div class="mode-list-item" id="tab-title-music" onclick="gui.activateTab('music');">Музыка</div>
+                <div class="mode-list-item" id="tab-title-artist" onclick="gui.activateTab('artist');">Исполнители</div>
+                <div class="mode-list-item" id="tab-title-albums" onclick="gui.activateTab('albums');">Альбомы</div>
+                <div class="mode-list-item" id="tab-title-playlists" onclick="gui.activateTab('playlists');">Плейлисты</div>
+                <div class="mode-list-item" id="tab-title-recommendations" onclick="gui.activateTab('recommendations');">Рекомендации</div>
+            </div>
+
+            <div id="content-frame">
+                <div id="tab-user" class="tab">
+                    {% include "modules/user.html" %}
+                </div>
+
+                <div id="tab-music" class="tab">
+                    {% include "modules/music.html" %}
+                </div>
+
+                <div id="tab-artist" class="tab">
+                    {% include "modules/artist.html" %}
+                </div>
+
+                <div id="tab-albums" class="tab">
+                    {% include "modules/albums.html" %}
+                </div>
+
+                <div id="tab-playlists" class="tab">
+                    {% include "modules/playlists.html" %}
+                </div>
+
+                <div id="tab-recommendations" class="tab">
+                    {% include "modules/recommendations.html" %}
+                </div>
+            </div>
+        </div>
+
+        <div id="bottom"></div>
+
+        <div id="small_error"></div>
+        <div id="small_ok">Все хорошо, ок! Я хорошая программа и я должна много кушать.</div>
+
+        <div id="dialog-lyrics" title="Текст">
+            <img src="/images/icons/close_window.png" alt="X" title="Закрыть текст" onclick="$(this).parent().fadeOut();" />
+            <div></div>
+        </div>
+
+
+        <div id="vk_api_transport" style="display: none;"></div>
+
+        <div style="display: none;">
+            <div id="access_token">{{ACCESS_TOKEN}}</div>
+        </div>
+
+        <!-- Libs -->
+        <script type="text/javascript" src="http://vkontakte.ru/js/api/openapi.js" charset="windows-1251"></script>
+        <script type="text/javascript" src="/js/frameworks/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="/js/frameworks/jquery-ui-1.8.4.custom.min.js"></script>
+        <script type="text/javascript" src="/js/frameworks/soundmanager2.js"></script>
+        <script type="text/javascript" src="/js/frameworks/mustache.js"></script>
+
+        <!-- Main -->
+        <script type="text/javascript" src="/js/main.js?v=3.0"></script>
+
+        <!-- Filters -->
+        <script type="text/javascript" src="/js/classes/Filters.js?v=3.0"></script>
+
+        <!-- Tracks -->
+        <script type="text/javascript" src="/js/classes/Tracks/Track.js?v=3.0"></script>
+
+        <!-- Info -->
+        <script type="text/javascript" src="/js/classes/Info/AbstractInfo.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Info/LastFmInfo.js?v=3.0"></script>
+
+        <!-- Lists -->
+        <script type="text/javascript" src="/js/classes/Lists/AbstractList.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Lists/LoveList.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Lists/MyAudioList.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Lists/NowPlayingList.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Lists/RecentList.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Lists/RecommendList.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Lists/SearchList.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Lists/ArtistSearchList.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Lists/MusicSearchList.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Lists/UserPlayList.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Lists/AlbumList.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Lists/RadioList.js?v=3.0"></script>
+
+        <!-- Scrobblers -->
+        <script type="text/javascript" src="/js/classes/Scrobblers/LastFmScrobbler.js?v=3.0"></script>
+
+        <!-- Search engines -->
+        <script type="text/javascript" src="/js/classes/Search/AbstractSearchEngine.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Search/VKSearchEngine.js?v=3.0"></script>
+
+
+        <!-- Controllers -->
+        <script type="text/javascript" src="/js/classes/CoversController.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/InfoController.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/ListController.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/PlaybackController.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/ScrobblerController.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/SearchController.js?v=3.0"></script>
+
+        <!-- Main -->
+        <script type="text/javascript" src="/js/classes/Gui/UserGui.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Gui/MusicGui.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Gui/ArtistGui.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Gui/AlbumsGui.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Gui/PlaylistsGui.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Gui/RecommendationsGui.js?v=3.0"></script>
+
+        <script type="text/javascript" src="/js/classes/Gui/ListGui.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Gui.js?v=3.0"></script>
+        <script type="text/javascript" src="/js/classes/Player.js?v=3.0"></script>
+
+        <script type="text/javascript" src="http://yandex.st/json2/2009-09-29/json2.min.js"></script>
+    </div>
+</body>
+</html>

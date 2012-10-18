@@ -1,4 +1,4 @@
-function SearchList(controller, params) {
+function MusicSearchList(controller, name) {
     AbstractList.call(this); // copy methods
     this.controller = controller || {};
     this.list = [];
@@ -10,19 +10,18 @@ function SearchList(controller, params) {
     this.show_header = true;
     this.show_deletetrack = true;
     this.id = AbstractList.globalId++;
-    this.date = params["date"] || "Давно";
-    this.name = params["name"] || "Unnamed";
+    this.name = name || "Unnamed";
     this.icon = "/images/icons/saved_searches.png";
     this.offset = 0;
 }
-extend(SearchList, AbstractList);
+extend(MusicSearchList, AbstractList);
 
-SearchList.prototype.getName = function() {
+MusicSearchList.prototype.getName = function() {
     // Название для сайдбара
      return this.name;
 };
 
-SearchList.prototype.getList = function(successCallback) {
+MusicSearchList.prototype.getList = function(successCallback) {
     // Выполнить поиск по this.name
     // если асинхронно - ничего не возвращает
     // и нужен каллбек. Если можно сразу - то
@@ -53,7 +52,7 @@ SearchList.prototype.getList = function(successCallback) {
     });
 };
 
-SearchList.prototype.getMore = function(successCallback) {
+MusicSearchList.prototype.getMore = function(successCallback) {
     // Получает еще треки и вызывает каллбек для вывода
     var _this = this;
     this.offset += 200;

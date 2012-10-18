@@ -22,7 +22,11 @@ class AccessTokens(models.Model):
         max_length=100
     )
 
-    # TODO: user_id
+    user_id = models.CharField(
+        u"VK user ID",
+        max_length=20,
+        blank=True
+    )
 
     time = models.DateTimeField(
         u"Добавлен",

@@ -1,0 +1,119 @@
+/* User */
+.search_saved-delete {
+    margin-left: 10px;
+}
+
+#user-recommended {
+    position: absolute;
+    top: 30px;
+    left: 65%;
+    width: 250px;
+    height: 280px;
+}
+
+    #user-recommended h1 {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+#user-lists {
+    clear: both;
+    overflow: hidden;
+}
+
+    .user-list {
+        width: 250px;
+        margin: 20px 40px;
+        float: left;
+    }
+
+        .user-list h1 {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .user-list-list {
+            width: 250px;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+            .user-list-list ol {
+                list-style-type: decimal-leading-zero;
+                padding-left: 30px;
+            }
+
+            .user-list-list .item {
+                padding: 10px;
+                cursor: pointer;
+                opacity: 0.8;
+            }
+
+            .user-list-list .item:hover {
+                opacity: 1;
+            }
+
+                .user-list-list .item span {
+                    font-weight: bold;
+                }
+
+                .user-list-list .item small {
+                    font-size: 11px;
+                    color: #A9A9A9;
+                }
+
+/* Music */
+
+#music-tracks {
+    padding: 0 20px;
+}
+
+    #music-tracks .track {
+        width: 55%;
+    }
+
+#listening_history .track, #vk_audio .track {
+    width: 90%;
+}
+
+#vk_need_login {
+    padding: 20px 0;
+    display: none;
+}
+
+/* Artist */
+
+#cover-info-buttons {
+}
+
+/* Playlist */
+
+#playlist_tracks {
+    left: 10px;
+}
+
+    #playlist_tracks .track {
+        width: 100%;
+    }
+
+.sidebar_view-add {
+    position: relative;
+    margin: 10px 0 0 15px;
+    cursor: pointer;
+}
+
+    .sidebar_view-add img {
+        margin: 5px;
+    }
+
+    .sidebar_view-add span {
+        font-size: 11px;
+    }
+
+    .sidebar_view-add input {
+        display: none;
+    }
+
+#playlist_buttons {
+    margin-left: 18px;
+}

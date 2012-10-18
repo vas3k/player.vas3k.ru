@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8" />
     <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-    <title>{% block title %}{% endblock %} - player.vas3k.ru</title>
-    <meta name="title" content="" />
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
+    <title>{% block title %}{% endblock %}player.vas3k.ru</title>
+    <meta name="author" content="V@s3K (vas3k.ru)" />
+    <meta name="description" content="Плеер музыки из вконтакте со скробблингом
+	 и рекомендациями last.fm, плейлистами, альбомами и вкусняшками" />
+    <meta name="copyright" content="vas3k.ru 2010-2012" />
+    <meta name="robots" content="" />
+    <meta name="generator" content="" />
+    <meta name="keywords" content="vkontakte, player, last.fm, recommendations, playlist, music
+	вконтакте, ластфм, скробблинг, рекоменации, альбомы, вкусняшки, плейлисты, музыка" />
     <link rel="icon" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png" />
 
@@ -15,6 +20,17 @@
 
     <script type="text/javascript" src="/js/frameworks/jquery-1.6.2.min.js"></script>
     <script type="text/javascript" src="http://vkontakte.ru/js/api/openapi.js" charset="windows-1251"></script>
+    <script type="text/javascript">
+        $(function() {
+            preview_item = 0;
+            $(".preview_item").click(function() {
+                $(this).fadeOut("fast");
+                preview_item++;
+                preview_item %= 4;
+                $("#preview_item_" + preview_item).fadeIn("fast");
+            });
+        });
+    </script>
     <!--[if IE]>
         <script>
             // Сосите мужской хуй, мудачки вендузятские. Я заставлю ваше говно любить мой HTML 5.
@@ -28,22 +44,20 @@
     <![endif]-->
   </head>
   <body>
-
-    <div id="center_block">
-        <div id="block_inside">
-            <img src="/images/logo.png" alt="player.vas3k.ru" />
-
-            {% block body %}
-            {% endblock %}
+    <div id="header">
+        <a href="/" id="logo">player.vas3k.ru</a>
+        <a href="/register/" id="register">Регистрация</a>
+        <div id="logins">
+            <form action="/login/" method="post">
+                <span><label for="login">Логин:</label> <input type="text" id="login" name="login" /></span><br />
+                <span><label for="password">Пароль:</label> <input type="password" id="password" name="password" /></span>
+                <span><input type="submit" value="Войти" /></span>
+            </form>
         </div>
     </div>
 
-    <div id="img-block">
-        <a href="/images/preview/preview0001.png"><img src="/images/preview/small/preview0001.png" alt="preview" class="rotation-1"></a>
-        <a href="/images/preview/preview0002.png"><img src="/images/preview/small/preview0002.png" alt="preview" class="rotation-4"></a>
-        <a href="/images/preview/preview0003.png"><img src="/images/preview/small/preview0003.png" alt="preview" class="rotation-2"></a>
-        <a href="/images/preview/preview0004.png"><img src="/images/preview/small/preview0004.png" alt="preview" class="rotation-0"></a>
-    </div>
+    {% block body %}
+    {% endblock %}
 
     {% block additional_block %}
     {% endblock %}

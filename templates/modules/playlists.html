@@ -1,0 +1,30 @@
+<div class="sidebar_view">
+    <div class="sidebar_view-add" id="create_playlist">
+        <img src="/images/icons/add_circle.png" alt="" />
+        <span>создать плейлист</span>
+        <input type="text" maxlength="40" />
+    </div>
+    <div id="playlists_sidebar"></div>
+</div>
+
+<div class="with_sidebar_view">
+    <h1>
+        <span id="playlist_name"></span>
+        <span class="list-buttons" id="playlist_buttons" data-list-id="playlist_tracks" style="display: none;">
+            <span class="activator"></span>
+            <span class="list-buttons-onactive">
+                <span class="list-selectall-button">выделить всё</span>
+                <span class="list-remove-button">удалить</span>
+                <span class="list-addto-button">
+                    добавить в...
+                    <span class="add_to_popup">
+                        <span class="add_to_popup-list"></span>
+                    </span>
+                </span>
+            </span>
+        </span>
+        <span class="header_small" id="playlist_add_to_now" style="display: none;" onclick="gui.playlists_gui.addToNowplayingList();">+ добавить всё в список воспроизведения</span>
+    </h1>
+
+    <div id="playlist_tracks" class="scroll_panel sortable"></div>
+</div>

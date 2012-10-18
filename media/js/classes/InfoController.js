@@ -16,67 +16,52 @@ InfoController.prototype.handleEvent = function(event) {
 };
 
 InfoController.prototype.onTrackPlay = function() {
-    this.loadNewInfo();
+    this.saveToHistory();
 };
 
 InfoController.prototype.onSearch = function() {
     this.loadAlbums();
 };
 
-InfoController.prototype.loadNewInfo = function() {
+InfoController.prototype.saveToHistory = function() {
     var current_track = this.player.playbackController.current_track;
     var _this = this;
     $.ajax({
-        url: "/lastfm/getartistinfo",
-        data: ({
+        url: "/ajax/add_to_nowlistening",
+        data: {
             track: current_track.toJSON()
-        }),
+        },
         type: "POST",
         dataType: "json",
-        success: function (data) {
-            if (data["status"] == "OK") {
-                var simular = "";
-                for (var i = 0; i < data["artist"]["similar"].length; i++) {
-                    simular += '<a href="#" onclick="player.searchController.performSearch(\'' + data["artist"]["similar"][i] + '\');">' + data["artist"]["similar"][i] + "</a> ";
-                }
-                
-                gui.sidebar_gui.setInfoSidebar(Mustache.to_html(_this.info_template,
-                    { "name": data["artist"]["name"], "url": data["artist"]["url"],
-                        "image": data["artist"]["image"][3], "simular": simular, "bio": data["artist"]["bio"] }));
-            } else {
-                _this.player.fireEvent("NoSidebarInfo");
-            }
-        },
-        error: function() {
-            _this.player.fireEvent("NoSidebarInfo");
-        }
+        success: function (data) {},
+        error: function() {}
     });
 };
 
 InfoController.prototype.loadAlbums = function() {
-    var artist = this.player.searchController.query;
-    var api_key = this.player.last_fm_id;
-    gui.albums_gui.clearAlbums();
-    $.ajax({
-        url: "http://ws.audioscrobbler.com/2.0/",
-        data: ({
-            method: "artist.gettopalbums",
-            format: "json",
-            lang: "ru",
-            api_key: api_key,
-            artist: artist
-        }),
-        type: "GET",
-        dataType: "jsonp",
-        success: function (data) {
-            if (!data["topalbums"]["album"]) return;
-            for (var i = 0; i < data["topalbums"]["album"].length; i++) {
-                gui.albums_gui.appendAlbum(data["topalbums"]["album"][i]);
-            }
-            gui.albums_gui.initAlbums();
-        },
-        error: function() {
-        }
-    });
+//    var artist = this.player.searchController.query;
+//    var api_key = this.player.last_fm_id;
+//    gui.albums_gui.clearAlbums();
+//    $.ajax({
+//        url: "http://ws.audioscrobbler.com/2.0/",
+//        data: ({
+//            method: "artist.gettopalbums",
+//            format: "json",
+//            lang: "ru",
+//            api_key: api_key,
+//            artist: artist
+//        }),
+//        type: "GET",
+//        dataType: "jsonp",
+//        success: function (data) {
+//            if (!data["topalbums"]["album"]) return;
+//            for (var i = 0; i < data["topalbums"]["album"].length; i++) {
+//                gui.albums_gui.appendAlbum(data["topalbums"]["album"][i]);
+//            }
+//            gui.albums_gui.initAlbums();
+//        },
+//        error: function() {
+//        }
+//    });
 };
 

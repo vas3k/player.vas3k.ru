@@ -27,8 +27,6 @@ UserPlayList.prototype.getList = function(successCallback) {
     // и нужен каллбек. Если можно сразу - то
     // вызывает каллбек сама
 
-    gui.changeHash("playlist:" + this.id);
-
     var _this = this;
     if (!_this.id) return;
 
@@ -86,6 +84,22 @@ UserPlayList.prototype.push = function(tracks) {
             } else {
                 alert(data["message"]);
             }
+        }
+    });
+};
+
+UserPlayList.prototype.pushRaw = function(tracks_ids) {
+    var _this = this;
+    $.ajax({
+        url: "/ajax/playlist/add",
+        data: ({
+            id: _this.id,
+            tracks: JSON.stringify(tracks_ids)
+        }),
+        type: "POST",
+        dataType: "json",
+        success: function(data) {
+            // лист требует ручного обновления
         }
     });
 };

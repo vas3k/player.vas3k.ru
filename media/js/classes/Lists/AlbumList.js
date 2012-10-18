@@ -17,6 +17,8 @@ function AlbumList(controller, artist, album) {
     this.album = album || "";
     this.name = this.artist + " " + this.album;
     this.icon = "/images/icons/playlist.png";
+    this.raw_data = null;
+    this.mbid = "";
 }
 
 extend(AlbumList, AbstractList);
@@ -33,34 +35,45 @@ AlbumList.prototype.getList = function(successCallback) {
     // вызывает каллбек сама
 
     var _this = this;
-    $.ajax({
-        url: "http://ws.audioscrobbler.com/2.0/",
-        data: ({
-            method: "album.getInfo",
-            format: "json",
-            autocorrect: "1",
-            lang: "ru",
-            api_key: "6f557f2c836b0fff474c3b6cfcf0ccf4",
-            artist: _this.artist,
-            album: _this.album
-        }),
-        type: "GET",
-        crossDomain: true,
-        dataType: "json",
-        success: function (data) {
-            var tracks = data["album"]["tracks"]["track"];
-            if (!tracks) return;
-            var track_id = 0;
-            _this.controller.update_list_interval = setInterval(function() {
-                if (tracks[track_id]) {
-                    _this.controller.player.searchController.searchOneGoodTrack(_this.artist, tracks[track_id]["name"].toLowerCase(), _this);
+
+    var data_processing = function (data) {
+        var tracks = data["album"]["tracks"]["track"];
+        if (!tracks) return;
+        var track_id = 0;
+        _this.controller.update_list_interval = setInterval(function() {
+            if (tracks[track_id]) {
+                _this.controller.player.searchController.searchOneGoodTrack(_this.artist, tracks[track_id]["name"].toLowerCase(), function(track) {
+                    _this.push(track);
                     successCallback(_this);
-                }
-                track_id++;
-                if (track_id > tracks.length) clearInterval(_this.controller.update_list_interval);
-            }, 1100);
-        },
-        error: function() {}
-    });
+                });
+            }
+            track_id++;
+            if (track_id > tracks.length) clearInterval(_this.controller.update_list_interval);
+        }, 300);
+    };
+
+    if (this.raw_data) {
+        data_processing(this.raw_data);
+    } else {
+        $.ajax({
+            url: "http://ws.audioscrobbler.com/2.0/",
+            data: ({
+                method: "album.getInfo",
+                format: "json",
+                autocorrect: "1",
+                lang: "ru",
+                api_key: "6f557f2c836b0fff474c3b6cfcf0ccf4",
+                artist: _this.artist,
+                album: _this.album
+            }),
+            type: "GET",
+            crossDomain: true,
+            dataType: "json",
+            success: function(data) {
+                data_processing(data);
+            },
+            error: function() {}
+        });
+    }
 };
 

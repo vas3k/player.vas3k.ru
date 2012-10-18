@@ -1,0 +1,449 @@
+#top {
+    border-bottom: solid 2px #A6A6A6;
+
+    background: #eeeeee; /* Old browsers */
+    background: -moz-linear-gradient(top,  #eeeeee 0%, #c6c6c6 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#c6c6c6)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #eeeeee 0%,#c6c6c6 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #eeeeee 0%,#c6c6c6 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #eeeeee 0%,#c6c6c6 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #eeeeee 0%,#c6c6c6 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#c6c6c6',GradientType=0 ); /* IE6-9 */
+}
+
+#top-controls {
+    position: absolute;
+    top: 14px;
+    left: 25px;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+    #top-controls-prev {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: url('../images/icons/prev.png') no-repeat;
+        background-position: 50% 50%;
+        width: 35px;
+        height: 35px;
+        cursor: pointer;
+        opacity: 0.6;
+    }
+
+        #top-controls-prev:hover {
+            opacity: 1;
+        }
+
+    #top-controls-play {
+        position: absolute;
+        top: 0;
+        left: 45px;
+        width: 35px;
+        height: 35px;
+        cursor: pointer;
+        opacity: 0.6;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+    }
+
+        #top-controls-play:hover {
+            opacity: 1;
+        }
+
+        .playbutton-play {
+            background-image: url('../images/icons/play.png');
+        }
+
+        .playbutton-pause {
+            background-image: url('../images/icons/pause.png');
+        }
+
+    #top-controls-next {
+        position: absolute;
+        top: 0;
+        left: 80px;
+        background: url('../images/icons/next.png') no-repeat;
+        background-position: 50% 50%;
+        width: 35px;
+        height: 35px;
+        cursor: pointer;
+        opacity: 0.6;
+    }
+
+        #top-controls-next:hover {
+            opacity: 1;
+        }
+
+    #top-controls-volume {
+        position: absolute;
+        top: 10px;
+        left: 140px;
+        width: 100px;
+        height: 20px;
+    }
+
+        #volume_slider {
+            position: absolute;
+            top: 3px;
+            left: 0;
+            width: 100px;
+            clear: both;
+            height: 10px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            background-color: #B6B6B6;
+            box-shadow: 1px 1px 5px #6F6F6F inset;
+        }
+
+            #volume_slider .ui-slider-handle {
+                position: absolute;
+                top: -3px;
+                width: 15px;
+                height: 15px;
+                border-radius: 10px;
+                -moz-border-radius: 10px;
+                border: solid 1px #B3B3B3;
+                background-color: #FEFEFE;
+                box-shadow: 1px 1px 1px #B3B3B3;
+            }
+
+            #volume_slider .ui-slider-handle:active {
+                background-color: #DEDEDE;
+            }
+
+    #top-info {
+        position: absolute;
+        top: 3px;
+        left: 300px;
+        right: 300px;
+        bottom: 3px;
+        border: solid 1px #8e8f93;
+        border-radius: 3px;
+        box-shadow: 0 0 4px #929395 inset;
+
+        background: #bfc0c5; /* Old browsers */
+        background: -moz-linear-gradient(top,  #bfc0c5 0%, #e3e4e6 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#bfc0c5), color-stop(100%,#e3e4e6)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  #bfc0c5 0%,#e3e4e6 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top,  #bfc0c5 0%,#e3e4e6 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top,  #bfc0c5 0%,#e3e4e6 100%); /* IE10+ */
+        background: linear-gradient(to bottom,  #bfc0c5 0%,#e3e4e6 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bfc0c5', endColorstr='#e3e4e6',GradientType=0 ); /* IE6-9 */
+    }
+
+        #top-info-tweet {
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            left: 55px;
+            opacity: 0.5;
+        }
+
+            #top-info-tweet:hover {
+                opacity: 1;
+            }
+
+        #top-info-nowplaying {
+            cursor: pointer;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            opacity: 0.5;
+        }
+
+            #top-info-nowplaying:hover {
+                opacity: 1;
+            }
+
+        #top-info-cover {
+            position: absolute;
+            top: 9px;
+            left: 10px;
+            width: 35px;
+            height: 35px;
+            background-color: #BBB;
+            box-shadow: 1px 1px 3px #929395;
+            background-size: cover;
+        }
+
+            #top-info-cover img {
+                display: none;
+                margin: 2px 0 2px 2px;
+                cursor: pointer;
+            }
+
+            #top-info-cover:hover img {
+                display: inline-block;
+            }
+
+        #top-info-title {
+            position: absolute;
+            top: 5px;
+            left: 80px;
+            right: 80px;
+            text-align: center;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        #top-info-artist {
+            position: absolute;
+            top: 20px;
+            left: 80px;
+            right: 80px;
+            text-align: center;
+            font-size: 11px;
+            color: #555;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        #top-info-progress {
+            position: absolute;
+            bottom: 0;
+            left: 100px;
+            right: 100px;
+            height: 15px;
+            font-size: 10px;
+        }
+
+            #top-info-progress-slider {
+                display: none;
+                position: absolute;
+                top: 4px;
+                left: 40px;
+                right: 40px;
+                height: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
+                background-color: #B6B6B6;
+                box-shadow: 1px 1px 2px #6F6F6F inset;
+            }
+
+                #loading_bar {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 5px;
+                    width: 50%;
+                    -moz-border-radius: 5px;
+                    border-radius: 5px;
+                    z-index: 10;
+                    background-color: #A9A9A9;
+                }
+
+                #top-info-progress-slider .ui-slider-handle {
+                    position: absolute;
+                    top: -3px;
+                    width: 9px;
+                    height: 9px;
+                    border-radius: 10px;
+                    -moz-border-radius: 10px;
+                    border: solid 1px #B3B3B3;
+                    background-color: #FEFEFE;
+                    box-shadow: 1px 1px 1px #B3B3B3;
+                    z-index: 20;
+                }
+
+            #top-info-progress-left_time {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 30px;
+                text-align: right;
+                color: #555;
+            }
+
+            #top-info-progress-right_time {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 30px;
+                color: #555;
+            }
+
+    #top-search {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+
+        #top-search input {
+            border: solid 1px #BCBCBC;
+            box-shadow: 0 1px 1px #D9D9D9 inset;
+            border-radius: 10px;
+            padding: 3px;
+            font-size: 11px;
+            width: 180px;
+        }
+
+    #top-buttons {
+        position: absolute;
+        top: 0;
+        right: 20px;
+        width: 100px;
+        height: 20px;
+    }
+
+        #top-buttons img {
+            float: right;
+            margin: 3px;
+            opacity: 0.6;
+        }
+
+        #top-buttons img:hover {
+            opacity: 1;
+        }
+
+#nowplaying_list {
+    display: none;
+    position: absolute;
+    top: 47px;
+    right: 200px;
+    width: 250px;
+    height: 450px;
+    background-color: #EEEEEE;
+    border: solid 1px #ACACAC;
+    border-radius: 5px;
+    z-index: 200;
+    box-shadow: 1px 1px 10px #ACACAC;
+}
+
+    #nowplaying_list:after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: -7px;
+        right: 120px;
+        width: 10px;
+        height: 10px;
+        background: #F7F7F7;
+        border-right: 1px solid #ACACAC;
+        border-bottom: 1px solid #ACACAC;
+        -moz-transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+        -o-transform: rotate(-135deg);
+        transform: rotate(-135deg);
+    }
+
+    #nowplaying_list-header {
+        padding: 5px;
+        color: #CCC;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        border-bottom: solid 1px #D2D2D2;
+        box-shadow: 1px 1px 2px #D2D2D2;
+
+        background: #F7F7F7; /* Old browsers */
+        background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f6f6f6)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 100%); /* IE10+ */
+        background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 ); /* IE6-9 */
+    }
+
+        #nowplaying_list-header strong {
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        #nowplaying_list-header #shuffle {
+            float: right;
+            width: 16px;
+            height: 16px;
+            background: transparent url("../images/icons/shuffle.png") no-repeat 50% 50%;
+            cursor: pointer;
+            opacity: 0.5;
+        }
+
+        #nowplaying_list-header #shuffle:hover {
+            opacity: 0.9;
+        }
+
+    #nowplaying_list-list {
+        position: absolute;
+        top: 25px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+        #nowplaying_list-list .inactive {
+            opacity: 0.5;
+        }
+
+        .nowplaying_list-item {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            border-bottom: solid 1px #DEDEDE;
+        }
+
+            .nowplaying_list-item .item-buttons {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 20px;
+                display: none;
+            }
+
+                .nowplaying_list-item .item-buttons img {
+                    margin: 17px 6px;
+                    cursor: pointer;
+                }
+
+                .nowplaying_list-item:hover .item-buttons {
+                    display: block;
+                }
+
+            .nowplaying_list-item .item-clickable {
+                position: absolute;
+                top: 5px;
+                left: 25px;
+                width: 220px;
+                height: 40px;
+                cursor: pointer;
+            }
+
+                .nowplaying_list-item .item-img {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 40px;
+                    height: 40px;
+                    background-color: #A9A9A9;
+                    background-position: 50% 50%;
+                    background-size: cover;
+                    box-shadow: 1px 1px 3px #929395;
+                }
+
+                .nowplaying_list-item .item-title {
+                    position: absolute;
+                    top: 5px;
+                    left: 45px;
+                    width: 170px;
+                    color: #111;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+
+                .nowplaying_list-item .item-artist {
+                    position: absolute;
+                    top: 20px;
+                    left: 45px;
+                    width: 170px;
+                    color: #828282;
+                    font-size: 11px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }

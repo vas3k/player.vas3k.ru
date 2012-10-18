@@ -1,4 +1,4 @@
-function RecommendList(controller, name) {
+function RecommendList(controller, params) {
     this.controller = controller;
     this.current_index = 0;
     this.list = [];
@@ -11,7 +11,8 @@ function RecommendList(controller, name) {
     this.show_deletetrack = false;
     this.id = "";
     this.label = "";
-    this.name = name || "";
+    this.name = params["name"] || "";
+    this.cover = params["cover"] || "";
     this.icon = "/images/icons/recommendations.png";
 }
 

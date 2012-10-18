@@ -1,0 +1,63 @@
+
+<div class="search">
+    <h1>Поиск исполнителя</h1>
+    <input type="text" name="query" class="search-query" id="artist-search" />
+    <button class="search-button">Поиск</button>
+
+    <div class="clearfix"></div>
+
+    <div class="search-params"></div>
+
+    <div class="search-links">
+        <a href="#" onclick="player.listController.saveSearch($('#artist-search').val());">сохранить</a>
+        <a href="#" onclick="gui.artist_gui.clearSearchBox();">очистить</a>
+    </div>
+</div>
+
+<div id="artist-info">
+    <h1 id="artist-info-name"></h1>
+    <h1 id="artist-info-subtitle"></h1>
+    <div id="artist-info-img"></div>
+    <div id="artist-info-bio"></div>
+    <div id="artist-info-similar"></div>
+</div>
+
+<div class="cover-view" id="artist_covers">
+    <div id="cover-info" style="display: none;">
+        <div id="cover-info-arrow"></div>
+        <div id="cover-info-inside">
+            <div>
+                <span id="cover-info-title"></span>
+                <span class="list-buttons" data-list-id="cover-info-tracks">
+                    <span class="activator"></span>
+                    <span class="list-buttons-onactive">
+                        <span class="list-selectall-button">выделить всё</span>
+                        <span class="list-addto-button">
+                            добавить в...
+                            <span class="add_to_popup">
+                                <span class="add_to_popup-list"></span>
+                            </span>
+                        </span>
+                    </span>
+                </span>
+                <span class="header_small" id="album_add_to_now" style="display: none;" onclick="gui.artist_gui.addToNowplayingList();">+ добавить весь альбом в список воспроизведения</span>
+            </div>
+            <div id="cover-info-artist"></div>
+
+            <div id="cover-info-tracks"></div>
+
+{#            <div id="cover-info-lists">#}
+{#                <div class="cover-info-list">#}
+{#                    <h1>Top tracks</h1>#}
+{#                    <div class="items"></div>#}
+{#                </div>#}
+{##}
+{#                <div class="cover-info-list">#}
+{#                    <h1>Top tracks</h1>#}
+{#                    <div class="items"></div>#}
+{#                </div>#}
+{#            </div>#}
+        </div>
+        <div id="cover-info-bgcover"></div>
+    </div>
+</div>

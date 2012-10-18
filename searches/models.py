@@ -25,7 +25,7 @@ class Searches(models.Model):
     )
 
     def for_json(self):
-        return { "_id": self.id, "name": self.query }
+        return { "_id": self.id, "name": self.query, "date": self.time.strftime("%d.%m.%Y %H:%M") }
 
     def __unicode__(self):
         return u"Поиск %s" % self.query

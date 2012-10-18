@@ -9,19 +9,21 @@ function Track() {
     this.lyrics_id = 0;
 }
 
-Track.template  = '<li id="{{owner_id}}_{{aid}}" class="track" data-artist="{{artist}}" data-title="{{title}}" data-url="{{url}}">' +
-            '<input type="checkbox"> ' +
-            '<img src="/images/icons/play.png" alt=">" class="playbutton"> ' +
-            '<span class="playlist_trackname"><b><span class="playlist_artist">{{artist}}</span></b> ' +
-            '<span class="playlist_title">{{title}}</span></span> ' +
-            '<img src="/images/icons/sortable.png" alt="=" title="Сортировать" class="sort_helper" />' +
-            '<span class="time">{{duration}}</span> ' +
-            '{{#show_deletetrack}}<img src="/images/icons/delete.png" alt="X" title="Удалить трек" class="deletebutton"> {{/show_deletetrack}}' +
-            '{{#lyrics_id}}<img src="/images/icons/lyrics.png" alt="X" data-lyrics="{{{lyrics_id}}}" title="Показать текст" class="lyricsbutton"> {{/lyrics_id}}' +
-            '<img src="/images/icons/attention.png" alt="Ban" title="Добавить в бан-лист" class="banlistbutton" />' +
-            '<a href="{{url}}"><img src="/images/icons/arrow_down.png" alt="X" title="Скачать mp3 (это не пермалинк, он меняется!)" class="downloadbutton" /></a> ' +
-            '<img src="/images/icons/link.png" alt="X" title="Открыть в отдельном окне" class="linkbutton"> ' +
-        '</li>';
+Track.template = '<div class="track" id="{{owner_id}}_{{aid}}" class="track" data-list="{{list}}" data-artist="{{artist}}" data-title="{{title}}" data-url="{{url}}">' +
+    '<div class="track-edit"><input type="checkbox" /></div>' +
+    '<div class="track-play"></div>' +
+    '<div class="track-title">{{title}}</div>' +
+    '<div class="track-artist">{{artist}}</div>' +
+    '<div class="track-options">' +
+    '{{#lyrics_id}}<div class="track-lyrics" title="Слова" data-lyrics="{{lyrics_id}}"></div>{{/lyrics_id}}' +
+    '<div class="track-small" title="Открыть в маленьком плеере"></div>' +
+    '{{#show_deletetrack}}<div class="track-delete" title="Удалить"></div>{{/show_deletetrack}}' +
+    '{{#show_sort}}<div class="track-sort" title="Сортировка"></div>{{/show_sort}}' +
+    '</div></div>';
+
+Track.toClass = function(str) {
+    return encodeURIComponent(str).replace(new RegExp("[%.]", 'g'), "").slice(0, 30);
+};
 
 Track.prototype.dummy = function() {
     if (!this.dummy_track) {

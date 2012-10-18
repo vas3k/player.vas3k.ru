@@ -1,20 +1,19 @@
 {% extends "static_layout.html" %}
 
 {% block title %}
-Рега
+Регистрация —
 {% endblock %}
 
 {% block body %}
-<form action="/register/" method="post" id="regform">
-    <span><label for="login">Логин:&nbsp;&nbsp;</label> <input type="text" id="login" name="login" /></span>
-    <span><label for="password">Пассворд:&nbsp;&nbsp;</label> <input type="text" id="password" name="password" /></span>
-    <span><input type="submit" value="Регистрация" /></span>
-</form>
+    <div id="bigbody">
+        <form action="/register/" method="post" id="regform">
+            <span><label for="login">Логин:&nbsp;&nbsp;</label> <input type="text" id="login" name="login" /></span><br />
+            <span><label for="password">Пароль:&nbsp;&nbsp;</label> <input type="text" id="password" name="password" /></span><br />
+            <span><input type="submit" value="Регистрация" /></span>
+        </form>
+    </div>
 {% endblock %}
 
 
 {% block additional_block %}
-    <div style="position: absolute; top: 40%; left: 50%; margin-left: -500px; width: 300px; text-align: right; background-color: rgba(255, 255, 255, 0); z-index: 20; padding: 20px;">
-        <b>Мы обновились</b><br/><br/>И сменили СУБД.<br/> Поэтому вам придется <a href="/register/">зарегистрироваться</a> заново с любым ником и
-        затем пройти по <a href="http://p.vas3k.ru/migrate/">этой ссылке</a> чтобы импортировать свои старые данные, залогинившись под старым юзером и паролем. После этого можно о них забыть.</div>
 {% endblock %}

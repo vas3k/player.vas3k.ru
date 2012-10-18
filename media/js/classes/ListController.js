@@ -3,13 +3,13 @@ function ListController(player) {
     this.player = player;
     this.shown_list = false;
     this.update_list_interval = undefined; // интервал, используется при загрузке потреково
-    this.lists = { "nowplaying": new NowPlayingList(this),
-                   "recent_searches":
-                        { "title": "Последние поиски", "items": {} },
-                   "searches":
-                        { "title": "Сохраненные поиски", "items": {} },
-                   "playlists":
-                        { "title": "Плейлисты", "items": {} },
+
+    this.nowplaying = new NowPlayingList(this);
+
+    this.lists = { "nowplaying": null,
+                   "recent_searches": null,
+                   "searches": null,
+                   "playlists": null,
                    "other":
                         { "title": "Вкусняшки", "items": {
                                 "my_vk": new MyAudioList(this),
@@ -24,15 +24,13 @@ function ListController(player) {
                         { "title": "Топ радио", "items": [] }
     };
 
-    this.loadHistorySearches(this.lists["recent_searches"]["items"]);
-    this.loadSavedSearches(this.lists["searches"]["items"]);
-    this.loadPlaylists(this.lists["playlists"]["items"]);
-    this.loadRecommendations(this.lists["recommendations"]["items"]);
-    this.loadRadios(this.lists["radios"]["items"]);
+//    this.loadPlaylists(this.lists["playlists"]["items"]);
+//    this.loadRecommendations(this.lists["recommendations"]["items"]);
+//    this.loadRadios(this.lists["radios"]["items"]);
 }
 
-ListController.prototype.loadHistorySearches = function(items) {
-    items = items || this.lists["recent_searches"]["items"];
+ListController.prototype.loadHistorySearches = function() {
+    var items = [];
     var _this = this;
     $.ajax({
         url: "/ajax/searchhistory/list",
@@ -46,19 +44,19 @@ ListController.prototype.loadHistorySearches = function(items) {
                     list.is_deletable = false;
                     items[list.id] = list;
                 }
-                gui.sidebar_gui.renderSidebar(_this.lists);
+                gui.user_gui.updateSearchHistory(items);
             } else {
-                _this.player.fireEvent("SidebarUpdateError");
+                _this.player.fireEvent("SearchHistoryUpdateError");
             }
         },
         error: function () {
-            _this.player.fireEvent("SidebarUpdateError");
+            _this.player.fireEvent("SearchHistoryUpdateError");
         }
     });
 };
 
-ListController.prototype.loadSavedSearches = function(items) {
-    items = items || this.lists["searches"]["items"];
+ListController.prototype.loadSavedSearches = function() {
+    var items = [];
     var _this = this;
     $.ajax({
         url: "/ajax/searches/list",
@@ -68,50 +66,23 @@ ListController.prototype.loadSavedSearches = function(items) {
             if (data["status"] == "OK") {
                 var list;
                 for (var i = 0; i < data["lists"].length; i++) {
-                    list = new SearchList(_this, data["lists"][i]["name"]);
+                    list = new SearchList(_this, data["lists"][i]);
                     list.id =  data["lists"][i]["_id"];
                     items[list.id] = list;
                 }
-                gui.sidebar_gui.renderSidebar(_this.lists);
+                gui.user_gui.updateSavedSearches(items);
             } else {
-                _this.player.fireEvent("SidebarUpdateError");
+                _this.player.fireEvent("SavedSearchesSidebarUpdateError");
             }
         },
         error: function () {
-            _this.player.fireEvent("SidebarUpdateError");
+            _this.player.fireEvent("SavedSearchesSidebarUpdateError");
         }
     });
 };
 
-ListController.prototype.loadPlaylists = function(items) {
-    items = items || this.lists["playlists"]["items"];
-    var _this = this;
-    $.ajax({
-        url: "/ajax/playlist/list",
-        type: "POST",
-        dataType: "json",
-        success: function(data) {
-            if (data["status"] == "OK") {
-                var list;
-                for (var i = 0; i < data["lists"].length; i++) {
-                    list = new UserPlayList(_this, data["lists"][i]["name"]);
-                    list.id =  data["lists"][i]["_id"];
-                    list.label = data["lists"][i]["track_count"];
-                    items[list.id] = list;
-                }
-                gui.sidebar_gui.renderSidebar(_this.lists);
-            } else {
-                _this.player.fireEvent("SidebarUpdateError");
-            }
-        },
-        error: function () {
-            _this.player.fireEvent("SidebarUpdateError");
-        }
-    });
-};
-
-ListController.prototype.loadRecommendations = function(items) {
-    items = items || this.lists["recommendations"]["items"];
+ListController.prototype.loadRecommendations = function() {
+    var items = [];
     var _this = this;
     $.ajax({
         url: "/lastfm/getrecommended",
@@ -119,59 +90,107 @@ ListController.prototype.loadRecommendations = function(items) {
         dataType: "json",
         success: function (data) {
             if (data["status"] == "OK") {
-                var min = data["artists"].length < 7 ? data["artists"].length : 7;
+                var min = data["artists"].length < 10 ? data["artists"].length : 10;
                 var list;
                 for (var i = 0; i < min; i++) {
                     list = new RecommendList(_this, data["artists"][i]);
                     list.id = data["artists"][i];
                     items[i] = list;
                 }
-                gui.sidebar_gui.renderSidebar(_this.lists);
+                gui.user_gui.updateRecommendations(items);
             } else {
-                _this.player.fireEvent("SidebarUpdateError");
+                gui.user_gui.ui_recommendations.html("Необходимо <a href='#' onclick='return Player.toggleLastfm();'>авторизоваться</a> в last.fm");
+                _this.player.fireEvent("RecommendationsUpdateError");
             }
         },
         error: function() {
-            _this.player.fireEvent("SidebarUpdateError");
+            gui.user_gui.ui_recommendations.html("Ошибка сервера");
+            _this.player.fireEvent("RecommendationsUpdateError");
         }
     });
 };
 
-ListController.prototype.loadRadios = function(items) {
-    items = items || this.lists["radios"]["items"];
+ListController.prototype.loadBigRecommendations = function() {
+    var items = [];
     var _this = this;
     $.ajax({
-        url: "/radio/get_list",
+        url: "/lastfm/getrecommended",
         type: "POST",
         dataType: "json",
         success: function (data) {
             if (data["status"] == "OK") {
-                var list;
-                for (var i = 0; i < data.radios.length; i++) {
-                    list = new RadioList(_this, data.radios[i].name);
-                    list.id = data.radios[i].id;
-                    items[list.id] = list;
-                }
-                gui.sidebar_gui.renderSidebar(_this.lists);
+                gui.recommendations_gui.updateRecommendations(data["artists"]);
             } else {
-                _this.player.fireEvent("SidebarUpdateError");
+                gui.recommendations_gui.ui_recommend_covers.html("Необходимо авторизоваться в last.fm");
+                _this.player.fireEvent("BigRecommendationsUpdateError");
             }
         },
         error: function() {
-            _this.player.fireEvent("SidebarUpdateError");
+            gui.recommendations_gui.ui_recommend_covers.html("Ошибка сервера");
+            _this.player.fireEvent("BigRecommendationsUpdateError");
         }
     });
 };
 
-ListController.prototype.loadAlbumTracks = function(artist, title) {
-    var album = new AlbumList(this, artist, title);
-    this.shown_list = album;
-    album.getList(gui.list_gui.showList);
+ListController.prototype.loadListeningHistory = function(items) {
+    var _this = this;
+    setTimeout(function () {
+        _this.getListByName("other", "recent").getList(gui.music_gui.updateListeningHistory);
+    }, 0);
+};
+
+ListController.prototype.loadVkAudio = function(items) {
+    var _this = this;
+    setTimeout(function () {
+        _this.getListByName("other", "my_vk").getList(gui.music_gui.updateVk);
+    }, 0);
+};
+
+//
+//ListController.prototype.loadRadios = function(items) {
+//    items = items || this.lists["radios"]["items"];
+//    var _this = this;
+//    $.ajax({
+//        url: "/radio/get_list",
+//        type: "POST",
+//        dataType: "json",
+//        success: function (data) {
+//            if (data["status"] == "OK") {
+//                var list;
+//                for (var i = 0; i < data.radios.length; i++) {
+//                    list = new RadioList(_this, data.radios[i].name);
+//                    list.id = data.radios[i].id;
+//                    items[list.id] = list;
+//                }
+//                gui.sidebar_gui.renderSidebar(_this.lists);
+//            } else {
+//                _this.player.fireEvent("SidebarUpdateError");
+//            }
+//        },
+//        error: function() {
+//            _this.player.fireEvent("SidebarUpdateError");
+//        }
+//    });
+//};
+//
+//ListController.prototype.loadAlbumTracks = function(artist, title) {
+//    var album = new AlbumList(this, artist, title);
+//    this.shown_list = album;
+//    album.getList(gui.list_gui.showList);
+//};
+
+ListController.prototype.replaceNowplayingList = function(list_object) {
+    this.nowplaying.list = list_object.list;
+    gui.list_gui.updateNowplayingList(this.nowplaying);
+};
+
+ListController.prototype.addToNowplayingList = function(list_object) {
+    this.nowplaying.list = this.nowplaying.list.concat(list_object.list);
+    gui.list_gui.updateNowplayingList(this.nowplaying);
 };
 
 ListController.prototype.setShownAsPlayingList = function() {
-    if (!this.shown_list) return;
-    this.lists["nowplaying"] = this.shown_list;
+    alert("NONONO");
 };
 
 ListController.prototype.showList = function(show_list) {
@@ -179,13 +198,13 @@ ListController.prototype.showList = function(show_list) {
     var _this = this;
     setTimeout(function () {
         _this.shown_list = show_list;
-        show_list.getList(gui.showList); // метод отрисовки передается как каллбек
+        show_list.getList(gui.active_tab_gui.showList); // метод отрисовки передается как каллбек
     }, 0);
 };
-
-ListController.prototype.showMore = function() {
-    this.shown_list.getMore(gui.showList);
-};
+//
+//ListController.prototype.showMore = function() {
+//    this.shown_list.getMore(gui.active_tab_gui.showList);
+//};
 
 ListController.prototype.getListByName = function(type, name) {
     if (!type) return [];
@@ -198,23 +217,21 @@ ListController.prototype.getListByName = function(type, name) {
 
 ListController.prototype.getFirstTrack = function() {
     // Выбрать первый трек из nowplaying
-    var nowplaying = this.lists["nowplaying"];
-    if (nowplaying.length == 0) {
+    if (this.nowplaying.length == 0) {
         return false;
     }
 
-    return nowplaying.getTrack(0);
+    return this.nowplaying.getTrack(0);
 };
 
 ListController.prototype.getNextTrack = function() {
     // Выбрать следующий из играющего листа
-    var nowplaying = this.lists["nowplaying"];
-    if (nowplaying.length == 0) {
+    if (this.nowplaying.length == 0) {
         return false;
     }
 
     try {
-        return nowplaying.getNext();
+        return this.nowplaying.getNext();
     } catch (e) { // TrackOverflow
         return false;
     }
@@ -222,13 +239,12 @@ ListController.prototype.getNextTrack = function() {
 
 ListController.prototype.getPreviousTrack = function() {
     // Выбрать предыдущий из играющего листа
-    var nowplaying = this.lists["nowplaying"];
-    if (nowplaying.length == 0) {
+    if (this.nowplaying.length == 0) {
         return false;
     }
 
     try {
-        return nowplaying.getPrev();
+        return this.nowplaying.getPrev();
     } catch (e) { // TrackOverflow
         return false;
     }
@@ -244,8 +260,7 @@ ListController.prototype.createPlaylist = function(name) {
             dataType: "json",
             success: function(data) {
                 if (data["status"] == "OK") {
-                    gui.sidebar_gui.toggleCreatePlaylistForm();
-                    _this.loadPlaylists();
+                    gui.playlists_gui.loadPlaylists();
                     _this.player.fireEvent("PlaylistCreated");
                 } else {
                     _this.player.fireEvent("PlayistCreateError");
@@ -268,8 +283,7 @@ ListController.prototype.removePlaylist = function(id) {
             dataType: "json",
             success: function(data) {
                 if (data["status"] == "OK") {
-                    delete _this.lists["playlists"]["items"][id];
-                    _this.loadPlaylists();
+                    gui.playlists_gui.loadPlaylists();
                     _this.player.fireEvent("PlaylistRemoved");
                 } else {
                     _this.player.fireEvent("PlayistRemoveError");
@@ -282,8 +296,8 @@ ListController.prototype.removePlaylist = function(id) {
     }
 };
 
-ListController.prototype.saveSearch = function() {
-    var query = this.player.searchController.query;
+ListController.prototype.saveSearch = function(query) {
+    var query = query || this.player.searchController.query;
     if (!query) return;
     var _this = this;
     $.ajax({
@@ -332,7 +346,7 @@ ListController.prototype.removeSavedSearch = function(id) {
 
 ListController.prototype.addToLists = function(list_name, list_object) {
     this.lists[list_name].items[list_object.id] = list_object;
-    gui.sidebar_gui.renderSidebar(this.lists);
+//    gui.sidebar_gui.renderSidebar(this.lists);
 };
 
 ListController.prototype.addTo = function(type, id, track) {
@@ -378,10 +392,10 @@ ListController.prototype.applyRemoveSelected = function() {
 };
 
 ListController.prototype.shuffle = function() {
-    this.shown_list.list.sort(function (a, b) {
+    this.nowplaying.list.sort(function (a, b) {
         var max = 1;
         var min = -1;
         return Math.floor(Math.random() * (max - min + 1)) + min;
     });
-    this.showList(this.shown_list);
+    gui.list_gui.updateNowplayingList(this.nowplaying);
 };

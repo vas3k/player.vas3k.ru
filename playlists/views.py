@@ -7,7 +7,7 @@ import simplejson as json
 @render_as_json
 @login_required
 def list(request):
-    playlist_objects = Playlist.objects.filter(user=request.user)
+    playlist_objects = Playlist.objects.filter(user=request.user).order_by("-id")
     playlists = [pl.for_json() for pl in playlist_objects]
     return { "status": "OK", "count": len(playlists), "lists": playlists }
 
@@ -48,10 +48,11 @@ def add(request):
         return { "status": "NeOK", "message": u"Достигнут предел в 150 треков. Создайте новый плейлист или удалите треки из этого" }
 
     for track in tracks:
-        track = PlaylistTracks.objects.create(playlist=playlist, track_id=track)
-        track.save()
-        if track.track_position >= 150:
-            return { "status": "NeOK", "message": u"Некоторые треки не были добавлены потому что достигнут предел в 150 треков. Удалите что-нибудь или перенесите в другой плейлист" }
+        if PlaylistTracks.objects.filter(playlist=playlist, track_id=track).count() == 0:
+            track = PlaylistTracks.objects.create(playlist=playlist, track_id=track)
+            track.save()
+            if track.track_position >= 150:
+                return { "status": "NeOK", "message": u"Некоторые треки не были добавлены потому что достигнут предел в 150 треков. Удалите что-нибудь или перенесите в другой плейлист" }
 
     return { "status": "OK", "message": u"Треки добавлены в плейлист" }
 
@@ -63,9 +64,10 @@ def get(request):
     if not id:
         return { "status": "NeOK", "message": u"No ID" }
 
+    playlist = Playlist.objects.get(id=id)
     track_objects = PlaylistTracks.objects.filter(playlist__id=id).order_by("track_position")[:150]
     track_list = [t.for_json() for t in track_objects]
-    return { "status": "OK", "list": { "_id": id, "tracks": track_list }}
+    return { "status": "OK", "list": { "_id": id, "tracks": track_list, "title": playlist.title }}
 
 @render_as_json
 @login_required
@@ -76,7 +78,7 @@ def delete(request):
         return { "status": "NeOK", "message": u"No ID" }
 
     try:
-        PlaylistTracks.objects.get(track_id=track_id, playlist__id=playlist_id).delete()
+        PlaylistTracks.objects.filter(track_id=track_id, playlist__id=playlist_id).delete()
         return { "status": "OK", "message": u"Трек с ID %s удален" % track_id }
     except Exception, ex:
         return { "status": "NeOK", "message": u"Проблема с удалением из плейлиста: %s" % ex }

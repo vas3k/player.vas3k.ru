@@ -69,7 +69,7 @@ class SearchesHistory(models.Model):
     )
 
     def for_json(self):
-        return "%s" % self.query
+        return { "name": "%s" % self.query, "date": self.time.strftime("%d.%m.%Y %H:%M") }
 
     def __unicode__(self):
         return u"Поиск %s" % self.query

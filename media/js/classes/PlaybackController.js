@@ -5,13 +5,14 @@ function PlaybackController(player) {
     this.current = undefined;
     this.is_playing = false;
     this.volume = this.player.storage["volume"] || 100;
-    this.repeat_state = this.player.storage["repeat"] || 0; // 0 - repeat all, 1 - repeat one, 2 - no repeat
+    this.repeat_state = 0;//this.player.storage["repeat"] || 0; // 0 - repeat all, 1 - repeat one, 2 - no repeat
 }
 
 PlaybackController.prototype.playTrack = function(track) {
     this.current_track = track;
     gui.activateControls(track);
     gui.list_gui.highlightTrackById(track.id);
+    gui.ui_slider.show();
 
     if (this.is_playing) {
         this.pause();
@@ -30,19 +31,18 @@ PlaybackController.prototype.playTrack = function(track) {
         volume: _this.volume,
         onconnect: function () {
             _this.player.fireEvent("TrackPlay");
-            gui.ui_playbutton.button("option", "icons", { primary: 'ui-icon-pause' }); //TODO: FIXME: не красиво так делать
+            gui.ui_playbutton.removeClass("playbutton-play").addClass("playbutton-pause");
         },
         onload: function() {
-            gui.ui_bar.removeClass("progressbar-ani");
-            gui.ui_bar.progressbar("value", 0);
-            gui.ui_smallinfo.fadeOut("slow");
+            gui.ui_bar.css("width", "0");
+            //gui.ui_smallinfo.fadeOut("slow");
 
             // Время скробблинга (либо половина, либо 320 секунд)
             this.scrobble_time = Math.min(this.duration / 2, 320000);
         },
         whileloading: function () {
-            gui.ui_smallinfo.html("загружено: " + parseInt(this.bytesLoaded / 1024) + " из " + parseInt(this.bytesTotal / 1024) + " кБ");
-            gui.ui_bar.progressbar("value", parseInt(this.bytesLoaded / this.bytesTotal * 100));
+            //gui.ui_smallinfo.html("загружено: " + parseInt(this.bytesLoaded / 1024) + " из " + parseInt(this.bytesTotal / 1024) + " кБ");
+            gui.ui_bar.css("width", parseInt(this.bytesLoaded / this.bytesTotal * 100) + "%");
         },
         whileplaying: function () {
             gui.ui_slider.slider("value", _this.current.position / 10);
@@ -61,7 +61,7 @@ PlaybackController.prototype.play = function() {
     // Играем текущий установленный трек
     // Установить можно через setCurrent
     if (this.current) {
-        gui.ui_playbutton.button("option", "icons", { primary: 'ui-icon-pause' }); //TODO: FIXME: не красиво так делать
+        gui.ui_playbutton.removeClass("playbutton-play").addClass("playbutton-pause");
         this.is_playing = true;
         soundManager.play('current');
         this.player.fireEvent("TrackPlay");

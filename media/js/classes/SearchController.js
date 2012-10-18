@@ -21,21 +21,39 @@ SearchController.prototype.handleEvent = function(event) {
 };
 
 SearchController.prototype.onNoSidebarInfo = function() {
-    var search_engine = this.search_engines[this.default_search_engine];
-    setTimeout(function() {
-        search_engine.loadUserInfo(gui.sidebar_gui.showUserInfoSidebar);
-    }, 0);
 };
+//
+//SearchController.prototype.performSearch = function(query, search_engine_id) {
+//    search_engine_id = search_engine_id || this.default_search_engine;
+//    query = this.clearQuery(query);
+//    this.query = query;
+//    var search = new SearchList(this.player.listController, query);
+//    search.is_deletable = false;
+//    this.player.listController.addToLists("recent_searches", search);
+//    this.player.listController.showList(search);
+//    this.player.fireEvent("Search");
+//};
 
-SearchController.prototype.performSearch = function(query, search_engine_id) {
+SearchController.prototype.musicSearch = function(query, search_engine_id) {
     search_engine_id = search_engine_id || this.default_search_engine;
     query = this.clearQuery(query);
     this.query = query;
-    var search = new SearchList(this.player.listController, query);
+    var search = new MusicSearchList(this.player.listController, query);
     search.is_deletable = false;
-    this.player.listController.addToLists("recent_searches", search);
+//    this.player.listController.addToLists("recent_searches", search);
     this.player.listController.showList(search);
-    this.player.fireEvent("Search");
+//    this.player.fireEvent("Search");
+};
+
+SearchController.prototype.artistSearch = function(query, search_engine_id) {
+    search_engine_id = search_engine_id || this.default_search_engine;
+    query = this.clearQuery(query);
+    this.query = query;
+    var search = new ArtistSearchList(this.player.listController, query);
+    search.is_deletable = false;
+    //this.player.listController.addToLists("recent_searches", search);
+    this.player.listController.showList(search);
+//    this.player.fireEvent("Search");
 };
 
 SearchController.prototype.activate = function(search_engine_id) {
@@ -92,11 +110,11 @@ SearchController.prototype.clearQuery = function(query) {
     return query.replace(new RegExp("<",'g'), "").replace(new RegExp(">",'g'), "");
 };
 
-SearchController.prototype.searchOneGoodTrack = function(artist, title, successCallbackObject, search_engine_id) {
+SearchController.prototype.searchOneGoodTrack = function(artist, title, successCallback, search_engine_id) {
     search_engine_id = search_engine_id ||this.default_search_engine;
     artist = artist.toLowerCase();
     title = title.toLowerCase();
-    this.search_engines[search_engine_id].searchOneGoodTrack(artist, title, successCallbackObject);
+    this.search_engines[search_engine_id].searchOneGoodTrack(artist, title, successCallback);
 };
 
 SearchController.prototype.getLyrics = function(lyrics_id, successCallback, search_engine_id) {

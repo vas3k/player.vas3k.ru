@@ -6,7 +6,7 @@ from searches.models import Searches
 @render_as_json
 @login_required
 def list(request):
-    search_objects = Searches.objects.filter(user=request.user)
+    search_objects = Searches.objects.filter(user=request.user).order_by("-id")
     searches = [s.for_json() for s in search_objects]
     return { "status": "OK", "count": len(searches), "lists": searches }
 

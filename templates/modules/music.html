@@ -1,0 +1,82 @@
+
+<div class="search">
+    <h1>Поиск музыки</h1>
+    <input type="text" name="query" class="search-query" id="music-search" />
+    <button class="search-button">Поиск</button>
+
+    <div class="clearfix"></div>
+
+    <div class="search-params">
+        <input type="checkbox" name="duplicates" class="search-param-duplicates" id="music-search-param-duplicates" checked="checked" />
+        <label for="music-search-param-duplicates">убирать дубли</label>
+    </div>
+
+    <div class="search-links">
+        <a href="#" onclick="player.listController.saveSearch($('#music-search').val());">сохранить</a>
+        <a href="#" onclick="gui.music_gui.clearSearchBox();">очистить</a>
+    </div>
+</div>
+
+<div class="list-view">
+    <span class="list-buttons" id="music-search-buttons" data-list-id="music-tracks" style="display: none;">
+        <span class="activator"></span>
+        <span class="list-buttons-onactive">
+            <span class="list-selectall-button">выделить всё</span>
+            <span class="list-remove-button">удалить</span>
+            <span class="list-addto-button">
+                добавить в...
+                <span class="add_to_popup">
+                    <span class="add_to_popup-list"></span>
+                </span>
+            </span>
+        </span>
+    </span>
+    <div id="music-tracks"></div>
+</div>
+
+<div class="columns" id="music-lists">
+    <div class="column column-50">
+        <h1>
+            История прослушиваний
+            <span class="list-buttons" data-list-id="listening_history">
+                <span class="activator"></span>
+                <span class="list-buttons-onactive">
+                    <span class="list-selectall-button">выделить всё</span>
+                    <span class="list-addto-button">
+                        добавить в...
+                        <span class="add_to_popup">
+                            <span class="add_to_popup-list"></span>
+                        </span>
+                    </span>
+                </span>
+            </span>
+        </h1>
+        <div id="listening_history">
+            <div class="list_loader"></div>
+        </div>
+    </div>
+
+    <div class="column column-50">
+        <h1>
+            Аудиозаписи вконтакте
+            <span class="list-buttons" data-list-id="vk_audio">
+                <span class="activator"></span>
+                <span class="list-buttons-onactive">
+                    <span class="list-selectall-button">выделить всё</span>
+                    <span class="list-addto-button">
+                        добавить в...
+                        <span class="add_to_popup">
+                            <span class="add_to_popup-list"></span>
+                        </span>
+                    </span>
+                </span>
+            </span>
+        </h1>
+        <div id="vk_audio">
+            <div class="list_loader"></div>
+            <div id="vk_need_login">
+                <a href="#" onclick="player.searchController.activate('vk'); return false;">Необходимо авторизоваться</a>
+            </div>
+        </div>
+    </div>
+</div>
