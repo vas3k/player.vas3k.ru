@@ -517,6 +517,84 @@
                 float: left;
             }
 
+.tag-cloud-view {
+    position: absolute;
+    top: 60px;
+    margin: 100px;
+    text-align: center;
+    clear: both;
+}
+
+    .tag-cloud-view .tag {
+        color: #555;
+        line-height: 1.5em;
+        margin-right: 20px;
+        border-bottom: dashed 1px #999;
+        cursor: pointer;
+    }
+
+    .tag-cloud-view .tag:hover {
+        color: #222;
+    }
+
+        .tag-cloud-view .tag-10 {
+            font-size: 40px;
+        }
+
+        .tag-cloud-view .tag-9 {
+            font-size: 38px;
+        }
+
+        .tag-cloud-view .tag-8 {
+            font-size: 36px;
+        }
+
+        .tag-cloud-view .tag-7 {
+            font-size: 33px;
+        }
+
+        .tag-cloud-view .tag-6 {
+            font-size: 30px;
+        }
+
+        .tag-cloud-view .tag-5 {
+            font-size: 25px;
+            line-height: 2.5em;
+        }
+
+        .tag-cloud-view .tag-4 {
+            font-size: 23px;
+            line-height: 2.5em;
+        }
+
+        .tag-cloud-view .tag-3 {
+            font-size: 19px;
+            line-height: 2.5em;
+        }
+
+        .tag-cloud-view .tag-2 {
+            font-size: 14px;
+            line-height: 2.5em;
+        }
+
+        .tag-cloud-view .tag-1 {
+            font-size: 13px;
+            line-height: 2.5em;
+        }
+
+        .tag-cloud-view .tag-0 {
+            font-size: 12px;
+            line-height: 2.5em;
+        }
+
+        .tag-cloud-view .tag sup {
+            color: #999;
+            font-size: 10px;
+            position: relative;
+            top: -1em;
+            left: 3px;
+        }
+
 .sidebar_view {
     position: absolute;
     top: 0;

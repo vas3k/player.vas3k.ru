@@ -22,6 +22,12 @@
     <div id="artist-info-similar"></div>
 </div>
 
+<div class="tag-cloud-view" id="artist-tags">
+    {% for artist in artists_top %}
+        <span class="tag tag-{% widthratio artist.0 100 10 %}" data-query="{{ artist.1 }}">{{ artist.1 }}<sup>{{ artist.2 }}</sup></span>
+    {% endfor %}
+</div>
+
 <div class="cover-view" id="artist_covers">
     <div id="cover-info" style="display: none;">
         <div id="cover-info-arrow"></div>

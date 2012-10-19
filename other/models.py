@@ -46,6 +46,23 @@ class ListeningHistory(models.Model):
         verbose_name  = u"история прослушиваний"
         verbose_name_plural = u"история прослушиваний"
 
+    @staticmethod
+    def get_weighted_set():
+        group_query = "select count(*) as cnt, track_artist from (select track_artist from other_listeninghistory order by id desc limit 15000) as top group by track_artist order by cnt desc limit 150;"
+
+        from django.db import connection
+        cursor = connection.cursor()
+        cursor.execute(group_query)
+
+        row = cursor.fetchone()
+        weighted_set = []
+        max = row[0]
+        while row:
+            weighted_set.append((row[0] * 100 / max, row[1], row[0]))
+            row = cursor.fetchone()
+
+        return weighted_set
+
 class SearchesHistory(models.Model):
     id = models.AutoField(
         '#',

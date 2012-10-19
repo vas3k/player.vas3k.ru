@@ -5,6 +5,7 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.core.cache import cache
 from libs.util import render_as_json
+from other.models import ListeningHistory
 from player.models import UserProfile, AccessTokens
 
 def full(request):
@@ -15,7 +16,13 @@ def full(request):
             cache.set('login_form_page', cached_page)
         return cached_page
         #return render_to_response("user/login_form.html")
-    return render_to_response("new.html", { "ACCESS_TOKEN": AccessTokens.get_random_token(), "user": request.user })
+
+    cached_artists = cache.get("artists_top")
+    if cached_artists is None:
+        cached_artists = ListeningHistory.get_weighted_set()
+        cache.set("artists_top", cached_artists)
+    #cached_artists = ListeningHistory.get_weighted_set()
+    return render_to_response("new.html", { "ACCESS_TOKEN": AccessTokens.get_random_token(), "artists_top": cached_artists, "user": request.user })
 
 def small(request):
     return render_to_response("small.html", { "ACCESS_TOKEN": AccessTokens.get_random_token() })
