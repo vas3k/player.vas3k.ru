@@ -125,6 +125,7 @@
     }
 
     #artist-info-bio {
+        margin-top: 17px;
         float: left;
         width: 45%;
         color: #595959;

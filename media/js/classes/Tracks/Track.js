@@ -22,7 +22,7 @@ Track.template = '<div class="track" id="{{owner_id}}_{{aid}}" class="track" dat
     '</div></div>';
 
 Track.toClass = function(str) {
-    return encodeURIComponent(str).replace(new RegExp("[%.]", 'g'), "").slice(0, 30);
+    return encodeURIComponent(str).replace(new RegExp("[%.!#\(\)]", 'g'), "").slice(0, 30);
 };
 
 Track.prototype.dummy = function() {

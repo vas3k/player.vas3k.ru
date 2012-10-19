@@ -100,7 +100,7 @@ VKSearchEngine.prototype.search = function(query, offset, count, successCallback
     query = query.replace(new RegExp("<",'g'), "").replace(new RegExp(">",'g'), "");
 
     $.ajax({
-        url: "https://api.vkontakte.ru/method/audio.search?q="+query+"&offset="+offset+"&count="+count+"&auto_complete=1"+"&access_token="+this.access_token+"&callback=callbackFunc",
+        url: "https://api.vkontakte.ru/method/audio.search?q="+query+"&offset="+offset+"&count="+count+"&access_token="+this.access_token+"&callback=callbackFunc",
         dataType: 'jsonp',
         success: function(r) {
             if (r.error && r.error.error_code == 5) _this.sendBadToken();

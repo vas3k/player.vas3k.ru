@@ -367,5 +367,6 @@ ListController.prototype.shuffle = function() {
         var min = -1;
         return Math.floor(Math.random() * (max - min + 1)) + min;
     });
+    this.nowplaying.current_index = 0;
     gui.list_gui.updateNowplayingList(this.nowplaying);
 };
