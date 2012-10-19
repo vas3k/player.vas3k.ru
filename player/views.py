@@ -21,7 +21,7 @@ def full(request):
     if cached_artists is None:
         cached_artists = ListeningHistory.get_weighted_set(request.user)
         cache.set("artists_top_user_%s" % request.user.id, cached_artists)
-    #cached_artists = ListeningHistory.get_weighted_set()
+    #cached_artists = ListeningHistory.get_weighted_set(request.user)
     return render_to_response("new.html", { "ACCESS_TOKEN": AccessTokens.get_random_token(), "artists_top": cached_artists, "user": request.user })
 
 def small(request):

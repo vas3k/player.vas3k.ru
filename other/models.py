@@ -48,7 +48,7 @@ class ListeningHistory(models.Model):
 
     @staticmethod
     def get_weighted_set(user):
-        group_query = "select count(*) as cnt, track_artist from (select track_artist from other_listeninghistory where user_id = %s order by id desc limit 10000) as top group by track_artist order by cnt desc limit 100;" % user.id
+        group_query = "select count(*) as cnt, track_artist from (select track_artist from other_listeninghistory where user_id = %s order by id desc limit 5000) as top group by track_artist order by cnt desc limit 100;" % user.id
 
         from django.db import connection
         cursor = connection.cursor()
