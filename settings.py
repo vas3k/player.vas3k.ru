@@ -153,6 +153,20 @@ LOGGING = {
     }
 }
 
+# Cache
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/player_cache',
+        #        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        #        'LOCATION': '127.0.0.1:11211',
+        'TIMEOUT': 1 * 60 * 60
+    }
+}
+
+# Users
+
 LOGIN_URL = "/login"
 FORCE_SCRIPT_NAME=""
 AUTH_PROFILE_MODULE = 'player.UserProfile'

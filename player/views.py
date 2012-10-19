@@ -3,11 +3,16 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render_to_response
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from player.models import UserProfile, AccessTokens
 
 def full(request):
     if not request.user.is_authenticated():
-        return render_to_response("user/login_form.html")
+        cached_page = cache.get('login_form_page')
+        if cached_page is None:
+            cached_page = render_to_response("user/login_form.html")
+        return cached_page
+        #return render_to_response("user/login_form.html")
     return render_to_response("new.html", { "ACCESS_TOKEN": AccessTokens.get_random_token(), "user": request.user })
 
 def small(request):
