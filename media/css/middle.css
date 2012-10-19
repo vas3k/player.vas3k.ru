@@ -125,7 +125,7 @@
     }
 
     #artist-info-bio {
-        margin-top: 17px;
+        margin-top: 15px;
         float: left;
         width: 45%;
         color: #595959;
@@ -542,15 +542,15 @@
         }
 
         .tag-cloud-view .tag-9 {
-            font-size: 38px;
+            font-size: 40px;
         }
 
         .tag-cloud-view .tag-8 {
-            font-size: 36px;
+            font-size: 38px;
         }
 
         .tag-cloud-view .tag-7 {
-            font-size: 33px;
+            font-size: 35px;
         }
 
         .tag-cloud-view .tag-6 {

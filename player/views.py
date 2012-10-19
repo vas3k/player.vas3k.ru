@@ -17,10 +17,10 @@ def full(request):
         return cached_page
         #return render_to_response("user/login_form.html")
 
-    cached_artists = cache.get("artists_top")
+    cached_artists = cache.get("artists_top_user_%s" % request.user.id)
     if cached_artists is None:
-        cached_artists = ListeningHistory.get_weighted_set()
-        cache.set("artists_top", cached_artists)
+        cached_artists = ListeningHistory.get_weighted_set(request.user)
+        cache.set("artists_top_user_%s" % request.user.id, cached_artists)
     #cached_artists = ListeningHistory.get_weighted_set()
     return render_to_response("new.html", { "ACCESS_TOKEN": AccessTokens.get_random_token(), "artists_top": cached_artists, "user": request.user })
 
