@@ -18,7 +18,6 @@ urlpatterns = patterns('',
     (r'^login/$', 'player.views.login'),
     (r'^logout/$', 'player.views.logout'),
 #    (r'^migrate/$', 'player.views.migrate'),
-    (r'^faq/$', 'player.views.faq'),
 
     (r'^nowlistening$', 'other.views.get_listening_history'),
     (r'^ajax/nowlistening$', 'other.views.get_listening_history'),

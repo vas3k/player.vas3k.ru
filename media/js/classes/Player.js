@@ -25,12 +25,11 @@ function Player() {
 
     this.listController = new ListController(this);
     this.playbackController = new PlaybackController(this);
-    this.infoController = new InfoController(this);
     this.searchController = new SearchController(this);
     this.scrobblerController = new ScrobblerController(this);
 
     this.eventListeners = {
-        "TrackPlay": [ this.infoController, this.scrobblerController ],
+        "TrackPlay": [ this.listController, this.scrobblerController ],
         "TrackJustBeforeFinish": [ this.scrobblerController ],
         "NoSidebarInfo": [ this.searchController ],
         "Search": [ this.infoController ]

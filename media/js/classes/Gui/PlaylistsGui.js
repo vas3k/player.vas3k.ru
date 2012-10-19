@@ -64,6 +64,9 @@ PlaylistsGui.prototype.loadPlaylists = function() {
 
                     _this.ui_add_to_lists.append('<div class="add_to_button" data-list-id="' + playlist._id + '">' + playlist.name + '</div>');
                 }
+                if (data["lists"].length == 0) {
+                    _this.ui_add_to_lists.html("<span class='add_to_block'>Плейлисты отсутствуют. Добавьте их в соответствующем разделе.</span>");
+                }
                 _this.ui_playlists_sidebar.html(html);
             } else {
                 _this.ui_playlists_sidebar.html("Ошибка при загрузке");

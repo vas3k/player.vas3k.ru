@@ -750,6 +750,19 @@
         overflow-y: auto;
     }
 
+        .add_to_popup .add_to_block {
+            display: block;
+            padding: 40px 20px;
+            font-size: 12px;
+            white-space: normal;
+            text-align: center;
+            color: #333;
+        }
+
+        .add_to_popup .add_to_block:hover {
+            color: #333;
+        }
+
         .add_to_popup .add_to_button {
             position: relative;
             width: 100%;

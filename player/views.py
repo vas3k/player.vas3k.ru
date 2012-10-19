@@ -7,7 +7,7 @@ from player.models import UserProfile, AccessTokens
 
 def full(request):
     if not request.user.is_authenticated():
-        return redirect("/login")
+        return render_to_response("user/login_form.html")
     return render_to_response("new.html", { "ACCESS_TOKEN": AccessTokens.get_random_token(), "user": request.user })
 
 def small(request):
@@ -54,10 +54,7 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect("/login/")
-
-def faq(request):
-    return render_to_response("static/faq.html")
+    return redirect("/")
 
 def add_token(request):
     if request.method == "POST":

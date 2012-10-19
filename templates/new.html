@@ -207,7 +207,6 @@
 
         <!-- Controllers -->
         <script type="text/javascript" src="/js/classes/CoversController.js?v=3.0"></script>
-        <script type="text/javascript" src="/js/classes/InfoController.js?v=3.0"></script>
         <script type="text/javascript" src="/js/classes/ListController.js?v=3.0"></script>
         <script type="text/javascript" src="/js/classes/PlaybackController.js?v=3.0"></script>
         <script type="text/javascript" src="/js/classes/ScrobblerController.js?v=3.0"></script>
@@ -226,6 +225,33 @@
         <script type="text/javascript" src="/js/classes/Player.js?v=3.0"></script>
 
         <script type="text/javascript" src="http://yandex.st/json2/2009-09-29/json2.min.js"></script>
+            
+        <!-- Yandex.Metrika counter -->
+        <script type="text/javascript">
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function() {
+                try {
+                    w.yaCounter1689589 = new Ya.Metrika({id:1689589,
+                            clickmap:true,
+                            trackLinks:true,
+                            trackHash:true});
+                } catch(e) { }
+            });
+            
+            var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s, n); };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f);
+            } else { f(); }
+        })(document, window, "yandex_metrika_callbacks");
+        </script>
+        <noscript><div><img src="//mc.yandex.ru/watch/1689589" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+        <!-- /Yandex.Metrika counter -->
     </div>
 </body>
 </html>

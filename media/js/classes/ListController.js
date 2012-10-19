@@ -29,6 +29,18 @@ function ListController(player) {
 //    this.loadRadios(this.lists["radios"]["items"]);
 }
 
+ListController.prototype.handleEvent = function(event) {
+    try {
+        this["on" + event]();
+    } catch(e) {
+        return false;
+    }
+};
+
+ListController.onTrackPlay = function() {
+    this.saveToHistory();
+};
+
 ListController.prototype.loadHistorySearches = function() {
     var items = [];
     var _this = this;
@@ -146,39 +158,6 @@ ListController.prototype.loadVkAudio = function(items) {
     }, 0);
 };
 
-//
-//ListController.prototype.loadRadios = function(items) {
-//    items = items || this.lists["radios"]["items"];
-//    var _this = this;
-//    $.ajax({
-//        url: "/radio/get_list",
-//        type: "POST",
-//        dataType: "json",
-//        success: function (data) {
-//            if (data["status"] == "OK") {
-//                var list;
-//                for (var i = 0; i < data.radios.length; i++) {
-//                    list = new RadioList(_this, data.radios[i].name);
-//                    list.id = data.radios[i].id;
-//                    items[list.id] = list;
-//                }
-//                gui.sidebar_gui.renderSidebar(_this.lists);
-//            } else {
-//                _this.player.fireEvent("SidebarUpdateError");
-//            }
-//        },
-//        error: function() {
-//            _this.player.fireEvent("SidebarUpdateError");
-//        }
-//    });
-//};
-//
-//ListController.prototype.loadAlbumTracks = function(artist, title) {
-//    var album = new AlbumList(this, artist, title);
-//    this.shown_list = album;
-//    album.getList(gui.list_gui.showList);
-//};
-
 ListController.prototype.replaceNowplayingList = function(list_object) {
     this.nowplaying.list = list_object.list;
     gui.list_gui.updateNowplayingList(this.nowplaying);
@@ -201,10 +180,6 @@ ListController.prototype.showList = function(show_list) {
         show_list.getList(gui.active_tab_gui.showList); // метод отрисовки передается как каллбек
     }, 0);
 };
-//
-//ListController.prototype.showMore = function() {
-//    this.shown_list.getMore(gui.active_tab_gui.showList);
-//};
 
 ListController.prototype.getListByName = function(type, name) {
     if (!type) return [];
@@ -342,6 +317,21 @@ ListController.prototype.removeSavedSearch = function(id) {
             }
         });
     }
+};
+
+ListController.prototype.saveToHistory = function() {
+    var current_track = player.playbackController.current_track;
+    var _this = this;
+    $.ajax({
+        url: "/ajax/add_to_nowlistening",
+        data: {
+            track: current_track.toJSON()
+        },
+        type: "POST",
+        dataType: "json",
+        success: function (data) {},
+        error: function() {}
+    });
 };
 
 ListController.prototype.addToLists = function(list_name, list_object) {
