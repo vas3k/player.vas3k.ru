@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render_to_response
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.core.cache import cache
+from libs.util import render_as_json
 from player.models import UserProfile, AccessTokens
 
 def full(request):
@@ -11,6 +12,7 @@ def full(request):
         cached_page = cache.get('login_form_page')
         if cached_page is None:
             cached_page = render_to_response("user/login_form.html")
+            cache.set('login_form_page', cached_page)
         return cached_page
         #return render_to_response("user/login_form.html")
     return render_to_response("new.html", { "ACCESS_TOKEN": AccessTokens.get_random_token(), "user": request.user })
@@ -76,6 +78,14 @@ def add_token(request):
             token_obj.save()
     return render_to_response("static/token_crawler.html")
 
+@render_as_json
+def bad_token(request):
+    if request.method == "POST":
+        token = request.POST.get("token")
+        token_obj = AccessTokens.objects.get(token=token)
+        token_obj.bad_times += 1
+        token_obj.save()
+    return { "new_token": AccessTokens.get_random_token() }
 
 #from mongokit import *
 #from django.db import connection

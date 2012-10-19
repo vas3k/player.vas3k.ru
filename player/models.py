@@ -38,6 +38,11 @@ class AccessTokens(models.Model):
         auto_now=True
     )
 
+    bad_times = models.PositiveIntegerField(
+        u"Количество отказов",
+        default=0
+    )
+
     class Meta:
         get_latest_by = 'last_access_time'
         ordering      = ('-id',)

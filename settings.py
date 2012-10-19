@@ -1,7 +1,7 @@
 # Django settings for Player project.
 import os
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (

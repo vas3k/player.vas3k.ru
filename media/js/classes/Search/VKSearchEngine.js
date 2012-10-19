@@ -38,6 +38,22 @@ VKSearchEngine.prototype.activate = function() {
     return true;
 };
 
+VKSearchEngine.prototype.sendBadToken = function() {
+    var _this = this;
+    $.ajax({
+        url: "/ajax/report_bad_token/",
+        type: "POST",
+        data: { "token": _this.access_token },
+        dataType: "json",
+        success: function(data) {
+            if (data.new_token) {
+                _this.access_token = data.new_token;
+            }
+        },
+        error: function () {}
+    });
+};
+
 VKSearchEngine.prototype.filter = function(track) {
     // Применить фильтры к переданному треку и вернуть
     for (var i = 0; i < this.pidoffka.length; i++) {
@@ -77,7 +93,6 @@ VKSearchEngine.prototype.getTrackFromResponse = function(r) {
 
 VKSearchEngine.prototype.search = function(query, offset, count, successCallback) {
     // Вернуть список треков - результат поиска
-
     var results = [];
     var _this = this;
     offset = offset || 0;
@@ -88,6 +103,7 @@ VKSearchEngine.prototype.search = function(query, offset, count, successCallback
         url: "https://api.vkontakte.ru/method/audio.search?q="+query+"&offset="+offset+"&count="+count+"&auto_complete=1"+"&access_token="+this.access_token+"&callback=callbackFunc",
         dataType: 'jsonp',
         success: function(r) {
+            if (r.error && r.error.error_code == 5) _this.sendBadToken();
             for (var i = 1; i < r.response.length; i++) {
                 results.push(_this.getTrackFromResponse(r.response[i]));
             }
@@ -111,6 +127,7 @@ VKSearchEngine.prototype.searchByIds = function(ids, successCallback) {
         url: "https://api.vkontakte.ru/method/audio.getById?audios="+id_str+"&access_token="+this.access_token+"&callback=callbackFunc",
         dataType: 'jsonp',
         success: function(r) {
+            if (r.error && r.error.error_code == 5) _this.sendBadToken();
             for (var i = 0; i < r.response.length; i++) {
                 results.push(_this.getTrackFromResponse(r.response[i]));
             }
@@ -131,6 +148,7 @@ VKSearchEngine.prototype.searchByUser = function(user_id, successCallback) {
 
     VK.Api.call('audio.get', { "uid": user_id, "need_user": 1 }, function(r) {
         if (r.response) {
+            if (r.error && r.error.error_code == 5) _this.sendBadToken();
             for (var i = 1; i < r.response.length; i++) {
                 results.push(_this.getTrackFromResponse(r.response[i]));
             }
@@ -149,6 +167,7 @@ VKSearchEngine.prototype.searchOneGoodTrack = function(artist, title, successCal
         url: "https://api.vkontakte.ru/method/audio.search?q="+query+"&count=40&auto_complete=1&access_token="+this.access_token+"&callback=callbackFunc",
         dataType: 'jsonp',
         success: function(r) {
+            if (r.error && r.error.error_code == 5) _this.sendBadToken();
             if (r.response[0] == "0") return;
             var goodtrack =- 1;
             for (var i = 1; i < r.response.length; i++) {
@@ -173,10 +192,12 @@ VKSearchEngine.prototype.searchOneGoodTrack = function(artist, title, successCal
 };
 
 VKSearchEngine.prototype.getLyrics = function(lyrics_id, successCallback) {
+    var _this = this;
     $.ajax({
         url: "https://api.vkontakte.ru/method/audio.getLyrics?lyrics_id="+lyrics_id+"&access_token="+this.access_token+"&callback=callbackFunc",
         dataType: 'jsonp',
         success: function(r) {
+            if (r.error && r.error.error_code == 5) _this.sendBadToken();
             successCallback(r.response.text);
         },
         error: function() {

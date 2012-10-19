@@ -23,6 +23,8 @@ urlpatterns = patterns('',
     (r'^ajax/nowlistening$', 'other.views.get_listening_history'),
     (r'^ajax/add_to_nowlistening$', 'other.views.add_to_listening_history'),
 
+    (r'^ajax/report_bad_token/$', 'player.views.bad_token'),
+
     (r'^ajax/playlist/', include('playlists.urls')),
     (r'^ajax/searches/', include('searches.urls')),
     (r'^ajax/love/', include('love.urls')),
