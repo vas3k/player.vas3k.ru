@@ -19,6 +19,7 @@ function AlbumList(controller, artist, album) {
     this.icon = "/images/icons/playlist.png";
     this.raw_data = null;
     this.mbid = "";
+    this.update_list_interval = null;
 }
 
 extend(AlbumList, AbstractList);
@@ -40,7 +41,7 @@ AlbumList.prototype.getList = function(successCallback) {
         var tracks = data["album"]["tracks"]["track"];
         if (!tracks) return;
         var track_id = 0;
-        _this.controller.update_list_interval = setInterval(function() {
+        _this.update_list_interval = setInterval(function() {
             if (tracks[track_id]) {
                 _this.controller.player.searchController.searchOneGoodTrack(_this.artist, tracks[track_id]["name"].toLowerCase(), function(track) {
                     _this.push(track);
@@ -48,7 +49,10 @@ AlbumList.prototype.getList = function(successCallback) {
                 });
             }
             track_id++;
-            if (track_id > tracks.length) clearInterval(_this.controller.update_list_interval);
+            if (track_id > tracks.length) {
+                clearInterval(_this.update_list_interval);
+                _this.update_list_interval = null;
+            }
         }, 300);
     };
 
