@@ -32,7 +32,7 @@ function Player() {
         "TrackPlay": [ this.listController, this.scrobblerController ],
         "TrackJustBeforeFinish": [ this.scrobblerController ],
         "NoSidebarInfo": [ this.searchController ],
-        "Search": [ this.infoController ]
+        "Search": []
     };
     //this.fireEvent("NoSidebarInfo");
 }
