@@ -27,18 +27,24 @@ MusicSearchList.prototype.getList = function(successCallback) {
     // и нужен каллбек. Если можно сразу - то
     // вызывает каллбек сама
 
-    gui.searchGui(this.name);
     
     var _this = this;
-    if (this.list.length == 0) {
-        this.controller.player.searchController.searchByQuery(this.name, function(new_list) {
-            _this.list = new_list;
-            successCallback(_this);
-        });
-    } else {
-        successCallback(this);
-        return this.list;
-    }
+    _this.list = [];
+
+    this.controller.player.searchController.searchByQuery(this.name, function(new_list) {
+        _this.list = _this.list.concat(new_list);
+        successCallback(_this);
+    });
+
+//    // Двойной асинхронный поиск, ага. НУЖНО БОЛЬШЕ МУЗЫКИ
+//    this.controller.player.searchController.searchByQuery(this.name, function(new_list) {
+//        _this.list = _this.list.concat(new_list);
+//        successCallback(_this);
+//    });
+
+    setTimeout(function() {
+        gui.searchGui(_this.name);
+    }, 0);
 
     $.ajax({
         url: "/ajax/searchhistory/add/",

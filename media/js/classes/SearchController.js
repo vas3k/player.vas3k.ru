@@ -34,15 +34,13 @@ SearchController.prototype.onNoSidebarInfo = function() {
 //    this.player.fireEvent("Search");
 //};
 
-SearchController.prototype.musicSearch = function(query, search_engine_id) {
+SearchController.prototype.musicSearch = function(query, successCallback, search_engine_id) {
     search_engine_id = search_engine_id || this.default_search_engine;
     query = this.clearQuery(query);
     this.query = query;
     var search = new MusicSearchList(this.player.listController, query);
     search.is_deletable = false;
-//    this.player.listController.addToLists("recent_searches", search);
-    this.player.listController.showList(search);
-//    this.player.fireEvent("Search");
+    return search;
 };
 
 SearchController.prototype.artistSearch = function(query, search_engine_id) {
@@ -51,9 +49,7 @@ SearchController.prototype.artistSearch = function(query, search_engine_id) {
     this.query = query;
     var search = new ArtistSearchList(this.player.listController, query);
     search.is_deletable = false;
-    //this.player.listController.addToLists("recent_searches", search);
-    this.player.listController.showList(search);
-//    this.player.fireEvent("Search");
+    return search;
 };
 
 SearchController.prototype.activate = function(search_engine_id) {

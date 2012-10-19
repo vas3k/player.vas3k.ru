@@ -23,10 +23,6 @@ function ListController(player) {
                    "radios":
                         { "title": "Топ радио", "items": [] }
     };
-
-//    this.loadPlaylists(this.lists["playlists"]["items"]);
-//    this.loadRecommendations(this.lists["recommendations"]["items"]);
-//    this.loadRadios(this.lists["radios"]["items"]);
 }
 
 ListController.prototype.handleEvent = function(event) {
@@ -160,6 +156,7 @@ ListController.prototype.loadVkAudio = function(items) {
 
 ListController.prototype.replaceNowplayingList = function(list_object) {
     this.nowplaying.list = list_object.list;
+    this.nowplaying.current_index = list_object.current_index;
     gui.list_gui.updateNowplayingList(this.nowplaying);
 };
 
@@ -167,19 +164,15 @@ ListController.prototype.addToNowplayingList = function(list_object) {
     this.nowplaying.list = this.nowplaying.list.concat(list_object.list);
     gui.list_gui.updateNowplayingList(this.nowplaying);
 };
-
-ListController.prototype.setShownAsPlayingList = function() {
-    alert("NONONO");
-};
-
-ListController.prototype.showList = function(show_list) {
-    clearInterval(this.update_list_interval);
-    var _this = this;
-    setTimeout(function () {
-        _this.shown_list = show_list;
-        show_list.getList(gui.active_tab_gui.showList); // метод отрисовки передается как каллбек
-    }, 0);
-};
+//
+//ListController.prototype.showList = function(show_list) {
+//    clearInterval(this.update_list_interval);
+//    var _this = this;
+//    setTimeout(function () {
+//        _this.shown_list = show_list;
+//        show_list.getList(gui.active_tab_gui.showList); // метод отрисовки передается как каллбек
+//    }, 0);
+//};
 
 ListController.prototype.getListByName = function(type, name) {
     if (!type) return [];
@@ -343,42 +336,29 @@ ListController.prototype.addTo = function(type, id, track) {
     return this.lists[type].items[id].push(track);
 };
 
-ListController.prototype.applyFilter = function(filter) {
+ListController.prototype.applyFilter = function(list_object, filter) {
     var i = 0;
-    while (i < this.shown_list.list.length) {
-        if (!filter.isApproved(this.shown_list.list[i])) {
-            this.shown_list.removeByIndex(i);
+    while (i < list_object.list.length) {
+        if (!filter.isApproved(list_object.list[i])) {
+            list_object.removeByIndex(i);
         } else {
             i++;
         }
     }
-    this.showList(this.shown_list);
 };
 
-ListController.prototype.applyDoublesFilter = function() {
-    this.applyFilter(new FilterDoubles());
+ListController.prototype.applyDoublesFilter = function(list_object) {
+    this.applyFilter(list_object, new FilterDoubles());
 };
 
-ListController.prototype.applyArtistFilter = function() {
+ListController.prototype.applyArtistFilter = function(list_object) {
     var artist = gui.ui_search.val();
-    this.applyFilter(new FilterArtist(artist));
+    this.applyFilter(list_object, new FilterArtist(artist));
 };
 
-ListController.prototype.applyTitleFilter = function() {
+ListController.prototype.applyTitleFilter = function(list_object) {
     var title = gui.ui_search.val();
-    this.applyFilter(new FilterTitle(title));
-};
-
-ListController.prototype.applyBanlistFilter = function() {
-    this.applyFilter(new FilterBanlist());
-};
-
-ListController.prototype.applyRemoveSelected = function() {
-    var list = this.shown_list;
-    gui.list_gui.ui_playlist.find("input:checked").each(function () {
-        list.removeById($(this).parent().attr("id"));
-        $(this).parent().fadeOut();
-    });
+    this.applyFilter(list_object, new FilterTitle(title));
 };
 
 ListController.prototype.shuffle = function() {

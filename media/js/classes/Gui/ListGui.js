@@ -4,8 +4,6 @@ function ListGui() {
     this.ui_error = $("#playlist_error");
     this.ui_smallerror = $("#small_error");
     this.ui_smallok = $("#small_ok");
-    this.ui_left_sidebar = $("#leftSidebar");
-    this.ui_right_sidebar = $("#rightSidebar");
     this.ui_getmore = $("#show_more");
 
     this.ui_nowplaying_activator = $("#top-info-nowplaying");
@@ -20,10 +18,8 @@ function ListGui() {
     this.ui_track_play = $(".track-play");
     this.ui_track_artist = $(".track-artist");
     this.ui_track_title = $(".track-title");
-   // this.ui_track_time = $(".playlist_time");
     this.ui_track_delete = $(".track-delete");
     this.ui_track_lyrics = $(".track-lyrics");
-    //this.ui_track_download = $(".downloadbutton");
     this.ui_track_link = $(".track-small");
 
     this.nowplaying_template = '<div class="nowplaying_list-item" id="nowplaying-track-{{{id}}}">' +
