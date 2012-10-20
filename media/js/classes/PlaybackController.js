@@ -5,6 +5,7 @@ function PlaybackController(player) {
     this.current = undefined;
     this.is_playing = false;
     this.volume = this.player.storage["volume"] || 100;
+    this.scrobble_time = 320000;
     this.repeat_state = 0;//this.player.storage["repeat"] || 0; // 0 - repeat all, 1 - repeat one, 2 - no repeat
 }
 
@@ -38,7 +39,7 @@ PlaybackController.prototype.playTrack = function(track) {
             //gui.ui_smallinfo.fadeOut("slow");
 
             // Время скробблинга (либо половина, либо 320 секунд)
-            this.scrobble_time = Math.min(this.duration / 2, 320000);
+            _this.scrobble_time = Math.min(this.duration / 2, 320000);
         },
         whileloading: function () {
             //gui.ui_smallinfo.html("загружено: " + parseInt(this.bytesLoaded / 1024) + " из " + parseInt(this.bytesTotal / 1024) + " кБ");
@@ -48,12 +49,13 @@ PlaybackController.prototype.playTrack = function(track) {
             gui.ui_slider.slider("value", _this.current.position / 10);
             gui.ui_positionlabel.html(timeFormat(_this.current.position));
         },
-        onjustbeforefinish: function () {
-            _this.player.fireEvent("TrackJustBeforeFinish");              
-        },
         onfinish: function () {
             _this.playNextTrack();
         }
+    });
+
+    this.current.onPosition(_this.scrobble_time, function() {
+        _this.player.fireEvent("TrackJustBeforeFinish");
     });
 };
 
