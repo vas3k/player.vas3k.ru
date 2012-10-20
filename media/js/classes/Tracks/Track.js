@@ -9,7 +9,7 @@ function Track() {
     this.lyrics_id = 0;
 }
 
-Track.template = '<div class="track" id="{{owner_id}}_{{aid}}" class="track" data-list="{{list}}" data-artist="{{artist}}" data-title="{{title}}" data-url="{{url}}">' +
+Track.template = '<div class="track" id="{{list}}_{{owner_id}}_{{aid}}" class="track" data-id="{{owner_id}}_{{aid}}" data-list="{{list}}" data-artist="{{artist}}" data-title="{{title}}" data-url="{{url}}">' +
     '<div class="track-edit"><input type="checkbox" /></div>' +
     '<div class="track-play"></div>' +
     '<div class="track-title">{{title}}</div>' +

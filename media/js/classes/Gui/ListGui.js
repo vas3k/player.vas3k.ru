@@ -37,7 +37,7 @@ function ListGui() {
 ListGui.prototype.linkTrackEvents = function() {
     this.ui_track_play.live("click", function() {
         var track_list_name = $(this).parent().attr("data-list");
-        var track_id = $(this).parent().attr("id");
+        var track_id = $(this).parent().attr("data-id");
         var track = gui.active_tab_gui.lists[track_list_name].getById(track_id);
         player.listController.replaceNowplayingList(gui.active_tab_gui.lists[track_list_name]);
         player.playbackController.playTrack(track);
@@ -61,7 +61,7 @@ ListGui.prototype.linkTrackEvents = function() {
 
     this.ui_track_delete.live("click", function() {
         var track_list_name = $(this).parent().parent().attr("data-list");
-        var track_id = $(this).parent().parent().attr("id");
+        var track_id = $(this).parent().parent().attr("data-id");
         if (gui.active_tab_gui.lists[track_list_name].removeById(track_id)) {
             $(this).parent().parent().fadeOut();
         }
@@ -153,7 +153,7 @@ ListGui.prototype.showList = function(list_object) {
 
 ListGui.prototype.highlightTrackById = function(track_id) {
     $(".track").removeClass("playing");
-    $("#" + track_id).addClass("playing");
+    $("*[data-id=" + track_id + "]").addClass("playing");
 
     $(".nowplaying_list-item").removeClass("playing");
     $("#nowplaying-track-" + track_id).addClass("playing");
