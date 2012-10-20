@@ -34,13 +34,14 @@ MusicSearchList.prototype.getList = function(successCallback) {
     this.controller.player.searchController.searchByQuery(this.name, function(new_list) {
         _this.list = _this.list.concat(new_list);
         successCallback(_this);
+
     });
 
-//    // Двойной асинхронный поиск, ага. НУЖНО БОЛЬШЕ МУЗЫКИ
-//    this.controller.player.searchController.searchByQuery(this.name, function(new_list) {
-//        _this.list = _this.list.concat(new_list);
-//        successCallback(_this);
-//    });
+    // Двойной асинхронный поиск, ага. НУЖНО БОЛЬШЕ МУЗЫКИ
+    this.controller.player.searchController.searchByQueryWithOffset(this.name, 200, 400, function(new_list) {
+        _this.list = _this.list.concat(new_list);
+        successCallback(_this);
+    });
 
     setTimeout(function() {
         gui.searchGui(_this.name);

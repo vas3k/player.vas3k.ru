@@ -39,9 +39,12 @@ MusicGui.prototype.showList = function(list_object) {
     gui.music_gui.ui_track_list.html(html); // Да-да :(
 };
 
-MusicGui.prototype.search = function(query) {
+MusicGui.prototype.search = function(query, artist_only) {
     query = query || this.ui_searchbox.val();
     if (!query) return;
+    if (artist_only) {
+        this.ui_checkbox_artist.attr("checked", "checked");
+    }
     this.ui_searchbox.val(query);
     this.ui_lists.hide();
     this.ui_search_list_buttons.show();
@@ -92,5 +95,6 @@ MusicGui.prototype.clearSearchBox = function() {
     this.ui_searchbox.val("");
     this.ui_lists.show();
     this.ui_track_list.html("");
+    this.ui_checkbox_artist.removeAttr("checked");
     this.ui_search_list_buttons.hide();
 };

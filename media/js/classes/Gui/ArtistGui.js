@@ -5,6 +5,7 @@ function ArtistGui() {
     this.ui_artist_img = $("#artist-info-img");
     this.ui_artist_name = $("#artist-info-name");
     this.ui_artist_subtitle = $("#artist-info-subtitle");
+    this.ui_artist_fastsearch = $("#artist-info-fastsearch");
 
     this.ui_albums_list = $("#artist_covers");
     this.ui_similar_list = $("#artist-info-similar");
@@ -41,6 +42,11 @@ function ArtistGui() {
 
     $("#artist-tags .tag").click(function() {
         _this.search($(this).attr("data-query"));
+    });
+
+    this.ui_artist_fastsearch.click(function() {
+        gui.music_gui.search($(this).attr("data-artist"), true);
+        gui.activateTab("music");
     });
 
     this.lists = {};
@@ -89,8 +95,11 @@ ArtistGui.prototype.loadArtistInfo = function(artist) {
             _this.ui_artist_bio.html(data.artist.bio.summary);
             _this.ui_artist_subtitle.html((data.artist.bio.placeformed || "") + " " + (data.artist.bio.yearformed || ""));
             _this.cover_info_bgcover.attr("style", "background-image: url('"+ data.artist.image[3]["#text"] + "');");
+            _this.ui_artist_fastsearch.attr("data-artist", data.artist.name);
+            _this.ui_artist_fastsearch.show();
         },
         beforeSend: function() {
+            _this.ui_artist_fastsearch.hide();
             _this.ui_artist_name.html("");
             _this.ui_artist_img.attr("style", "");
             _this.ui_artist_bio.html('<div class="list_loader"></div>');
@@ -185,6 +194,7 @@ ArtistGui.prototype.clearSearchBox = function() {
     this.ui_artist_subtitle.html("");
     this.ui_similar_list.html("");
     this.ui_albums_list.html("");
+    this.ui_artist_fastsearch.hide();
     this.ui_tags_block.fadeIn("fast");
 };
 
