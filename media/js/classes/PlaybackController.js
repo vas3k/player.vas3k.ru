@@ -50,7 +50,6 @@ PlaybackController.prototype.playTrack = function(track) {
             gui.ui_positionlabel.html(timeFormat(_this.current.position));
 
             if (_this.scrobble_time && _this.current.position > _this.scrobble_time && _this.current.position < _this.scrobble_time + 5000) {
-                console.debug("POSITION! " + _this.current.position + " scrobble: " + _this.scrobble_time);
                 _this.player.fireEvent("TrackJustBeforeFinish");
                 _this.scrobble_time = null; // больше не скробблить этот трек
             }
