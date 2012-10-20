@@ -48,14 +48,16 @@ PlaybackController.prototype.playTrack = function(track) {
         whileplaying: function () {
             gui.ui_slider.slider("value", _this.current.position / 10);
             gui.ui_positionlabel.html(timeFormat(_this.current.position));
+
+            if (_this.scrobble_time && _this.current.position > _this.scrobble_time && _this.current.position < _this.scrobble_time + 5000) {
+                console.debug("POSITION! " + _this.current.position + " scrobble: " + _this.scrobble_time);
+                _this.player.fireEvent("TrackJustBeforeFinish");
+                _this.scrobble_time = null; // больше не скробблить этот трек
+            }
         },
         onfinish: function () {
             _this.playNextTrack();
         }
-    });
-
-    this.current.onPosition(_this.scrobble_time, function() {
-        _this.player.fireEvent("TrackJustBeforeFinish");
     });
 };
 
