@@ -39,7 +39,7 @@ PlaybackController.prototype.playTrack = function(track) {
             //gui.ui_smallinfo.fadeOut("slow");
 
             // Время скробблинга (либо половина, либо 320 секунд)
-            _this.scrobble_time = Math.min(this.duration / 2, 320000);
+            _this.scrobble_time = Math.floor(Math.min(this.duration / 2, 320000));
         },
         whileloading: function () {
             //gui.ui_smallinfo.html("загружено: " + parseInt(this.bytesLoaded / 1024) + " из " + parseInt(this.bytesTotal / 1024) + " кБ");
