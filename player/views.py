@@ -14,8 +14,8 @@ def full(request):
         if cached_page is None:
             cached_page = render_to_response("user/login_form.html")
             cache.set('login_form_page', cached_page)
-        #return cached_page
-        return render_to_response("user/login_form.html")
+        return cached_page
+        #return render_to_response("user/login_form.html")
 
     cached_artists = cache.get("artists_top_user_%s" % request.user.id)
     if cached_artists is None:
