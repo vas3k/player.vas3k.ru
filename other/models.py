@@ -57,10 +57,11 @@ class ListeningHistory(models.Model):
 
         row = cursor.fetchone()
         weighted_set = []
-        max = row[0]
-        while row:
-            weighted_set.append((row[0] * 100 / max, row[1], row[0]))
-            row = cursor.fetchone()
+        if row is not None:
+            max = row[0]
+            while row:
+                weighted_set.append((row[0] * 100 / max, row[1], row[0]))
+                row = cursor.fetchone()
 
         return weighted_set
 

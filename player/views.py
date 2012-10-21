@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 from django.shortcuts import redirect, render_to_response
+from django.http import HttpResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.core.cache import cache
@@ -9,6 +10,10 @@ from player.models import UserProfile, AccessTokens
 
 
 def full(request):
+    referer = request.META.get('HTTP_REFERER') or None
+    if referer is not None and "/api/auth?api_key=6f557f2c836b0fff474c3b6cfcf0ccf4" in referer:
+        return HttpResponse("<script>window.close()</script>")
+
     if not request.user.is_authenticated():
         cached_page = cache.get('login_form_page')
         if cached_page is None:
