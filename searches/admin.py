@@ -2,6 +2,7 @@
 from django.contrib import admin
 from models import *
 
+
 class SearchesAdmin(admin.ModelAdmin):
     list_display = ('query', 'user', 'time')
 
