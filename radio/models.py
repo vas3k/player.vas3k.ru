@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 from django.db import models
 
+
 class Radio(models.Model):
     id = models.AutoField(
         '#',
@@ -24,16 +25,17 @@ class Radio(models.Model):
     )
 
     def for_json(self):
-        return { "id": self.code, "name": self.name }
+        return {"id": self.code, "name": self.name}
 
     def __unicode__(self):
         return u"Радио: %s" % self.name
 
     class Meta:
         get_latest_by = 'id'
-        ordering      = ('-id',)
-        verbose_name  = u"радио"
+        ordering = ('-id',)
+        verbose_name = u"радио"
         verbose_name_plural = u"радио"
+
 
 class RadioTracks(models.Model):
     id = models.AutoField(
@@ -63,13 +65,13 @@ class RadioTracks(models.Model):
     )
 
     def for_json(self):
-        return { "title": self.track_title, "artist": self.track_artist }
+        return {"title": self.track_title, "artist": self.track_artist}
 
     def __unicode__(self):
         return u"Трек для радио: %s - %s" % (self.track_artist, self.track_title)
 
     class Meta:
         get_latest_by = 'id'
-        ordering      = ('-id',)
-        verbose_name  = u"трек"
+        ordering = ('-id',)
+        verbose_name = u"трек"
         verbose_name_plural = u"треки"

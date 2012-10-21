@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Searches(models.Model):
     id = models.AutoField(
         '#',
@@ -25,13 +26,13 @@ class Searches(models.Model):
     )
 
     def for_json(self):
-        return { "_id": self.id, "name": self.query, "date": self.time.strftime("%d.%m.%Y %H:%M") }
+        return {"_id": self.id, "name": self.query, "date": self.time.strftime("%d.%m.%Y %H:%M")}
 
     def __unicode__(self):
         return u"Поиск %s" % self.query
 
     class Meta:
         get_latest_by = 'time'
-        ordering      = ('-id',)
-        verbose_name  = u"сохраненный поиск"
+        ordering = ('-id',)
+        verbose_name = u"сохраненный поиск"
         verbose_name_plural = u"сохраненные поиски"

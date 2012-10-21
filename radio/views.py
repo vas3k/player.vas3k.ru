@@ -1,8 +1,10 @@
 # -*- encoding: utf-8 -*-
 import time
+from django.http import HttpResponse
+from annoying.decorators import ajax_request
 from libs.prostopleer import ProstoPleer
-from libs.util import render_as_json, render_as_text
 from radio.models import Radio, RadioTracks
+
 
 TOP = {
     "msk": {
@@ -22,14 +24,14 @@ TOP = {
     }
 }
 
-@render_as_text
+
 def update_stations(request):
     Radio.objects.all().delete()
     for city, radios in TOP.items():
         for radio_code, radio_name in radios.items():
             Radio.objects.get_or_create(city=city, code=radio_code, name=radio_name)
 
-@render_as_text
+
 def update(request):
     RadioTracks.objects.all().delete()
 
@@ -44,19 +46,21 @@ def update(request):
         except:
             continue
 
-    return "OK"
+    return HttpResponse("OK")
 
-@render_as_json
+
+@ajax_request
 def get_radio(request):
     code = request.GET.get("id")
     if not code:
-        return { "status": "NeOK", "message": u"Не указан код радио" }
+        return {"status": "NeOK", "message": u"Не указан код радио"}
     track_objects = RadioTracks.objects.filter(radio__code=code).order_by("id")
     tracks = [t.for_json() for t in track_objects]
-    return { "status": "OK", "tracks": tracks }
+    return {"status": "OK", "tracks": tracks}
 
-@render_as_json
+
+@ajax_request
 def get_list(request):
     radio_objects = Radio.objects.all()
     radios = [r.for_json() for r in radio_objects]
-    return { "status": "OK", "radios": radios }
+    return {"status": "OK", "radios": radios}

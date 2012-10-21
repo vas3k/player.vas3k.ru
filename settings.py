@@ -12,7 +12,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'player',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
@@ -82,7 +82,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -92,7 +92,7 @@ SECRET_KEY = '95!c2=sq4ofja%!nycnz9zkqnbbzfv3km%2tw)bs=rg9g$t2sr'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    #'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -161,20 +161,20 @@ CACHES = {
         'LOCATION': '/var/tmp/player_cache',
         #        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         #        'LOCATION': '127.0.0.1:11211',
-        'TIMEOUT': 12 * 60 * 60 # 12 hours
+        'TIMEOUT': 12 * 60 * 60  # 12 hours
     }
 }
 
 # Users
 
 LOGIN_URL = "/login"
-FORCE_SCRIPT_NAME=""
+FORCE_SCRIPT_NAME = ""
 AUTH_PROFILE_MODULE = 'player.UserProfile'
 APPEND_SLASH = True
 
 # Application settings
-LASTFM_KEY = "" # lastfm access key
-LASTFM_SECRET = "" # lastfm secret key
+LASTFM_KEY = ""  # lastfm access key
+LASTFM_SECRET = ""  # lastfm secret key
 ACCESS_TOKEN = ""  # vkontakte desktop app token
 
 # Local settings

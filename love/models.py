@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Love(models.Model):
     id = models.AutoField(
         '#',
@@ -34,8 +35,8 @@ class Love(models.Model):
 
     class Meta:
         get_latest_by = 'time'
-        ordering      = ('-id',)
-        verbose_name  = u"любимое"
+        ordering = ('-id',)
+        verbose_name = u"любимое"
         verbose_name_plural = u"любимые"
 
     def __unicode__(self):

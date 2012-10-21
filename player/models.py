@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
@@ -10,6 +11,7 @@ class UserProfile(models.Model):
         u"VK имя",
         max_length=100
     )
+
 
 class AccessTokens(models.Model):
     id = models.AutoField(
@@ -45,8 +47,8 @@ class AccessTokens(models.Model):
 
     class Meta:
         get_latest_by = 'last_access_time'
-        ordering      = ('-id',)
-        verbose_name  = u"токен"
+        ordering = ('-id',)
+        verbose_name = u"токен"
         verbose_name_plural = u"токены"
 
     def __unicode__(self):

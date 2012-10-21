@@ -2,6 +2,7 @@
 from django.contrib import admin
 from models import *
 
+
 class LoveAdmin(admin.ModelAdmin):
     list_display = ('track_id', 'user', 'time', 'track_position')
 
