@@ -55,13 +55,15 @@ class ListeningHistory(models.Model):
         cursor.execute(group_query)
 
         row = cursor.fetchone()
-        weighted_set = []
-        max = row[0]
-        while row:
-            weighted_set.append((row[0] * 100 / max, row[1], row[0]))
-            row = cursor.fetchone()
+        if row:
+            weighted_set = []
+            max = row[0]
+            while row:
+                weighted_set.append((row[0] * 100 / max, row[1], row[0]))
+                row = cursor.fetchone()
 
-        return weighted_set
+            return weighted_set
+        return []
 
 class SearchesHistory(models.Model):
     id = models.AutoField(
