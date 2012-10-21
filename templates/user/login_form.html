@@ -1,39 +1,58 @@
 {% extends "static_layout.html" %}
 
 {% block body %}
-    <div id="preview_block">
+    <div id="preview_block" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
         <img src="/images/preview/small/preview001.png" class="preview_item" id="preview_item_0" />
         <img src="/images/preview/small/preview002.png" class="preview_item" id="preview_item_1" style="display: none;" />
         <img src="/images/preview/small/preview003.png" class="preview_item" id="preview_item_2" style="display: none;" />
         <img src="/images/preview/small/preview004.png" class="preview_item" id="preview_item_3" style="display: none;" />
     </div>
 
+    <div id="share_block">
+        <script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script>
+        <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="none" data-yashareQuickServices="vkontakte,facebook,twitter,lj,gplus,surfingbird"></div>
+    </div>
+
     <div id="center_block">
         <div class="center_50_block">
-            <div class="inside_block" style="background-image: url('/images/icons/small/black/2x2_grid_icon&32.png');">
-                <h1>Что это?</h1>
-                <div>Самые сообразительные уже могли догадаться, что это плеер. Для всех остальных: это плеер. Ага, очередной онлайн-плеер музыки. Только классный.</div>
+            <div class="inside_block" style="background-image: url('/images/icons/small/black/sound_high_icon&32.png');">
+                <h1>Музыка онлайн</h1>
+                <div>Слушайте музыку и ищите любимых исполнителей прямо из браузера.</div>
             </div>
         </div>
 
         <div class="center_50_block">
             <div class="inside_block" style="background-image: url('/images/icons/small/black/headphones_icon&32.png');">
-                <h1>Откуда музыка?</h1>
-                <div>Из самой большой музыкальной помойки рунета под названием вконтакте. Но мы не предполагаем наличие у вас аккаунта там, все работает без регистрации.</div>
+                <h1>Last.fm</h1>
+                <div>Скробблинг и рекомендации с сайта <a href="http://last.fm">last.fm</a> — самого большого онлайн-каталога музыки в интернете. Прямо из коробки.</div>
+            </div>
+        </div>
+
+        <div class="center_50_block">
+            <div class="inside_block" style="background-image: url('/images/icons/small/black/font_bold_icon&32.png');">
+                <h1>Вконтакте</h1>
+                <div>Подключите ваш аккаунт <a href="http://vk.com">vk.com</a> и слушайте свои аудиозаписи прямо в плеере.</div>
+            </div>
+        </div>
+
+        <div class="center_50_block">
+            <div class="inside_block" style="background-image: url('/images/icons/small/black/image_text_icon&32.png');">
+                <h1>Плейлисты</h1>
+                <div>Возможность создавать и управлять собственными плейлистами, катологизируя музыку.</div>
+            </div>
+        </div>
+
+        <div class="center_50_block">
+            <div class="inside_block" style="background-image: url('/images/icons/small/black/2x2_grid_icon&32.png');">
+                <h1>Альбомы и исполнители</h1>
+                <div>Смотрите биографию исполнителей, похожие группы и слушайте по альбомам.</div>
             </div>
         </div>
 
         <div class="center_50_block">
             <div class="inside_block" style="background-image: url('/images/icons/small/black/eye_icon&32.png');">
-                <h1>Почему так выглядит?</h1>
-                <div>Нам нравится интерфейс iTunes.</div>
-            </div>
-        </div>
-
-        <div class="center_50_block">
-            <div class="inside_block" style="background-image: url('/images/icons/small/black/box_icon&32.png');">
-                <h1>Что умеет?</h1>
-                <div>Искать любую доступную музыку, фильтровать ее, создавать плейлисты, искать по исполнителям, альбомам, скробблить и давать рекомендации с lasf.fm.</div>
+                <h1>Тексты песен</h1>
+                <div>Открывайте текст песни и подпевайте. Делитесь песнями с друзьями через социальные сети.</div>
             </div>
         </div>
 
@@ -47,6 +66,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="start_button">
+        <a href="/register/" class="blue">Начать использование</a>
     </div>
 {% endblock %}
 
