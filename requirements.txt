@@ -3,3 +3,4 @@ South>=0.7.3
 simplejson
 lxml
 psycopg2
+django-annoying==0.7.6
