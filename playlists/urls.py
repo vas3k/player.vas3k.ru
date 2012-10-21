@@ -1,7 +1,8 @@
 # -*- encoding: utf-8 -*-
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('playlists.views',
+urlpatterns = patterns(
+    'playlists.views',
     (r'list$', 'list'),
     (r'new$', 'new'),
     (r'remove$', 'remove'),

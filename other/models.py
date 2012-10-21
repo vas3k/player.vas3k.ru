@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class ListeningHistory(models.Model):
     id = models.AutoField(
         '#',
@@ -42,8 +43,8 @@ class ListeningHistory(models.Model):
 
     class Meta:
         get_latest_by = 'time'
-        ordering      = ('-id',)
-        verbose_name  = u"история прослушиваний"
+        ordering = ('-id',)
+        verbose_name = u"история прослушиваний"
         verbose_name_plural = u"история прослушиваний"
 
     @staticmethod
@@ -55,15 +56,15 @@ class ListeningHistory(models.Model):
         cursor.execute(group_query)
 
         row = cursor.fetchone()
-        if row:
-            weighted_set = []
+        weighted_set = []
+        if row is not None:
             max = row[0]
             while row:
                 weighted_set.append((row[0] * 100 / max, row[1], row[0]))
                 row = cursor.fetchone()
 
-            return weighted_set
-        return []
+        return weighted_set
+
 
 class SearchesHistory(models.Model):
     id = models.AutoField(
@@ -88,16 +89,13 @@ class SearchesHistory(models.Model):
     )
 
     def for_json(self):
-        return { "name": "%s" % self.query, "date": self.time.strftime("%d.%m.%Y %H:%M") }
+        return {"name": "%s" % self.query, "date": self.time.strftime("%d.%m.%Y %H:%M")}
 
     def __unicode__(self):
         return u"Поиск %s" % self.query
 
     class Meta:
         get_latest_by = 'time'
-        ordering      = ('-id',)
-        verbose_name  = u"история поисков"
+        ordering = ('-id',)
+        verbose_name = u"история поисков"
         verbose_name_plural = u"история поисков"
-
-
-

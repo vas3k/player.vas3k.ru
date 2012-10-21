@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Playlist(models.Model):
     id = models.AutoField(
         '#',
@@ -31,8 +32,8 @@ class Playlist(models.Model):
 
     class Meta:
         get_latest_by = 'time'
-        ordering      = ('-id',)
-        verbose_name  = u"плейлист"
+        ordering = ('-id',)
+        verbose_name = u"плейлист"
         verbose_name_plural = u"плейлисты"
 
     def __unicode__(self):
@@ -42,7 +43,8 @@ class Playlist(models.Model):
         return PlaylistTracks.objects.filter(playlist=self).count()
 
     def for_json(self):
-        return { "_id": self.id, "name": self.title, "track_count": self.count, "userid": self.user.id }
+        return {"_id": self.id, "name": self.title, "track_count": self.count, "userid": self.user.id}
+
 
 class PlaylistTracks(models.Model):
     id = models.AutoField(
@@ -73,8 +75,8 @@ class PlaylistTracks(models.Model):
 
     class Meta:
         get_latest_by = 'time'
-        ordering      = ('-id',)
-        verbose_name  = u"трек плейлиста"
+        ordering = ('-id',)
+        verbose_name = u"трек плейлиста"
         verbose_name_plural = u"треки плейлиста"
 
     def __unicode__(self):

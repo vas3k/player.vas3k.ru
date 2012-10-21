@@ -6,7 +6,8 @@ from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     # Examples:
     # url(r'^$', 'Player.views.home', name='home'),
     # url(r'^Player/', include('Player.foo.urls')),
@@ -42,15 +43,16 @@ urlpatterns = patterns('',
 # если у нас тест-сервер, сделаем вот так, на боевом nginx,
 # конечно же, все делается через location
 if settings.DEBUG:
-    urlpatterns += patterns('',
+    urlpatterns += patterns(
+        '',
         (r'^new/(.*)$', 'django.views.static.serve',
-             { 'document_root': settings.MEDIA_ROOT + "/new", 'show_indexes': True }),
+            {'document_root': settings.MEDIA_ROOT + "/new", 'show_indexes': True}),
         (r'^css/(.*)$', 'django.views.static.serve',
-             { 'document_root': settings.MEDIA_ROOT + "/css", 'show_indexes': True }),
+            {'document_root': settings.MEDIA_ROOT + "/css", 'show_indexes': True}),
         (r'^images/(.*)$', 'django.views.static.serve',
-            { 'document_root': settings.MEDIA_ROOT + "/images", 'show_indexes': True }),
+            {'document_root': settings.MEDIA_ROOT + "/images", 'show_indexes': True}),
         (r'^js/(.*)$', 'django.views.static.serve',
-            { 'document_root': settings.MEDIA_ROOT + "/js", 'show_indexes': True }),
+            {'document_root': settings.MEDIA_ROOT + "/js", 'show_indexes': True}),
         (r'^swf/(.*)$', 'django.views.static.serve',
-            { 'document_root': settings.MEDIA_ROOT + "/swf", 'show_indexes': True }),
+            {'document_root': settings.MEDIA_ROOT + "/swf", 'show_indexes': True}),
     )
