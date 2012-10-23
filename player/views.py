@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 from django.shortcuts import redirect, render_to_response
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.core.cache import cache
@@ -72,7 +72,7 @@ def login(request):
             return redirect(request.GET.get("next", "/"))
         else:
             return render_to_response("user/error.html", {"message": u"Пароль не верен или такого пользователя не существует"})
-    return render_to_response("user/login_form.html")
+    return HttpResponsePermanentRedirect("/")
 
 
 def logout(request):

@@ -201,12 +201,20 @@ body {
         border-radius: 5px;
     }
 
-        .inside_block h1 {
+        .inside_block h1,
+        .inside_block h2,
+        .inside_block h3 {
             font-size: 18px;
+            font-weight: bold;
         }
 
         .inside_block div {
             line-height: 1.4em;
+            padding-right: 20px;
+        }
+
+        .inside_block div strong {
+            font-weight: normal;
         }
 
 #bigbody {
