@@ -108,6 +108,7 @@
             {% endif %}
         </div>
 
+        {% if tracks %}
         <h3>Лучшие песни группы &laquo;{{ artist.title }}&raquo;</h3>
         <div id="artist_tracks">
             {% for track in tracks %}
@@ -119,6 +120,7 @@
                 </div>
             {% endfor %}
         </div>
+        {% endif %}
 
         {% if albums %}
         <h3>Альбомы группы &laquo;{{ artist.title }}&raquo;</h3>
