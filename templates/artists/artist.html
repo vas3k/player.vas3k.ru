@@ -54,6 +54,7 @@
 
         function playTrack(url) {
             soundManager.stop('current');
+            soundManager.destroySound("current");
             soundManager.createSound({
                 id: 'current',
                 url: url,
