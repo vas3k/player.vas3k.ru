@@ -223,6 +223,10 @@ body {
     text-align: center;
 }
 
+    #bigbody li {
+        padding-top: 7px;
+    }
+
 #usererror {
     margin-top: 100px;
     color: #DB3B34;
@@ -306,4 +310,255 @@ body {
     background: -webkit-gradient(linear, left top, left bottom, from(#0078a5), to(#00adee));
     background: -moz-linear-gradient(top,  #0078a5,  #00adee);
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#0078a5', endColorstr='#00adee');
+}
+
+.green {
+    color: #e8f0de;
+    border: solid 1px #538312;
+    background: #64991e;
+    background: -webkit-gradient(linear, left top, left bottom, from(#7db72f), to(#4e7d0e));
+    background: -moz-linear-gradient(top,  #7db72f,  #4e7d0e);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db72f', endColorstr='#4e7d0e');
+}
+.green:hover {
+    background: #538018;
+    background: -webkit-gradient(linear, left top, left bottom, from(#6b9d28), to(#436b0c));
+    background: -moz-linear-gradient(top,  #6b9d28,  #436b0c);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#6b9d28', endColorstr='#436b0c');
+}
+.green:active {
+    color: #a9c08c;
+    background: -webkit-gradient(linear, left top, left bottom, from(#4e7d0e), to(#7db72f));
+    background: -moz-linear-gradient(top,  #4e7d0e,  #7db72f);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e7d0e', endColorstr='#7db72f');
+}
+
+#footer {
+    border-top: solid 1px #CCC;
+    margin-top: 100px;
+    padding: 20px;
+    text-align: center;
+}
+
+    #footer a {
+        margin: 0 10px;
+        color: #CCC;
+    }
+
+/* Artist */
+
+#artist-container {
+    width: 960px;
+    margin: 70px auto;
+}
+
+    #artist-container h3 {
+        font-size: 18px;
+        margin-left: 5px;
+        margin-bottom: 20px;
+    }
+
+#artist_tracks {
+    width: 100%;
+    clear: both;
+    min-height: 300px;
+    overflow: hidden;
+    margin-bottom: 80px;
+}
+
+    #artist_tracks h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .track {
+        position: relative;
+        width: 300px;
+        height: 30px;
+        padding: 10px;
+        border-radius: 10px;
+        float: left;
+     }
+
+    .playing {
+        background: #f6f6f6; /* Old browsers */
+        background: -moz-linear-gradient(top,  #f6f6f6 0%, #eaeaea 50%, #ededed 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f6f6), color-stop(50%,#eaeaea), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  #f6f6f6 0%,#eaeaea 50%,#ededed 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top,  #f6f6f6 0%,#eaeaea 50%,#ededed 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top,  #f6f6f6 0%,#eaeaea 50%,#ededed 100%); /* IE10+ */
+        background: linear-gradient(to bottom,  #f6f6f6 0%,#eaeaea 50%,#ededed 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f6f6', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+    }
+
+    .track-play {
+        position: absolute;
+        top: 13px;
+        left: 15px;
+        width: 35px;
+        height: 25px;
+        cursor: pointer;
+        background: url('../images/icons/play.png') no-repeat 30% 50%;
+    }
+
+    .track-pause {
+        position: absolute;
+        top: 13px;
+        left: 15px;
+        width: 35px;
+        height: 25px;
+        cursor: pointer;
+        background: url('../images/icons/pause.png') no-repeat 30% 50%;
+    }
+
+    .track-title {
+        position: absolute;
+        top: 12px;
+        left: 55px;
+        font-weight: bold;
+        font-size: 13px;
+        white-space: nowrap;
+        width: 50%;
+        overflow: hidden;
+        color: #090909;
+    }
+
+    .track-artist {
+        position: absolute;
+        top: 30px;
+        left: 55px;
+        font-size: 11px;
+        color: #A9A9A9;
+        white-space: nowrap;
+        width: 60%;
+        overflow: hidden;
+    }
+
+.cover-view {
+    width: 100%;
+    clear: both;
+    overflow: hidden;
+    text-align: center;
+}
+
+    .cover {
+        display: inline-block;
+        width: 200px;
+        height: 240px;
+        margin: 20px 10px 0 20px;
+        cursor: pointer;
+    }
+
+    .cover-image {
+        width: 200px;
+        height: 200px;
+        background: #EEE;
+        box-shadow: 1px 1px 7px #9D9489;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .cover:hover .cover-image {
+        box-shadow: 1px 1px 10px #9D9489;
+    }
+
+    .cover-title {
+        padding: 7px 0;
+    }
+
+    .cover-title span {
+        font-weight: bold;
+    }
+
+    .cover-title small {
+        color: #A9A9A9;
+        font-size: 11px;
+    }
+
+#artist-info {
+    width: 100%;
+    height: 330px;
+    clear: both;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 50px;
+}
+
+    #artist-info h1 {
+        font-size: 20px;
+        padding-bottom: 20px;
+    }
+
+    #artist-info-img {
+        width: 180px;
+        height: 180px;
+        float: left;
+        margin-right: 20px;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        background-size: cover;
+    }
+
+    #artist-info-bio {
+        float: left;
+        width: 40%;
+        color: #595959;
+        line-height: 1.4em;
+        font-size: 13px;
+    }
+
+    #artist-info-similar {
+        position: absolute;
+        top: 40px;
+        left: 65%;
+        width: 45%;
+        height: 290px;
+        overflow: hidden;
+    }
+
+        #artist-info-similar h3 {
+            font-size: 18px;
+            margin-left: 5px;
+            margin-bottom: 10px;
+        }
+
+        .similar-artist {
+            float: left;
+            width: 180px;
+            height: 30px;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+            .similar-artist-img {
+                width: 30px;
+                height: 30px;
+                margin-right: 10px;
+                float: left;
+                background-repeat: no-repeat;
+                background-position: 50% 50%;
+                background-size: cover;
+            }
+
+            .simular-artist-title {
+                float: left;
+                width: 130px;
+                margin-top: 8px;
+                height: 30px;
+                overflow: hidden;
+                color: #444;
+                white-space: nowrap;
+            }
+
+            .simular-artist:hover .simular-artist-title {
+                color: #111;
+        }
+
+#start_button a {
+    margin: 0 20px;
+}
+
+#start_button h3 {
+    margin-bottom: 30px;
 }

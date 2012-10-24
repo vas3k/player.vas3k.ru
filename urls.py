@@ -33,6 +33,7 @@ urlpatterns = patterns(
     (r'^ajax/searchhistory/list', 'other.views.get_searches_history'),
 
     (r'^lastfm/', include('lastfm.urls')),
+    (r'^listen/', include('artistpages.urls')),
     (r'^radio/', include('radio.urls')),
     (r'^add_token', 'player.views.add_token'),
 

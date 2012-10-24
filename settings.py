@@ -127,7 +127,8 @@ INSTALLED_APPS = (
     'player',
     'playlists',
     'radio',
-    'searches'
+    'searches',
+    'artistpages'
 )
 
 # A sample logging configuration. The only tangible logging

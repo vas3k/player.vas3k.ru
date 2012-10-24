@@ -1,0 +1,144 @@
+{% extends "static_layout.html" %}
+
+{% block js %}
+<script type="text/javascript" src="http://vkontakte.ru/js/api/openapi.js" charset="windows-1251"></script>
+<script type="text/javascript" src="/js/frameworks/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="/js/frameworks/soundmanager2.js"></script>
+<script type="text/javascript">
+    $(function() {
+        soundManager.url = '/swf/';
+        soundManager.debugMode = false;
+        soundManager.useFlashBlock = true; // optionally, enable when you're ready to dive in
+        soundManager.useHTML5Audio = true; // enable HTML5 audio support, if you're feeling adventurous.
+        soundManager.useHighPerformance = true;
+
+        access_token = $("#access_token").html();
+
+        $(".track-play").live("click", function() {
+            $(".track-pause").removeClass("track-pause").addClass("track-play");
+            $(this).removeClass("track-play").addClass("track-pause");
+            var artist = $(this).parent().attr("data-artist").toLowerCase();
+            var title = $(this).parent().attr("data-title").toLowerCase();
+            var query = artist + " " + title;
+            $.ajax({
+                url: "https://api.vkontakte.ru/method/audio.search?q="+query+"&count=40&auto_complete=1&access_token="+access_token+"&callback=callbackFunc",
+                dataType: 'jsonp',
+                success: function(r) {
+                    if (r.response[0] == "0") return;
+                    var goodtrack =- 1;
+                    for (var i = 1; i < r.response.length; i++) {
+                        if ( r.response[i].artist.toLowerCase() == artist &&
+                                r.response[i].title.toLowerCase() == title ) {
+                            goodtrack = i;
+                            break;
+                        }
+                        if ((r.response[i].artist.toLowerCase().indexOf(artist) + 1) &&
+                                (r.response[i].title.toLowerCase().indexOf(title) + 1)) {
+                            goodtrack = i;
+                        }
+                    }
+                    if (goodtrack > -1) {
+                        playTrack(r.response[goodtrack].url);
+                    }
+                },
+                error: function() {
+                    console.debug("Превышен интервал запросов. ВОТ ЭТО ПОВОРОТ!");
+                }
+            });
+        });
+
+        $(".track-pause").live("click", function() {
+            $(this).removeClass("track-pause").addClass("track-play");
+            soundManager.pause('current');
+        });
+
+        function playTrack(url) {
+            soundManager.stop('current');
+            soundManager.createSound({
+                id: 'current',
+                url: url,
+                autoLoad: true,
+                autoPlay: true,
+                volume: window.localStorage["volume"] || 100,
+                onconnect: function () {
+                },
+                onload: function() {
+                },
+                whileloading: function () {
+                },
+                whileplaying: function () {
+                },
+                onjustbeforefinish: function () {
+                },
+                onfinish: function () {
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
+
+{% block title %}Слушать песни группы {{ artist.title }} — {% endblock %}
+
+{% block body %}
+    <div id="artist-container">
+        <div id="share_block">
+            <script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script>
+            <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="none" data-yashareQuickServices="vkontakte,facebook,twitter,lj,gplus,surfingbird"></div>
+        </div>
+
+        <div id="artist-info">
+            <h1>Слушать &laquo;{{ artist.title }}&raquo; онлайн</h1>
+
+            <img src="{{ artist.big_image }}" id="artist-info-img" alt="" />
+
+            <div id="artist-info-bio">{{ artist.description|safe }}</div>
+
+            <div id="artist-info-similar">
+                <h3>Группы, похожие на &laquo;{{ artist.title }}&raquo;</h3>
+                {% for similar_artist in similar %}
+                <a href="/#artist:{{ similar_artist.title }}" target="_blank" class="similar-artist">
+                    <div class="similar-artist-img" style="background-image: url('{{ similar_artist.cover }}');"></div>
+                    <div class="similar-artist-title">{{ similar_artist.title }}</div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <h3>Лучшие песни группы &laquo;{{ artist.title }}&raquo;</h3>
+        <div id="artist_tracks">
+            {% for track in tracks %}
+                <div class="track" id="{{ artist.slug }}_{{ track }}" data-artist="{{ artist.title }}" data-title="{{ track.title }}">
+                    <div class="track-play"></div>
+                    <div class="track-title">{{ track.title }}</div>
+                    <div class="track-artist">{{ artist.title }}</div>
+                    <div class="track-options"></div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h3>Альбомы группы &laquo;{{ artist.title }}&raquo;</h3>
+        <div class="cover-view" id="artist_albums">
+            {% for album in albums %}
+            <a href="/#album:{{ album.title }}" target="_blank" class="cover">
+                <div class="cover-image" style="background-image: url('{{ album.cover }}');"></div>
+                <div class="cover-title">{{ album.title }}</div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <div id="start_button">
+            <h3>Все песни группы &laquo;{{ artist.title }}&raquo; и многих других исполнителей бесплатно можно послушать в плеере</h3>
+            <a href="/" target="_blank" class="green">Узнать больше</a>
+            <a href="/register/" target="_blank" class="blue">Начать использование</a>
+        </div>
+    </div>
+
+    <div style="display: none;">
+        <div id="access_token">{{ACCESS_TOKEN}}</div>
+    </div>
+{% endblock %}
+
+
+{% block additional_block %}
+{% endblock %}

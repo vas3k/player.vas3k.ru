@@ -33,6 +33,8 @@
             });
         });
     </script>
+    {% block js %}
+    {% endblock %}
     <!--[if IE]>
         <script>
             // Сосите мужской хуй, мудачки вендузятские. Я заставлю ваше говно любить мой HTML 5.
@@ -62,6 +64,13 @@
     {% endblock %}
 
     {% block additional_block %}
+    {% endblock %}
+
+    {% block footer %}
+    <div id="footer">
+        <a href="http://vas3k.ru">Создатель</a>
+        <a href="/listen/">Карта сайта</a>
+    </div>
     {% endblock %}
 
     <!-- Yandex.Metrika counter -->
