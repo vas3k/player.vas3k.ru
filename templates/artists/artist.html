@@ -94,6 +94,7 @@
 
             <div id="artist-info-bio">{{ artist.description|safe }}</div>
 
+            {% if similar %}
             <div id="artist-info-similar">
                 <h3>Группы, похожие на &laquo;{{ artist.title }}&raquo;</h3>
                 {% for similar_artist in similar %}
@@ -103,6 +104,7 @@
                 </a>
                 {% endfor %}
             </div>
+            {% endif %}
         </div>
 
         <h3>Лучшие песни группы &laquo;{{ artist.title }}&raquo;</h3>
@@ -117,6 +119,7 @@
             {% endfor %}
         </div>
 
+        {% if albums %}
         <h3>Альбомы группы &laquo;{{ artist.title }}&raquo;</h3>
         <div class="cover-view" id="artist_albums">
             {% for album in albums %}
@@ -126,6 +129,7 @@
             </a>
             {% endfor %}
         </div>
+        {% endif %}
 
         <div id="start_button">
             <h3>Все песни группы &laquo;{{ artist.title }}&raquo; и многих других исполнителей бесплатно можно послушать в плеере</h3>

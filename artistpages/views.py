@@ -36,40 +36,49 @@ def load_artist(request):
         big_image = data_json["artist"]["image"][3]["#text"]
     )
 
-    albums_query = "http://ws.audioscrobbler.com/2.0/?method=artist.getTopAlbums&format=json&lang=ru&autocorrect=1&api_key=%s&artist=%s" % (settings.LASTFM_KEY, artist)
-    data = urllib2.urlopen(albums_query).read()
-    data_json = json.loads(data)
+    try:
+        albums_query = "http://ws.audioscrobbler.com/2.0/?method=artist.getTopAlbums&format=json&lang=ru&autocorrect=1&api_key=%s&artist=%s" % (settings.LASTFM_KEY, artist)
+        data = urllib2.urlopen(albums_query).read()
+        data_json = json.loads(data)
 
-    for num, album in enumerate(data_json["topalbums"]["album"]):
-        if num > 16: break
-        Albums.objects.create(
-            artist = artist_page,
-            title = album["name"],
-            cover = album["image"][3]["#text"]
-        )
+        for num, album in enumerate(data_json["topalbums"]["album"]):
+            if num > 16: break
+            Albums.objects.create(
+                artist = artist_page,
+                title = album["name"],
+                cover = album["image"][3]["#text"]
+            )
+    except:
+        pass
 
-    tracks_query = "http://ws.audioscrobbler.com/2.0/?method=artist.getTopTracks&format=json&lang=ru&autocorrect=1&api_key=%s&artist=%s" % (settings.LASTFM_KEY, artist)
-    data = urllib2.urlopen(tracks_query).read()
-    data_json = json.loads(data)
+    try:
+        tracks_query = "http://ws.audioscrobbler.com/2.0/?method=artist.getTopTracks&format=json&lang=ru&autocorrect=1&api_key=%s&artist=%s" % (settings.LASTFM_KEY, artist)
+        data = urllib2.urlopen(tracks_query).read()
+        data_json = json.loads(data)
 
-    for num, track in enumerate(data_json["toptracks"]["track"]):
-        if num > 20: break
-        Tracks.objects.create(
-            artist = artist_page,
-            title = track["name"]
-        )
+        for num, track in enumerate(data_json["toptracks"]["track"]):
+            if num > 20: break
+            Tracks.objects.create(
+                artist = artist_page,
+                title = track["name"]
+            )
+    except:
+        pass
 
-    similar_query = "http://ws.audioscrobbler.com/2.0/?method=artist.getSimilar&format=json&lang=ru&autocorrect=1&api_key=%s&artist=%s" % (settings.LASTFM_KEY, artist)
-    data = urllib2.urlopen(similar_query).read()
-    data_json = json.loads(data)
+    try:
+        similar_query = "http://ws.audioscrobbler.com/2.0/?method=artist.getSimilar&format=json&lang=ru&autocorrect=1&api_key=%s&artist=%s" % (settings.LASTFM_KEY, artist)
+        data = urllib2.urlopen(similar_query).read()
+        data_json = json.loads(data)
 
-    for num, artist in enumerate(data_json["similarartists"]["artist"]):
-        if num > 10: break
-        Similar.objects.create(
-            artist = artist_page,
-            title = artist["name"],
-            cover = artist["image"][0]["#text"]
-        )
+        for num, artist in enumerate(data_json["similarartists"]["artist"]):
+            if num > 10: break
+            Similar.objects.create(
+                artist = artist_page,
+                title = artist["name"],
+                cover = artist["image"][0]["#text"]
+            )
+    except:
+        pass
 
     return redirect("/listen/%s/" % slug)
 
