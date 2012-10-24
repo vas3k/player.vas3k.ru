@@ -794,7 +794,7 @@
     position: absolute;
     top: 30px;
     left: -20px;
-    width: 140px;
+    width: 160px;
     height: 180px;
     background-color: #F7F7F7;
     border: solid 1px #ACACAC;
@@ -808,7 +808,7 @@
         display: block;
         position: absolute;
         top: -7px;
-        right: 70px;
+        right: 80px;
         width: 10px;
         height: 10px;
         background: #F7F7F7;

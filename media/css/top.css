@@ -367,6 +367,19 @@
             opacity: 0.9;
         }
 
+        #nowplaying-clear {
+            float: right;
+            width: 16px;
+            height: 16px;
+            background: transparent url("../images/icons/delete.png") no-repeat 50% 50%;
+            cursor: pointer;
+            opacity: 0.5;
+        }
+
+        #nowplaying-clear:hover {
+            opacity: 0.9;
+        }
+
     #nowplaying_list-list {
         position: absolute;
         top: 25px;

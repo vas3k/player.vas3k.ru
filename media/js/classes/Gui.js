@@ -145,7 +145,7 @@ Gui.prototype.linkButtonEvents = function() {
         var track_list_id = $(this).parent().parent().attr("data-list-id");
         $("#" + track_list_id).find("input[type=checkbox]:checked").each(function() {
             var track_element = $(this).parent().parent();
-            if (gui.active_tab_gui.lists[track_element.attr("data-list")].removeById(track_element.attr("id"))) {
+            if (gui.active_tab_gui.lists[track_element.attr("data-list")].removeById(track_element.attr("data-id"))) {
                 track_element.fadeOut();
             }
         });
@@ -157,15 +157,25 @@ Gui.prototype.linkButtonEvents = function() {
 
     this.ui_list_addto_button.live("click", function() {
         var playlist_id = $(this).attr("data-list-id");
-        var track_list_id = $($(this).parents(".list-buttons")[0]).attr("data-list-id");
+        var parent_list = $($(this).parents(".list-buttons")[0]);
 
-        var track_ids = [];
-        $("#" + track_list_id).find("input[type=checkbox]:checked").each(function() {
-            var track_element = $(this).parent().parent();
-            track_ids.push(track_element.attr("id"));
-        });
+        var track_list_id = parent_list.attr("data-list-id");
+        var track_list_name = parent_list.attr("data-list-name");
 
-        gui.playlists_gui.lists["playlist-" + playlist_id].pushRaw(track_ids);
+        if (playlist_id == "nowplaying") {
+            $("#" + track_list_id).find("input[type=checkbox]:checked").each(function() {
+                var track_id = $(this).parent().parent().attr("data-id");
+                player.listController.nowplaying.list.push(gui.active_tab_gui.lists[track_list_name].getById(track_id));
+            });
+            gui.list_gui.updateNowplayingList(player.listController.nowplaying);
+        } else {
+            var track_ids = [];
+            $("#" + track_list_id).find("input[type=checkbox]:checked").each(function() {
+                var track_element = $(this).parent().parent();
+                track_ids.push(track_element.attr("data-id"));
+            });
+            gui.playlists_gui.lists["playlist-" + playlist_id].pushRaw(track_ids);
+        }
     });
 
     this.ui_shuffle_button.click(function() {

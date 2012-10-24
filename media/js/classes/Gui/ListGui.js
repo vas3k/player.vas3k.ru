@@ -7,6 +7,7 @@ function ListGui() {
     this.ui_getmore = $("#show_more");
 
     this.ui_nowplaying_activator = $("#top-info-nowplaying");
+    this.ui_nowplaying_clear = $("#nowplaying-clear");
     this.ui_nowplaying = $("#nowplaying_list-list");
     this.ui_nowplaying_play = $(".nowplaying-play");
     this.ui_nowplaying_remove = $(".nowplaying-remove");
@@ -47,6 +48,12 @@ ListGui.prototype.linkTrackEvents = function() {
         var track_id = $(this).attr("data-id");
         var track = player.listController.nowplaying.getById(track_id);
         player.playbackController.playTrack(track);
+    });
+
+    this.ui_nowplaying_clear.click(function() {
+        player.listController.nowplaying.list = [];
+        player.listController.nowplaying.current_index = 0;
+        $("#nowplaying_list-list").html("");
     });
 
     this.ui_track_artist.live("click", function() {

@@ -50,7 +50,7 @@ PlaylistsGui.prototype.loadPlaylists = function() {
         success: function(data) {
             if (data["status"] == "OK") {
                 var html = "";
-                _this.ui_add_to_lists.html("");
+                _this.ui_add_to_lists.html('<div class="add_to_button" data-list-id="nowplaying">Список воспроизведения</div>');
                 for (var i = 0; i < data["lists"].length; i++) {
                     var playlist = data["lists"][i];
                     html += Mustache.to_html(_this.playlist_template, {
