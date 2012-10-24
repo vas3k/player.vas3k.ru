@@ -100,5 +100,5 @@ def show(request, artist):
 @render_to("artists/list.html")
 def list(request):
     return {
-        "artists": Pages.objects.order_by("-id")
+        "artists": Pages.objects.order_by("title")
     }
