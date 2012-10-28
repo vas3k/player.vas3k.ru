@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 import urllib2
 import time
-import re
+import simplejson as json
 from hashlib import md5
 from lxml import etree
 from django.conf import settings
@@ -9,9 +9,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from annoying.decorators import ajax_request
 
-
 SESSION_LIFECYCLE = 365 * 24 * 60 * 60
-
 
 def handshake(lastfm_login, lastfm_session):
     # теперь пожмем ручки
@@ -30,12 +28,16 @@ def callback(request):
 
     # получим себе key
     api_sig = md5('api_key' + settings.LASTFM_KEY + 'methodauth.getSessiontoken' + token + settings.LASTFM_SECRET).hexdigest()
-    get = 'method=auth.getSession&api_key=' + settings.LASTFM_KEY + '&token=' + token + '&api_sig=' + api_sig
-    answer = urllib2.urlopen("http://ws.audioscrobbler.com/2.0/?%s" % get).read().replace("\n", "")
-    lastfm_login = re.search("<name>(.*?)</name>", answer).group(1)
-    lastfm_session = re.search("<key>(.*?)</key>", answer).group(1)
+    get = 'method=auth.getSession&format=json&api_key=' + settings.LASTFM_KEY + '&token=' + token + '&api_sig=' + api_sig
 
-    session = handshake(lastfm_login, lastfm_session)
+    try:
+        answer = urllib2.urlopen("http://ws.audioscrobbler.com/2.0/?%s" % get).read().replace("\n", "")
+        answer_json = json.loads(answer)
+        lastfm_login = answer_json["session"]["name"]
+        lastfm_session = answer_json["session"]["name"]
+        session = handshake(lastfm_login, lastfm_session)
+    except:
+        return render_to_response("static/lastfmnotok.html")
 
     # и куки не забудем
     response = render_to_response("static/lastfmok.html")

@@ -194,6 +194,7 @@ Gui.prototype.linkButtonEvents = function() {
 
 //    _this.ui_repeat_status.html(_this.repeat_states[player.playbackController.repeat_state]);
 //
+
     $("#create_playlist").click(function() {
         $(this).find("span").toggle();
         $(this).find("input").toggle().focus();
