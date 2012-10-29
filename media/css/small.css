@@ -85,6 +85,7 @@
         #trackslider .ui-slider-handle {
             width: 9px;
             height: 9px;
+            top: -.5em;
         }
 
     #trackposition {
