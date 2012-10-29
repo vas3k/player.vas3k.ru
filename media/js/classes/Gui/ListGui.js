@@ -87,7 +87,7 @@ ListGui.prototype.linkTrackEvents = function() {
     });
 
     this.ui_track_link.live("click", function() {
-        window.open("/small#track:" + $(this).parent().parent().attr("id"),
+        window.open("/small#track:" + $(this).parent().parent().attr("data-id"),
                     $(this).parent().parent().attr("data-artist") + " " + $(this).parent().parent().attr("data-title"),
                     'top=300, left=200, menubar=0, toolbar=0, location=0, ' +
                     'directories=0, status=0, scrollbars=0, resizable=0, width=600, height=110');
