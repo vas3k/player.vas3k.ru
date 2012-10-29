@@ -56,7 +56,7 @@
 
     #trackartist {
         position: absolute;
-        top: 25px;
+        top: 22px;
         left: 30px;
         right: 30px;
         text-align: center;
@@ -122,9 +122,11 @@
 
     #smallinfo {
         font-size: 10px;
+        color: #999;
         position: absolute;
-        top: 45px;
-        right: 90px;
+        top: 35px;
+        width: 100%;
+        text-align: center;
     }
 
 #popup_error {
@@ -252,12 +254,6 @@ input {
     background: linear-gradient(to bottom,  #eeeeee 0%,#c6c6c6 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#c6c6c6',GradientType=0 ); /* IE6-9 */
 }
-    #smallinfo {
-        font-size: 10px;
-        position: absolute;
-        top: 45px;
-        right: 90px;
-    }
 
 #header_buttons {
     padding-top: 10px;

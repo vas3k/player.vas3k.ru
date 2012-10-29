@@ -123,7 +123,7 @@ $(function () {
                     $("#smallinfo").fadeOut("slow");
                 },
                 whileloading: function () {
-                    $("#smallinfo").html("загружено: " + parseInt(this.bytesLoaded / 1024) + " из " + parseInt(this.bytesTotal / 1024) + " кБ");
+                    $("#smallinfo").html("загружено " + parseInt(this.bytesLoaded / 1024) + " из " + parseInt(this.bytesTotal / 1024) + " кБ");
                     $("#progressbar").progressbar("value", parseInt(this.bytesLoaded / this.bytesTotal * 100));
                 },
                 whileplaying: function () {
