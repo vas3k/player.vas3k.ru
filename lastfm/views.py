@@ -34,7 +34,7 @@ def callback(request):
         answer = urllib2.urlopen("http://ws.audioscrobbler.com/2.0/?%s" % get).read().replace("\n", "")
         answer_json = json.loads(answer)
         lastfm_login = answer_json["session"]["name"]
-        lastfm_session = answer_json["session"]["name"]
+        lastfm_session = answer_json["session"]["key"]
         session = handshake(lastfm_login, lastfm_session)
     except:
         return render_to_response("static/lastfmnotok.html")
