@@ -94,6 +94,7 @@ def add_token(request):
                 token_obj = AccessTokens.objects.create(user_id=user_id)
             token_obj.token = token
             token_obj.save()
+    return {}
 
 
 @ajax_request
